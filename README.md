@@ -9,6 +9,7 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 ### Root
 - `build.gradle` — build and dependencies
 - `settings.gradle` — Gradle settings
+- `CHANGE.md` — project change history
 - `nilloader.nilmod.css` — NilLoader metadata
 - `nilplugin.txt`, `nilplugin-verbose.txt`, `nilagent.txt` — runtime logs
 
