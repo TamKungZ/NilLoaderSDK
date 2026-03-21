@@ -21,7 +21,8 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 - `src/main/java/me/tamkungz/nilloadersdk/log/Loggers.java`
   - Root logger: `sdk()`
   - Class logger: `forClass(Class<?>)`
-  - Root namespace: `NilLoaderSDK`
+  - Configurable root namespace: `setRoot(String)`, `getRoot()`, `resetRoot()`
+  - Default root namespace: `DEFAULT_ROOT` (`NilLoaderSDK`)
 
 ### Entrypoint System
 - `src/main/java/me/tamkungz/nilloadersdk/entrypoint/NilLoaderSDKPremain.java`
@@ -75,17 +76,24 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 ## Logging Standard
 
 ### Rules
-1. Use a single root logger namespace: `NilLoaderSDK`.
-2. Use class-scoped logger when needed: `NilLoaderSDK/<ClassSimpleName>`.
-3. Do not hardcode bracket prefixes (`[]`) in log message text.
+1. For single-mod apps, you can use default root: `NilLoaderSDK`.
+2. For multi-mod apps, use explicit per-mod roots (example: `A`, `B`).
+3. Use class-scoped logger when needed: `<ModRoot>/<ClassSimpleName>`.
+4. Do not hardcode bracket prefixes (`[]`) in log message text.
 
-### Example
+### Example (Per-Mod)
 ```java
-private static final NilLogger LOG = Loggers.sdk();
-private static final NilLogger CLASS_LOG = Loggers.forClass(MyClass.class);
+private static final NilLogger A_LOG = Loggers.forMod("A");
+private static final NilLogger A_CLASS_LOG = Loggers.forModClass("A", ModAService.class);
 
-LOG.info("SDK initialized");
-CLASS_LOG.info("Action executed");
+private static final NilLogger B_LOG = Loggers.forMod("B");
+private static final NilLogger B_CLASS_LOG = Loggers.forModClass("B", ModBService.class);
+
+A_LOG.info("A root logger");      // A
+A_CLASS_LOG.info("A class logger"); // A/ModAService
+
+B_LOG.info("B root logger");      // B
+B_CLASS_LOG.info("B class logger"); // B/ModBService
 ```
 
 ---
