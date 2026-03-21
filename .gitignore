@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# Java
+*.class
+
+# IDE (IntelliJ / VSCode)
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime / debug logs
+*.log
+hs_err_pid*
+replay_pid*
+
+# Local NilLoader runtime artifacts
+# nilplugin.txt
+# nilplugin-verbose.txt
+# nilagent.txt
+
+.remapping/

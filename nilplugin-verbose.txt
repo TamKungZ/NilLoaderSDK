@@ -1,0 +1,1995 @@
+Classfile jar:file:///G:/Projects/Code/Java/Minecraft/LYFE/nilloader/NilGradle-1.4.4.jar!/com/unascribed/nilgradle/NilPlugin.class
+  Last modified 1 Á.¤. 2568; size 42363 bytes
+  SHA-256 checksum a724a741551aa577176f4304494fc12b10ea1b2f317d508a30f059672aac1169
+  Compiled from "NilPlugin.java"
+public class com.unascribed.nilgradle.NilPlugin extends java.lang.Object implements org.gradle.api.Plugin<org.gradle.api.Project>
+  minor version: 0
+  major version: 52
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #2                          // com/unascribed/nilgradle/NilPlugin
+  super_class: #5                         // java/lang/Object
+  interfaces: 1, fields: 2, methods: 43, attributes: 4
+Constant pool:
+     #1 = Utf8               com/unascribed/nilgradle/NilPlugin
+     #2 = Class              #1           // com/unascribed/nilgradle/NilPlugin
+     #3 = Utf8               Ljava/lang/Object;Lorg/gradle/api/Plugin<Lorg/gradle/api/Project;>;
+     #4 = Utf8               java/lang/Object
+     #5 = Class              #4           // java/lang/Object
+     #6 = Utf8               org/gradle/api/Plugin
+     #7 = Class              #6           // org/gradle/api/Plugin
+     #8 = Utf8               NilPlugin.java
+     #9 = Utf8               com/unascribed/nilgradle/NilPlugin$1
+    #10 = Class              #9           // com/unascribed/nilgradle/NilPlugin$1
+    #11 = Utf8               com/unascribed/nilgradle/NilPlugin$4
+    #12 = Class              #11          // com/unascribed/nilgradle/NilPlugin$4
+    #13 = Utf8               com/unascribed/nilgradle/NilPlugin$3
+    #14 = Class              #13          // com/unascribed/nilgradle/NilPlugin$3
+    #15 = Utf8               com/unascribed/nilgradle/NilPlugin$2
+    #16 = Class              #15          // com/unascribed/nilgradle/NilPlugin$2
+    #17 = Utf8               com/unascribed/nilgradle/NilPlugin$5
+    #18 = Class              #17          // com/unascribed/nilgradle/NilPlugin$5
+    #19 = Utf8               java/util/Map$Entry
+    #20 = Class              #19          // java/util/Map$Entry
+    #21 = Utf8               java/util/Map
+    #22 = Class              #21          // java/util/Map
+    #23 = Utf8               Entry
+    #24 = Utf8               org/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources
+    #25 = Class              #24          // org/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources
+    #26 = Utf8               org/gradle/api/artifacts/repositories/IvyArtifactRepository
+    #27 = Class              #26          // org/gradle/api/artifacts/repositories/IvyArtifactRepository
+    #28 = Utf8               MetadataSources
+    #29 = Utf8               java/lang/invoke/MethodHandles$Lookup
+    #30 = Class              #29          // java/lang/invoke/MethodHandles$Lookup
+    #31 = Utf8               java/lang/invoke/MethodHandles
+    #32 = Class              #31          // java/lang/invoke/MethodHandles
+    #33 = Utf8               Lookup
+    #34 = Utf8               log
+    #35 = Utf8               Lorg/slf4j/Logger;
+    #36 = Utf8               project
+    #37 = Utf8               Lorg/gradle/api/Project;
+    #38 = Utf8               <init>
+    #39 = Utf8               ()V
+    #40 = NameAndType        #38:#39      // "<init>":()V
+    #41 = Methodref          #5.#40       // java/lang/Object."<init>":()V
+    #42 = Utf8               this
+    #43 = Utf8               Lcom/unascribed/nilgradle/NilPlugin;
+    #44 = Utf8               apply
+    #45 = Utf8               (Lorg/gradle/api/Project;)V
+    #46 = NameAndType        #36:#37      // project:Lorg/gradle/api/Project;
+    #47 = Fieldref           #2.#46       // com/unascribed/nilgradle/NilPlugin.project:Lorg/gradle/api/Project;
+    #48 = Utf8               org/gradle/api/Project
+    #49 = Class              #48          // org/gradle/api/Project
+    #50 = Utf8               getPlugins
+    #51 = Utf8               ()Lorg/gradle/api/plugins/PluginContainer;
+    #52 = NameAndType        #50:#51      // getPlugins:()Lorg/gradle/api/plugins/PluginContainer;
+    #53 = InterfaceMethodref #49.#52      // org/gradle/api/Project.getPlugins:()Lorg/gradle/api/plugins/PluginContainer;
+    #54 = Utf8               org/gradle/api/plugins/JavaPlugin
+    #55 = Class              #54          // org/gradle/api/plugins/JavaPlugin
+    #56 = Utf8               org/gradle/api/plugins/PluginContainer
+    #57 = Class              #56          // org/gradle/api/plugins/PluginContainer
+    #58 = Utf8               (Ljava/lang/Class;)Lorg/gradle/api/Plugin;
+    #59 = NameAndType        #44:#58      // apply:(Ljava/lang/Class;)Lorg/gradle/api/Plugin;
+    #60 = InterfaceMethodref #57.#59      // org/gradle/api/plugins/PluginContainer.apply:(Ljava/lang/Class;)Lorg/gradle/api/Plugin;
+    #61 = Utf8               getRepositories
+    #62 = Utf8               ()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+    #63 = NameAndType        #61:#62      // getRepositories:()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+    #64 = InterfaceMethodref #49.#63      // org/gradle/api/Project.getRepositories:()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+    #65 = Utf8               (Ljava/lang/Object;)V
+    #66 = MethodType         #65          //  (Ljava/lang/Object;)V
+    #67 = Utf8               lambda$apply$2
+    #68 = Utf8               (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+    #69 = NameAndType        #67:#68      // lambda$apply$2:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+    #70 = Methodref          #2.#69       // com/unascribed/nilgradle/NilPlugin.lambda$apply$2:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+    #71 = MethodHandle       6:#70        // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$2:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+    #72 = MethodType         #68          //  (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+    #73 = Utf8               java/lang/invoke/LambdaMetafactory
+    #74 = Class              #73          // java/lang/invoke/LambdaMetafactory
+    #75 = Utf8               metafactory
+    #76 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    #77 = NameAndType        #75:#76      // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    #78 = Methodref          #74.#77      // java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    #79 = MethodHandle       6:#78        // REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    #80 = Utf8               execute
+    #81 = Utf8               ()Lorg/gradle/api/Action;
+    #82 = NameAndType        #80:#81      // execute:()Lorg/gradle/api/Action;
+    #83 = InvokeDynamic      #0:#82       // #0:execute:()Lorg/gradle/api/Action;
+    #84 = Utf8               org/gradle/api/artifacts/dsl/RepositoryHandler
+    #85 = Class              #84          // org/gradle/api/artifacts/dsl/RepositoryHandler
+    #86 = Utf8               ivy
+    #87 = Utf8               (Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+    #88 = NameAndType        #86:#87      // ivy:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+    #89 = InterfaceMethodref #85.#88      // org/gradle/api/artifacts/dsl/RepositoryHandler.ivy:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+    #90 = Utf8               java/lang/String
+    #91 = Class              #90          // java/lang/String
+    #92 = Utf8               Beta
+    #93 = String             #92          // Beta
+    #94 = Utf8               Alpha
+    #95 = String             #94          // Alpha
+    #96 = Utf8               Infdev
+    #97 = String             #96          // Infdev
+    #98 = Utf8               Indev
+    #99 = String             #98          // Indev
+   #100 = Utf8               Classic
+   #101 = String             #100         // Classic
+   #102 = Utf8               Pre-Classic
+   #103 = String             #102         // Pre-Classic
+   #104 = Utf8               [Ljava/lang/String;
+   #105 = Class              #104         // "[Ljava/lang/String;"
+   #106 = Utf8               lambda$apply$5
+   #107 = Utf8               (Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #108 = NameAndType        #106:#107    // lambda$apply$5:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #109 = Methodref          #2.#108      // com/unascribed/nilgradle/NilPlugin.lambda$apply$5:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #110 = MethodHandle       6:#109       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$5:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #111 = Utf8               (Ljava/lang/String;)Lorg/gradle/api/Action;
+   #112 = NameAndType        #80:#111     // execute:(Ljava/lang/String;)Lorg/gradle/api/Action;
+   #113 = InvokeDynamic      #1:#112      // #1:execute:(Ljava/lang/String;)Lorg/gradle/api/Action;
+   #114 = Utf8               lambda$apply$8
+   #115 = NameAndType        #114:#68     // lambda$apply$8:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #116 = Methodref          #2.#115      // com/unascribed/nilgradle/NilPlugin.lambda$apply$8:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #117 = MethodHandle       6:#116       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$8:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+   #118 = InvokeDynamic      #2:#82       // #2:execute:()Lorg/gradle/api/Action;
+   #119 = Utf8               lambda$apply$10
+   #120 = Utf8               (Lorg/gradle/api/Project;Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+   #121 = NameAndType        #119:#120    // lambda$apply$10:(Lorg/gradle/api/Project;Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+   #122 = Methodref          #2.#121      // com/unascribed/nilgradle/NilPlugin.lambda$apply$10:(Lorg/gradle/api/Project;Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+   #123 = MethodHandle       6:#122       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$10:(Lorg/gradle/api/Project;Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+   #124 = Utf8               (Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+   #125 = MethodType         #124         //  (Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+   #126 = Utf8               (Lorg/gradle/api/Project;)Lorg/gradle/api/Action;
+   #127 = NameAndType        #80:#126     // execute:(Lorg/gradle/api/Project;)Lorg/gradle/api/Action;
+   #128 = InvokeDynamic      #3:#127      // #3:execute:(Lorg/gradle/api/Project;)Lorg/gradle/api/Action;
+   #129 = Utf8               flatDir
+   #130 = Utf8               (Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;
+   #131 = NameAndType        #129:#130    // flatDir:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;
+   #132 = InterfaceMethodref #85.#131     // org/gradle/api/artifacts/dsl/RepositoryHandler.flatDir:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;
+   #133 = Utf8               getConfigurations
+   #134 = Utf8               ()Lorg/gradle/api/artifacts/ConfigurationContainer;
+   #135 = NameAndType        #133:#134    // getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+   #136 = InterfaceMethodref #49.#135     // org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+   #137 = Utf8               loader
+   #138 = String             #137         // loader
+   #139 = Utf8               org/gradle/api/artifacts/ConfigurationContainer
+   #140 = Class              #139         // org/gradle/api/artifacts/ConfigurationContainer
+   #141 = Utf8               create
+   #142 = Utf8               (Ljava/lang/String;)Ljava/lang/Object;
+   #143 = NameAndType        #141:#142    // create:(Ljava/lang/String;)Ljava/lang/Object;
+   #144 = InterfaceMethodref #140.#143    // org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+   #145 = Utf8               org/gradle/api/artifacts/Configuration
+   #146 = Class              #145         // org/gradle/api/artifacts/Configuration
+   #147 = Utf8               game
+   #148 = String             #147         // game
+   #149 = Utf8               jarmod
+   #150 = String             #149         // jarmod
+   #151 = Utf8               remappedGame
+   #152 = String             #151         // remappedGame
+   #153 = Utf8               mod
+   #154 = String             #153         // mod
+   #155 = Utf8               modVia
+   #156 = String             #155         // modVia
+   #157 = Utf8               remappedMod
+   #158 = String             #157         // remappedMod
+   #159 = Utf8               lambda$apply$11
+   #160 = Utf8               (Lorg/gradle/api/artifacts/Configuration;)V
+   #161 = NameAndType        #159:#160    // lambda$apply$11:(Lorg/gradle/api/artifacts/Configuration;)V
+   #162 = Methodref          #2.#161      // com/unascribed/nilgradle/NilPlugin.lambda$apply$11:(Lorg/gradle/api/artifacts/Configuration;)V
+   #163 = MethodHandle       6:#162       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$11:(Lorg/gradle/api/artifacts/Configuration;)V
+   #164 = MethodType         #160         //  (Lorg/gradle/api/artifacts/Configuration;)V
+   #165 = InvokeDynamic      #4:#82       // #4:execute:()Lorg/gradle/api/Action;
+   #166 = Utf8               nilInternalTargetMapping
+   #167 = String             #166         // nilInternalTargetMapping
+   #168 = Utf8               (Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+   #169 = NameAndType        #141:#168    // create:(Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+   #170 = InterfaceMethodref #140.#169    // org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+   #171 = Utf8               nilInternalAltTargetMapping
+   #172 = String             #171         // nilInternalAltTargetMapping
+   #173 = Utf8               nilInternalViaMapping
+   #174 = String             #173         // nilInternalViaMapping
+   #175 = Utf8               nilInternalWorkMapping
+   #176 = String             #175         // nilInternalWorkMapping
+   #177 = Utf8               add
+   #178 = Utf8               (Ljava/lang/Object;)Z
+   #179 = NameAndType        #177:#178    // add:(Ljava/lang/Object;)Z
+   #180 = InterfaceMethodref #140.#179    // org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+   #181 = Utf8               compileClasspath
+   #182 = String             #181         // compileClasspath
+   #183 = Utf8               lambda$apply$12
+   #184 = Utf8               (Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)V
+   #185 = NameAndType        #183:#184    // lambda$apply$12:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)V
+   #186 = Methodref          #2.#185      // com/unascribed/nilgradle/NilPlugin.lambda$apply$12:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)V
+   #187 = MethodHandle       6:#186       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$12:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)V
+   #188 = Utf8               (Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/Action;
+   #189 = NameAndType        #80:#188     // execute:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/Action;
+   #190 = InvokeDynamic      #5:#189      // #5:execute:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/Action;
+   #191 = Utf8               getByName
+   #192 = Utf8               (Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/Configuration;
+   #193 = NameAndType        #191:#192    // getByName:(Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/Configuration;
+   #194 = InterfaceMethodref #140.#193    // org/gradle/api/artifacts/ConfigurationContainer.getByName:(Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/Configuration;
+   #195 = Utf8               getExtensions
+   #196 = Utf8               ()Lorg/gradle/api/plugins/ExtensionContainer;
+   #197 = NameAndType        #195:#196    // getExtensions:()Lorg/gradle/api/plugins/ExtensionContainer;
+   #198 = InterfaceMethodref #49.#197     // org/gradle/api/Project.getExtensions:()Lorg/gradle/api/plugins/ExtensionContainer;
+   #199 = Utf8               nil
+   #200 = String             #199         // nil
+   #201 = Utf8               com/unascribed/nilgradle/NilExtension
+   #202 = Class              #201         // com/unascribed/nilgradle/NilExtension
+   #203 = Utf8               org/gradle/api/plugins/ExtensionContainer
+   #204 = Class              #203         // org/gradle/api/plugins/ExtensionContainer
+   #205 = Utf8               (Ljava/lang/String;Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;
+   #206 = NameAndType        #141:#205    // create:(Ljava/lang/String;Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;
+   #207 = InterfaceMethodref #204.#206    // org/gradle/api/plugins/ExtensionContainer.create:(Ljava/lang/String;Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;
+   #208 = Utf8               setProject
+   #209 = NameAndType        #208:#45     // setProject:(Lorg/gradle/api/Project;)V
+   #210 = Methodref          #202.#209    // com/unascribed/nilgradle/NilExtension.setProject:(Lorg/gradle/api/Project;)V
+   #211 = Utf8               mappings
+   #212 = String             #211         // mappings
+   #213 = Utf8               com/unascribed/nilgradle/MappingsExtension
+   #214 = Class              #213         // com/unascribed/nilgradle/MappingsExtension
+   #215 = Methodref          #214.#209    // com/unascribed/nilgradle/MappingsExtension.setProject:(Lorg/gradle/api/Project;)V
+   #216 = Utf8               java/io/File
+   #217 = Class              #216         // java/io/File
+   #218 = Utf8               getBuildDir
+   #219 = Utf8               ()Ljava/io/File;
+   #220 = NameAndType        #218:#219    // getBuildDir:()Ljava/io/File;
+   #221 = InterfaceMethodref #49.#220     // org/gradle/api/Project.getBuildDir:()Ljava/io/File;
+   #222 = Utf8               nil/output/mappings.json
+   #223 = String             #222         // nil/output/mappings.json
+   #224 = Utf8               (Ljava/io/File;Ljava/lang/String;)V
+   #225 = NameAndType        #38:#224     // "<init>":(Ljava/io/File;Ljava/lang/String;)V
+   #226 = Methodref          #217.#225    // java/io/File."<init>":(Ljava/io/File;Ljava/lang/String;)V
+   #227 = Utf8               getTasks
+   #228 = Utf8               ()Lorg/gradle/api/tasks/TaskContainer;
+   #229 = NameAndType        #227:#228    // getTasks:()Lorg/gradle/api/tasks/TaskContainer;
+   #230 = InterfaceMethodref #49.#229     // org/gradle/api/Project.getTasks:()Lorg/gradle/api/tasks/TaskContainer;
+   #231 = Utf8               processResources
+   #232 = String             #231         // processResources
+   #233 = Utf8               org/gradle/api/tasks/TaskContainer
+   #234 = Class              #233         // org/gradle/api/tasks/TaskContainer
+   #235 = Utf8               (Ljava/lang/String;)Lorg/gradle/api/Task;
+   #236 = NameAndType        #191:#235    // getByName:(Ljava/lang/String;)Lorg/gradle/api/Task;
+   #237 = InterfaceMethodref #234.#236    // org/gradle/api/tasks/TaskContainer.getByName:(Ljava/lang/String;)Lorg/gradle/api/Task;
+   #238 = Utf8               org/gradle/language/jvm/tasks/ProcessResources
+   #239 = Class              #238         // org/gradle/language/jvm/tasks/ProcessResources
+   #240 = Utf8               getInputs
+   #241 = Utf8               ()Lorg/gradle/api/internal/TaskInputsInternal;
+   #242 = NameAndType        #240:#241    // getInputs:()Lorg/gradle/api/internal/TaskInputsInternal;
+   #243 = Methodref          #239.#242    // org/gradle/language/jvm/tasks/ProcessResources.getInputs:()Lorg/gradle/api/internal/TaskInputsInternal;
+   #244 = Utf8               cachebuster
+   #245 = String             #244         // cachebuster
+   #246 = Utf8               java/util/UUID
+   #247 = Class              #246         // java/util/UUID
+   #248 = Utf8               randomUUID
+   #249 = Utf8               ()Ljava/util/UUID;
+   #250 = NameAndType        #248:#249    // randomUUID:()Ljava/util/UUID;
+   #251 = Methodref          #247.#250    // java/util/UUID.randomUUID:()Ljava/util/UUID;
+   #252 = Utf8               toString
+   #253 = Utf8               ()Ljava/lang/String;
+   #254 = NameAndType        #252:#253    // toString:()Ljava/lang/String;
+   #255 = Methodref          #247.#254    // java/util/UUID.toString:()Ljava/lang/String;
+   #256 = Utf8               org/gradle/api/internal/TaskInputsInternal
+   #257 = Class              #256         // org/gradle/api/internal/TaskInputsInternal
+   #258 = Utf8               property
+   #259 = Utf8               (Ljava/lang/String;Ljava/lang/Object;)Lorg/gradle/api/tasks/TaskInputPropertyBuilder;
+   #260 = NameAndType        #258:#259    // property:(Ljava/lang/String;Ljava/lang/Object;)Lorg/gradle/api/tasks/TaskInputPropertyBuilder;
+   #261 = InterfaceMethodref #257.#260    // org/gradle/api/internal/TaskInputsInternal.property:(Ljava/lang/String;Ljava/lang/Object;)Lorg/gradle/api/tasks/TaskInputPropertyBuilder;
+   #262 = Utf8               lambda$apply$13
+   #263 = Utf8               (Lorg/gradle/api/file/CopySpec;)V
+   #264 = NameAndType        #262:#263    // lambda$apply$13:(Lorg/gradle/api/file/CopySpec;)V
+   #265 = Methodref          #2.#264      // com/unascribed/nilgradle/NilPlugin.lambda$apply$13:(Lorg/gradle/api/file/CopySpec;)V
+   #266 = MethodHandle       6:#265       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$13:(Lorg/gradle/api/file/CopySpec;)V
+   #267 = MethodType         #263         //  (Lorg/gradle/api/file/CopySpec;)V
+   #268 = InvokeDynamic      #6:#82       // #6:execute:()Lorg/gradle/api/Action;
+   #269 = Utf8               from
+   #270 = Utf8               (Ljava/lang/Object;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+   #271 = NameAndType        #269:#270    // from:(Ljava/lang/Object;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+   #272 = Methodref          #239.#271    // org/gradle/language/jvm/tasks/ProcessResources.from:(Ljava/lang/Object;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+   #273 = Utf8               lambda$apply$17
+   #274 = Utf8               (Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;Lorg/gradle/api/Project;)V
+   #275 = NameAndType        #273:#274    // lambda$apply$17:(Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;Lorg/gradle/api/Project;)V
+   #276 = Methodref          #2.#275      // com/unascribed/nilgradle/NilPlugin.lambda$apply$17:(Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;Lorg/gradle/api/Project;)V
+   #277 = MethodHandle       7:#276       // REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$apply$17:(Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;Lorg/gradle/api/Project;)V
+   #278 = MethodType         #45          //  (Lorg/gradle/api/Project;)V
+   #279 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;)Lorg/gradle/api/Action;
+   #280 = NameAndType        #80:#279     // execute:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;)Lorg/gradle/api/Action;
+   #281 = InvokeDynamic      #7:#280      // #7:execute:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;)Lorg/gradle/api/Action;
+   #282 = Utf8               afterEvaluate
+   #283 = Utf8               (Lorg/gradle/api/Action;)V
+   #284 = NameAndType        #282:#283    // afterEvaluate:(Lorg/gradle/api/Action;)V
+   #285 = InterfaceMethodref #49.#284     // org/gradle/api/Project.afterEvaluate:(Lorg/gradle/api/Action;)V
+   #286 = Utf8               era
+   #287 = Utf8               Ljava/lang/String;
+   #288 = Utf8               eras
+   #289 = Utf8               loaderCfg
+   #290 = Utf8               Lorg/gradle/api/artifacts/Configuration;
+   #291 = Utf8               gameCfg
+   #292 = Utf8               jarmodCfg
+   #293 = Utf8               remappedGameCfg
+   #294 = Utf8               modCfg
+   #295 = Utf8               modViaCfg
+   #296 = Utf8               remappedModCfg
+   #297 = Utf8               setupMappingsConfig
+   #298 = Utf8               Lorg/gradle/api/Action<-Lorg/gradle/api/artifacts/Configuration;>;
+   #299 = Utf8               Lorg/gradle/api/Action;
+   #300 = Utf8               targetMappingCfg
+   #301 = Utf8               altTargetMappingCfg
+   #302 = Utf8               viaMappingCfg
+   #303 = Utf8               workMappingCfg
+   #304 = Utf8               nilExt
+   #305 = Utf8               Lcom/unascribed/nilgradle/NilExtension;
+   #306 = Utf8               mappingsExt
+   #307 = Utf8               Lcom/unascribed/nilgradle/MappingsExtension;
+   #308 = Utf8               mappingsJsonOutFile
+   #309 = Utf8               Ljava/io/File;
+   #310 = Utf8               process
+   #311 = Utf8               Lorg/gradle/language/jvm/tasks/ProcessResources;
+   #312 = Utf8               loadTargetMappings
+   #313 = Utf8               (Ljava/util/Map;Lorg/gradle/api/artifacts/ResolvedArtifact;Ljava/util/function/Function;)V
+   #314 = Utf8               (Ljava/util/Map<Ljava/lang/String;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;>;Lorg/gradle/api/artifacts/ResolvedArtifact;Ljava/util/function/Function<Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;>;)V
+   #315 = Utf8               org/gradle/api/artifacts/ResolvedArtifact
+   #316 = Class              #315         // org/gradle/api/artifacts/ResolvedArtifact
+   #317 = Utf8               getFile
+   #318 = NameAndType        #317:#219    // getFile:()Ljava/io/File;
+   #319 = InterfaceMethodref #316.#318    // org/gradle/api/artifacts/ResolvedArtifact.getFile:()Ljava/io/File;
+   #320 = Utf8               srg
+   #321 = String             #320         // srg
+   #322 = Utf8               getClassifier
+   #323 = NameAndType        #322:#253    // getClassifier:()Ljava/lang/String;
+   #324 = InterfaceMethodref #316.#323    // org/gradle/api/artifacts/ResolvedArtifact.getClassifier:()Ljava/lang/String;
+   #325 = Utf8               equals
+   #326 = NameAndType        #325:#178    // equals:(Ljava/lang/Object;)Z
+   #327 = Methodref          #91.#326     // java/lang/String.equals:(Ljava/lang/Object;)Z
+   #328 = Utf8               java/util/function/Function
+   #329 = Class              #328         // java/util/function/Function
+   #330 = Utf8               com/unascribed/nilgradle/MappingDetector
+   #331 = Class              #330         // com/unascribed/nilgradle/MappingDetector
+   #332 = Utf8               detectAndLoad
+   #333 = Utf8               (Ljava/io/File;Z)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+   #334 = NameAndType        #332:#333    // detectAndLoad:(Ljava/io/File;Z)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+   #335 = Methodref          #331.#334    // com/unascribed/nilgradle/MappingDetector.detectAndLoad:(Ljava/io/File;Z)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+   #336 = Utf8               (Ljava/lang/Object;)Ljava/lang/Object;
+   #337 = NameAndType        #44:#336     // apply:(Ljava/lang/Object;)Ljava/lang/Object;
+   #338 = InterfaceMethodref #329.#337    // java/util/function/Function.apply:(Ljava/lang/Object;)Ljava/lang/Object;
+   #339 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet
+   #340 = Class              #339         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet
+   #341 = Utf8               getModuleVersion
+   #342 = Utf8               ()Lorg/gradle/api/artifacts/ResolvedModuleVersion;
+   #343 = NameAndType        #341:#342    // getModuleVersion:()Lorg/gradle/api/artifacts/ResolvedModuleVersion;
+   #344 = InterfaceMethodref #316.#343    // org/gradle/api/artifacts/ResolvedArtifact.getModuleVersion:()Lorg/gradle/api/artifacts/ResolvedModuleVersion;
+   #345 = Utf8               org/gradle/api/artifacts/ResolvedModuleVersion
+   #346 = Class              #345         // org/gradle/api/artifacts/ResolvedModuleVersion
+   #347 = Utf8               getId
+   #348 = Utf8               ()Lorg/gradle/api/artifacts/ModuleVersionIdentifier;
+   #349 = NameAndType        #347:#348    // getId:()Lorg/gradle/api/artifacts/ModuleVersionIdentifier;
+   #350 = InterfaceMethodref #346.#349    // org/gradle/api/artifacts/ResolvedModuleVersion.getId:()Lorg/gradle/api/artifacts/ModuleVersionIdentifier;
+   #351 = Utf8               org/gradle/api/artifacts/ModuleVersionIdentifier
+   #352 = Class              #351         // org/gradle/api/artifacts/ModuleVersionIdentifier
+   #353 = Utf8               getName
+   #354 = NameAndType        #353:#253    // getName:()Ljava/lang/String;
+   #355 = InterfaceMethodref #352.#354    // org/gradle/api/artifacts/ModuleVersionIdentifier.getName:()Ljava/lang/String;
+   #356 = Utf8               getGroup
+   #357 = NameAndType        #356:#253    // getGroup:()Ljava/lang/String;
+   #358 = InterfaceMethodref #352.#357    // org/gradle/api/artifacts/ModuleVersionIdentifier.getGroup:()Ljava/lang/String;
+   #359 = Utf8               isEmpty
+   #360 = Utf8               ()Z
+   #361 = NameAndType        #359:#360    // isEmpty:()Z
+   #362 = Methodref          #91.#361     // java/lang/String.isEmpty:()Z
+   #363 = Utf8               java/lang/StringBuilder
+   #364 = Class              #363         // java/lang/StringBuilder
+   #365 = Methodref          #364.#40     // java/lang/StringBuilder."<init>":()V
+   #366 = Utf8               append
+   #367 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+   #368 = NameAndType        #366:#367    // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+   #369 = Methodref          #364.#368    // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+   #370 = Utf8               .
+   #371 = String             #370         // .
+   #372 = Methodref          #364.#254    // java/lang/StringBuilder.toString:()Ljava/lang/String;
+   #373 = Utf8               getVersion
+   #374 = NameAndType        #373:#253    // getVersion:()Ljava/lang/String;
+   #375 = InterfaceMethodref #352.#374    // org/gradle/api/artifacts/ModuleVersionIdentifier.getVersion:()Ljava/lang/String;
+   #376 = Utf8               -
+   #377 = String             #376         // -
+   #378 = Utf8               target/raw/
+   #379 = String             #378         // target/raw/
+   #380 = Utf8               .tsrg
+   #381 = String             #380         // .tsrg
+   #382 = Utf8               saveDebugMappings
+   #383 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/lang/String;)V
+   #384 = NameAndType        #382:#383    // saveDebugMappings:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/lang/String;)V
+   #385 = Methodref          #2.#384      // com/unascribed/nilgradle/NilPlugin.saveDebugMappings:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/lang/String;)V
+   #386 = Utf8               put
+   #387 = Utf8               (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+   #388 = NameAndType        #386:#387    // put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+   #389 = InterfaceMethodref #22.#388     // java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+   #390 = Utf8               targetMappings
+   #391 = Utf8               Ljava/util/Map<Ljava/lang/String;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;>;
+   #392 = Utf8               Ljava/util/Map;
+   #393 = Utf8               a
+   #394 = Utf8               Lorg/gradle/api/artifacts/ResolvedArtifact;
+   #395 = Utf8               configurator
+   #396 = Utf8               Ljava/util/function/Function<Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;>;
+   #397 = Utf8               Ljava/util/function/Function;
+   #398 = Utf8               tgt
+   #399 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+   #400 = Utf8               v
+   #401 = Utf8               Lorg/gradle/api/artifacts/ModuleVersionIdentifier;
+   #402 = Utf8               name
+   #403 = Utf8               remap
+   #404 = Utf8               (Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+   #405 = Utf8               java/lang/Throwable
+   #406 = Class              #405         // java/lang/Throwable
+   #407 = Utf8               java/io/IOException
+   #408 = Class              #407         // java/io/IOException
+   #409 = Utf8               getResolvedConfiguration
+   #410 = Utf8               ()Lorg/gradle/api/artifacts/ResolvedConfiguration;
+   #411 = NameAndType        #409:#410    // getResolvedConfiguration:()Lorg/gradle/api/artifacts/ResolvedConfiguration;
+   #412 = InterfaceMethodref #146.#411    // org/gradle/api/artifacts/Configuration.getResolvedConfiguration:()Lorg/gradle/api/artifacts/ResolvedConfiguration;
+   #413 = Utf8               org/gradle/api/artifacts/ResolvedConfiguration
+   #414 = Class              #413         // org/gradle/api/artifacts/ResolvedConfiguration
+   #415 = Utf8               getResolvedArtifacts
+   #416 = Utf8               ()Ljava/util/Set;
+   #417 = NameAndType        #415:#416    // getResolvedArtifacts:()Ljava/util/Set;
+   #418 = InterfaceMethodref #414.#417    // org/gradle/api/artifacts/ResolvedConfiguration.getResolvedArtifacts:()Ljava/util/Set;
+   #419 = Utf8               java/util/Set
+   #420 = Class              #419         // java/util/Set
+   #421 = Utf8               iterator
+   #422 = Utf8               ()Ljava/util/Iterator;
+   #423 = NameAndType        #421:#422    // iterator:()Ljava/util/Iterator;
+   #424 = InterfaceMethodref #420.#423    // java/util/Set.iterator:()Ljava/util/Iterator;
+   #425 = Utf8               java/util/Iterator
+   #426 = Class              #425         // java/util/Iterator
+   #427 = Utf8               hasNext
+   #428 = NameAndType        #427:#360    // hasNext:()Z
+   #429 = InterfaceMethodref #426.#428    // java/util/Iterator.hasNext:()Z
+   #430 = Utf8               next
+   #431 = Utf8               ()Ljava/lang/Object;
+   #432 = NameAndType        #430:#431    // next:()Ljava/lang/Object;
+   #433 = InterfaceMethodref #426.#432    // java/util/Iterator.next:()Ljava/lang/Object;
+   #434 = Utf8
+   #435 = String             #434         //
+   #436 = Utf8               replace
+   #437 = Utf8               (CC)Ljava/lang/String;
+   #438 = NameAndType        #436:#437    // replace:(CC)Ljava/lang/String;
+   #439 = Methodref          #91.#438     // java/lang/String.replace:(CC)Ljava/lang/String;
+   #440 = Utf8               nil/cache/
+   #441 = String             #440         // nil/cache/
+   #442 = Utf8               -merged.jar
+   #443 = String             #442         // -merged.jar
+   #444 = Utf8               exists
+   #445 = NameAndType        #444:#360    // exists:()Z
+   #446 = Methodref          #217.#445    // java/io/File.exists:()Z
+   #447 = Utf8               getParentFile
+   #448 = NameAndType        #447:#219    // getParentFile:()Ljava/io/File;
+   #449 = Methodref          #217.#448    // java/io/File.getParentFile:()Ljava/io/File;
+   #450 = Utf8               mkdirs
+   #451 = NameAndType        #450:#360    // mkdirs:()Z
+   #452 = Methodref          #217.#451    // java/io/File.mkdirs:()Z
+   #453 = Utf8               java/util/HashSet
+   #454 = Class              #453         // java/util/HashSet
+   #455 = Methodref          #454.#40     // java/util/HashSet."<init>":()V
+   #456 = Utf8               java/util/ArrayList
+   #457 = Class              #456         // java/util/ArrayList
+   #458 = Methodref          #457.#40     // java/util/ArrayList."<init>":()V
+   #459 = Utf8               java/util/zip/ZipOutputStream
+   #460 = Class              #459         // java/util/zip/ZipOutputStream
+   #461 = Utf8               java/io/FileOutputStream
+   #462 = Class              #461         // java/io/FileOutputStream
+   #463 = Utf8               (Ljava/io/File;)V
+   #464 = NameAndType        #38:#463     // "<init>":(Ljava/io/File;)V
+   #465 = Methodref          #462.#464    // java/io/FileOutputStream."<init>":(Ljava/io/File;)V
+   #466 = Utf8               (Ljava/io/OutputStream;)V
+   #467 = NameAndType        #38:#466     // "<init>":(Ljava/io/OutputStream;)V
+   #468 = Methodref          #460.#467    // java/util/zip/ZipOutputStream."<init>":(Ljava/io/OutputStream;)V
+   #469 = Utf8               java/util/zip/ZipInputStream
+   #470 = Class              #469         // java/util/zip/ZipInputStream
+   #471 = Utf8               java/io/FileInputStream
+   #472 = Class              #471         // java/io/FileInputStream
+   #473 = Methodref          #472.#464    // java/io/FileInputStream."<init>":(Ljava/io/File;)V
+   #474 = Utf8               (Ljava/io/InputStream;)V
+   #475 = NameAndType        #38:#474     // "<init>":(Ljava/io/InputStream;)V
+   #476 = Methodref          #470.#475    // java/util/zip/ZipInputStream."<init>":(Ljava/io/InputStream;)V
+   #477 = Utf8               java/util/List
+   #478 = Class              #477         // java/util/List
+   #479 = InterfaceMethodref #478.#179    // java/util/List.add:(Ljava/lang/Object;)Z
+   #480 = Utf8               resolve
+   #481 = NameAndType        #480:#416    // resolve:()Ljava/util/Set;
+   #482 = InterfaceMethodref #146.#481    // org/gradle/api/artifacts/Configuration.resolve:()Ljava/util/Set;
+   #483 = Utf8               java/util/Collections
+   #484 = Class              #483         // java/util/Collections
+   #485 = Utf8               reverse
+   #486 = Utf8               (Ljava/util/List;)V
+   #487 = NameAndType        #485:#486    // reverse:(Ljava/util/List;)V
+   #488 = Methodref          #484.#487    // java/util/Collections.reverse:(Ljava/util/List;)V
+   #489 = InterfaceMethodref #478.#423    // java/util/List.iterator:()Ljava/util/Iterator;
+   #490 = Utf8               getNextEntry
+   #491 = Utf8               ()Ljava/util/zip/ZipEntry;
+   #492 = NameAndType        #490:#491    // getNextEntry:()Ljava/util/zip/ZipEntry;
+   #493 = Methodref          #470.#492    // java/util/zip/ZipInputStream.getNextEntry:()Ljava/util/zip/ZipEntry;
+   #494 = Utf8               java/util/zip/ZipEntry
+   #495 = Class              #494         // java/util/zip/ZipEntry
+   #496 = Methodref          #495.#354    // java/util/zip/ZipEntry.getName:()Ljava/lang/String;
+   #497 = Utf8               contains
+   #498 = NameAndType        #497:#178    // contains:(Ljava/lang/Object;)Z
+   #499 = InterfaceMethodref #420.#498    // java/util/Set.contains:(Ljava/lang/Object;)Z
+   #500 = InterfaceMethodref #420.#179    // java/util/Set.add:(Ljava/lang/Object;)Z
+   #501 = Utf8               putNextEntry
+   #502 = Utf8               (Ljava/util/zip/ZipEntry;)V
+   #503 = NameAndType        #501:#502    // putNextEntry:(Ljava/util/zip/ZipEntry;)V
+   #504 = Methodref          #460.#503    // java/util/zip/ZipOutputStream.putNextEntry:(Ljava/util/zip/ZipEntry;)V
+   #505 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/bombe/util/ByteStreams
+   #506 = Class              #505         // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/util/ByteStreams
+   #507 = Utf8               copy
+   #508 = Utf8               (Ljava/io/InputStream;Ljava/io/OutputStream;)J
+   #509 = NameAndType        #507:#508    // copy:(Ljava/io/InputStream;Ljava/io/OutputStream;)J
+   #510 = Methodref          #506.#509    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/util/ByteStreams.copy:(Ljava/io/InputStream;Ljava/io/OutputStream;)J
+   #511 = Utf8               closeEntry
+   #512 = NameAndType        #511:#39     // closeEntry:()V
+   #513 = Methodref          #460.#512    // java/util/zip/ZipOutputStream.closeEntry:()V
+   #514 = Utf8               close
+   #515 = NameAndType        #514:#39     // close:()V
+   #516 = Methodref          #460.#515    // java/util/zip/ZipOutputStream.close:()V
+   #517 = Utf8               addSuppressed
+   #518 = Utf8               (Ljava/lang/Throwable;)V
+   #519 = NameAndType        #517:#518    // addSuppressed:(Ljava/lang/Throwable;)V
+   #520 = Methodref          #406.#519    // java/lang/Throwable.addSuppressed:(Ljava/lang/Throwable;)V
+   #521 = Methodref          #470.#515    // java/util/zip/ZipInputStream.close:()V
+   #522 = Utf8               java/lang/RuntimeException
+   #523 = Class              #522         // java/lang/RuntimeException
+   #524 = Utf8               Error while merging jars
+   #525 = String             #524         // Error while merging jars
+   #526 = Utf8               (Ljava/lang/String;Ljava/lang/Throwable;)V
+   #527 = NameAndType        #38:#526     // "<init>":(Ljava/lang/String;Ljava/lang/Throwable;)V
+   #528 = Methodref          #523.#527    // java/lang/RuntimeException."<init>":(Ljava/lang/String;Ljava/lang/Throwable;)V
+   #529 = Utf8               -unwidened.jar
+   #530 = String             #529         // -unwidened.jar
+   #531 = Utf8               .jar
+   #532 = String             #531         // .jar
+   #533 = Utf8               java/lang/System
+   #534 = Class              #533         // java/lang/System
+   #535 = Utf8               out
+   #536 = Utf8               Ljava/io/PrintStream;
+   #537 = NameAndType        #535:#536    // out:Ljava/io/PrintStream;
+   #538 = Fieldref           #534.#537    // java/lang/System.out:Ljava/io/PrintStream;
+   #539 = Utf8               Remapping
+   #540 = String             #539         // Remapping
+   #541 = Utf8               ...
+   #542 = String             #541         // ...
+   #543 = Utf8               java/io/PrintStream
+   #544 = Class              #543         // java/io/PrintStream
+   #545 = Utf8               println
+   #546 = Utf8               (Ljava/lang/String;)V
+   #547 = NameAndType        #545:#546    // println:(Ljava/lang/String;)V
+   #548 = Methodref          #544.#547    // java/io/PrintStream.println:(Ljava/lang/String;)V
+   #549 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas
+   #550 = Class              #549         // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas
+   #551 = Methodref          #550.#40     // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas."<init>":()V
+   #552 = Utf8               getClasspath
+   #553 = Utf8               ()Ljava/util/List;
+   #554 = NameAndType        #552:#553    // getClasspath:()Ljava/util/List;
+   #555 = Methodref          #550.#554    // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas.getClasspath:()Ljava/util/List;
+   #556 = Utf8               toPath
+   #557 = Utf8               ()Ljava/nio/file/Path;
+   #558 = NameAndType        #556:#557    // toPath:()Ljava/nio/file/Path;
+   #559 = Methodref          #217.#558    // java/io/File.toPath:()Ljava/nio/file/Path;
+   #560 = MethodType         #336         //  (Ljava/lang/Object;)Ljava/lang/Object;
+   #561 = Utf8               lambda$remap$19
+   #562 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #563 = NameAndType        #561:#562    // lambda$remap$19:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #564 = Methodref          #2.#563      // com/unascribed/nilgradle/NilPlugin.lambda$remap$19:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #565 = MethodHandle       7:#564       // REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$remap$19:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #566 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #567 = MethodType         #566         //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #568 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Ljava/util/function/Function;
+   #569 = NameAndType        #44:#568     // apply:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Ljava/util/function/Function;
+   #570 = InvokeDynamic      #8:#569      // #8:apply:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Ljava/util/function/Function;
+   #571 = Utf8               install
+   #572 = Utf8               (Ljava/util/function/Function;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas;
+   #573 = NameAndType        #571:#572    // install:(Ljava/util/function/Function;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas;
+   #574 = Methodref          #550.#573    // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas.install:(Ljava/util/function/Function;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas;
+   #575 = Utf8               run
+   #576 = Utf8               (Ljava/nio/file/Path;Ljava/nio/file/Path;)V
+   #577 = NameAndType        #575:#576    // run:(Ljava/nio/file/Path;Ljava/nio/file/Path;)V
+   #578 = Methodref          #550.#577    // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas.run:(Ljava/nio/file/Path;Ljava/nio/file/Path;)V
+   #579 = Utf8               lambda$remap$20
+   #580 = NameAndType        #579:#566    // lambda$remap$20:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #581 = Methodref          #2.#580      // com/unascribed/nilgradle/NilPlugin.lambda$remap$20:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #582 = MethodHandle       7:#581       // REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$remap$20:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+   #583 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;)Ljava/util/function/Function;
+   #584 = NameAndType        #44:#583     // apply:(Lcom/unascribed/nilgradle/NilPlugin;)Ljava/util/function/Function;
+   #585 = InvokeDynamic      #9:#584      // #9:apply:(Lcom/unascribed/nilgradle/NilPlugin;)Ljava/util/function/Function;
+   #586 = Utf8               nil.decompile
+   #587 = String             #586         // nil.decompile
+   #588 = Utf8               hasProperty
+   #589 = Utf8               (Ljava/lang/String;)Z
+   #590 = NameAndType        #588:#589    // hasProperty:(Ljava/lang/String;)Z
+   #591 = InterfaceMethodref #49.#590     // org/gradle/api/Project.hasProperty:(Ljava/lang/String;)Z
+   #592 = Utf8               Decompiling...
+   #593 = String             #592         // Decompiling...
+   #594 = Methodref          #217.#354    // java/io/File.getName:()Ljava/lang/String;
+   #595 = Utf8               .jar$
+   #596 = String             #595         // .jar$
+   #597 = Utf8               -sources.jar
+   #598 = String             #597         // -sources.jar
+   #599 = Utf8               replaceFirst
+   #600 = Utf8               (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+   #601 = NameAndType        #599:#600    // replaceFirst:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+   #602 = Methodref          #91.#601     // java/lang/String.replaceFirst:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+   #603 = Utf8               -log=ERROR
+   #604 = String             #603         // -log=ERROR
+   #605 = Utf8               -udv=1
+   #606 = String             #605         // -udv=1
+   #607 = Utf8               -thr=4
+   #608 = String             #607         // -thr=4
+   #609 = Utf8               -ind=\t
+   #610 = String             #609         // -ind=\t
+   #611 = Utf8               getAbsolutePath
+   #612 = NameAndType        #611:#253    // getAbsolutePath:()Ljava/lang/String;
+   #613 = Methodref          #217.#612    // java/io/File.getAbsolutePath:()Ljava/lang/String;
+   #614 = Utf8               com/unascribed/nilgradle/repackage/org/jetbrains/java/decompiler/main/decompiler/ConsoleDecompiler
+   #615 = Class              #614         // com/unascribed/nilgradle/repackage/org/jetbrains/java/decompiler/main/decompiler/ConsoleDecompiler
+   #616 = Utf8               main
+   #617 = Utf8               ([Ljava/lang/String;)V
+   #618 = NameAndType        #616:#617    // main:([Ljava/lang/String;)V
+   #619 = Methodref          #615.#618    // com/unascribed/nilgradle/repackage/org/jetbrains/java/decompiler/main/decompiler/ConsoleDecompiler.main:([Ljava/lang/String;)V
+   #620 = Methodref          #550.#515    // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas.close:()V
+   #621 = Utf8               java/io/UncheckedIOException
+   #622 = Class              #621         // java/io/UncheckedIOException
+   #623 = Utf8               (Ljava/io/IOException;)V
+   #624 = NameAndType        #38:#623     // "<init>":(Ljava/io/IOException;)V
+   #625 = Methodref          #622.#624    // java/io/UncheckedIOException."<init>":(Ljava/io/IOException;)V
+   #626 = Utf8               getDependencies
+   #627 = Utf8               ()Lorg/gradle/api/artifacts/DependencySet;
+   #628 = NameAndType        #626:#627    // getDependencies:()Lorg/gradle/api/artifacts/DependencySet;
+   #629 = InterfaceMethodref #146.#628    // org/gradle/api/artifacts/Configuration.getDependencies:()Lorg/gradle/api/artifacts/DependencySet;
+   #630 = Utf8               ()Lorg/gradle/api/artifacts/dsl/DependencyHandler;
+   #631 = NameAndType        #626:#630    // getDependencies:()Lorg/gradle/api/artifacts/dsl/DependencyHandler;
+   #632 = InterfaceMethodref #49.#631     // org/gradle/api/Project.getDependencies:()Lorg/gradle/api/artifacts/dsl/DependencyHandler;
+   #633 = Utf8               nilgradle.dynamic:
+   #634 = String             #633         // nilgradle.dynamic:
+   #635 = Utf8               org/gradle/api/artifacts/dsl/DependencyHandler
+   #636 = Class              #635         // org/gradle/api/artifacts/dsl/DependencyHandler
+   #637 = Utf8               (Ljava/lang/Object;)Lorg/gradle/api/artifacts/Dependency;
+   #638 = NameAndType        #141:#637    // create:(Ljava/lang/Object;)Lorg/gradle/api/artifacts/Dependency;
+   #639 = InterfaceMethodref #636.#638    // org/gradle/api/artifacts/dsl/DependencyHandler.create:(Ljava/lang/Object;)Lorg/gradle/api/artifacts/Dependency;
+   #640 = Utf8               org/gradle/api/artifacts/DependencySet
+   #641 = Class              #640         // org/gradle/api/artifacts/DependencySet
+   #642 = InterfaceMethodref #641.#179    // org/gradle/api/artifacts/DependencySet.add:(Ljava/lang/Object;)Z
+   #643 = Utf8               f
+   #644 = Utf8               en
+   #645 = Utf8               Ljava/util/zip/ZipEntry;
+   #646 = Utf8               zis
+   #647 = Utf8               Ljava/util/zip/ZipInputStream;
+   #648 = Utf8               zos
+   #649 = Utf8               Ljava/util/zip/ZipOutputStream;
+   #650 = Utf8               zf
+   #651 = Utf8               e
+   #652 = Utf8               Ljava/io/IOException;
+   #653 = Utf8               alreadyCopied
+   #654 = Utf8               Ljava/util/Set<Ljava/lang/String;>;
+   #655 = Utf8               Ljava/util/Set;
+   #656 = Utf8               inputs
+   #657 = Utf8               Ljava/util/List<Ljava/util/zip/ZipInputStream;>;
+   #658 = Utf8               Ljava/util/List;
+   #659 = Utf8               sources
+   #660 = Utf8               atlas
+   #661 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/FixedAtlas;
+   #662 = Utf8               appendix
+   #663 = Utf8               merged
+   #664 = Utf8               cache
+   #665 = Utf8               widenedCache
+   #666 = Utf8               artifact
+   #667 = Utf8               in
+   #668 = Utf8               merge
+   #669 = Utf8               toJson
+   #670 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate;Ljava/util/Set;Ljava/util/Set;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #671 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate<Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping<**>;>;Ljava/util/Set<Ljava/lang/String;>;Ljava/util/Set<Lcom/unascribed/nilgradle/Member;>;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #672 = Utf8               com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject
+   #673 = Class              #672         // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject
+   #674 = Methodref          #673.#40     // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject."<init>":()V
+   #675 = Utf8               com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonArray
+   #676 = Class              #675         // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonArray
+   #677 = Methodref          #676.#40     // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonArray."<init>":()V
+   #678 = Utf8               getTopLevelClassMappings
+   #679 = Utf8               ()Ljava/util/Collection;
+   #680 = NameAndType        #678:#679    // getTopLevelClassMappings:()Ljava/util/Collection;
+   #681 = InterfaceMethodref #340.#680    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet.getTopLevelClassMappings:()Ljava/util/Collection;
+   #682 = Utf8               java/util/Collection
+   #683 = Class              #682         // java/util/Collection
+   #684 = InterfaceMethodref #683.#423    // java/util/Collection.iterator:()Ljava/util/Iterator;
+   #685 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/TopLevelClassMapping
+   #686 = Class              #685         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/TopLevelClassMapping
+   #687 = Utf8               java/util/function/Predicate
+   #688 = Class              #687         // java/util/function/Predicate
+   #689 = Utf8               test
+   #690 = NameAndType        #689:#178    // test:(Ljava/lang/Object;)Z
+   #691 = InterfaceMethodref #688.#690    // java/util/function/Predicate.test:(Ljava/lang/Object;)Z
+   #692 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Ljava/util/function/Predicate;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #693 = NameAndType        #669:#692    // toJson:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Ljava/util/function/Predicate;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #694 = Methodref          #2.#693      // com/unascribed/nilgradle/NilPlugin.toJson:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Ljava/util/function/Predicate;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #695 = Methodref          #676.#179    // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonArray.add:(Ljava/lang/Object;)Z
+   #696 = Utf8               classes
+   #697 = String             #696         // classes
+   #698 = Methodref          #673.#388    // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+   #699 = InterfaceMethodref #420.#361    // java/util/Set.isEmpty:()Z
+   #700 = Utf8               computeClassMapping
+   #701 = Utf8               (Ljava/lang/String;)Ljava/util/Optional;
+   #702 = NameAndType        #700:#701    // computeClassMapping:(Ljava/lang/String;)Ljava/util/Optional;
+   #703 = InterfaceMethodref #340.#702    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet.computeClassMapping:(Ljava/lang/String;)Ljava/util/Optional;
+   #704 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping
+   #705 = Class              #704         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping
+   #706 = Utf8               getFullDeobfuscatedName
+   #707 = NameAndType        #706:#253    // getFullDeobfuscatedName:()Ljava/lang/String;
+   #708 = InterfaceMethodref #705.#707    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping.getFullDeobfuscatedName:()Ljava/lang/String;
+   #709 = MethodHandle       9:#708       // REF_invokeInterface com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping.getFullDeobfuscatedName:()Ljava/lang/String;
+   #710 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/lang/String;
+   #711 = MethodType         #710         //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/lang/String;
+   #712 = Utf8               ()Ljava/util/function/Function;
+   #713 = NameAndType        #44:#712     // apply:()Ljava/util/function/Function;
+   #714 = InvokeDynamic      #10:#713     // #10:apply:()Ljava/util/function/Function;
+   #715 = Utf8               java/util/Optional
+   #716 = Class              #715         // java/util/Optional
+   #717 = Utf8               map
+   #718 = Utf8               (Ljava/util/function/Function;)Ljava/util/Optional;
+   #719 = NameAndType        #717:#718    // map:(Ljava/util/function/Function;)Ljava/util/Optional;
+   #720 = Methodref          #716.#719    // java/util/Optional.map:(Ljava/util/function/Function;)Ljava/util/Optional;
+   #721 = Utf8               orElse
+   #722 = NameAndType        #721:#336    // orElse:(Ljava/lang/Object;)Ljava/lang/Object;
+   #723 = Methodref          #716.#722    // java/util/Optional.orElse:(Ljava/lang/Object;)Ljava/lang/Object;
+   #724 = Utf8               com/unascribed/nilgradle/Member
+   #725 = Class              #724         // com/unascribed/nilgradle/Member
+   #726 = Utf8               owner
+   #727 = NameAndType        #726:#287    // owner:Ljava/lang/String;
+   #728 = Fieldref           #725.#727    // com/unascribed/nilgradle/Member.owner:Ljava/lang/String;
+   #729 = String             #726         // owner
+   #730 = Utf8               signature
+   #731 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MemberSignature;
+   #732 = NameAndType        #730:#731    // signature:Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MemberSignature;
+   #733 = Fieldref           #725.#732    // com/unascribed/nilgradle/Member.signature:Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MemberSignature;
+   #734 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature
+   #735 = Class              #734         // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature
+   #736 = Utf8               sig
+   #737 = String             #736         // sig
+   #738 = Utf8               lambda$toJson$21
+   #739 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #740 = NameAndType        #738:#739    // lambda$toJson$21:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #741 = Methodref          #2.#740      // com/unascribed/nilgradle/NilPlugin.lambda$toJson$21:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #742 = MethodHandle       6:#741       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$toJson$21:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #743 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #744 = MethodType         #743         //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #745 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/function/Function;
+   #746 = NameAndType        #44:#745     // apply:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/function/Function;
+   #747 = InvokeDynamic      #11:#746     // #11:apply:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/function/Function;
+   #748 = Utf8               empty
+   #749 = Utf8               ()Ljava/util/Optional;
+   #750 = NameAndType        #748:#749    // empty:()Ljava/util/Optional;
+   #751 = Methodref          #716.#750    // java/util/Optional.empty:()Ljava/util/Optional;
+   #752 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping
+   #753 = Class              #752         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping
+   #754 = Utf8               getDeobfuscatedSignature
+   #755 = Utf8               ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #756 = NameAndType        #754:#755    // getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #757 = InterfaceMethodref #753.#756    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping.getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #758 = MethodHandle       9:#757       // REF_invokeInterface com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping.getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #759 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #760 = MethodType         #759         //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #761 = InvokeDynamic      #12:#713     // #12:apply:()Ljava/util/function/Function;
+   #762 = MethodType         #431         //  ()Ljava/lang/Object;
+   #763 = Utf8               lambda$toJson$22
+   #764 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #765 = NameAndType        #763:#764    // lambda$toJson$22:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #766 = Methodref          #2.#765      // com/unascribed/nilgradle/NilPlugin.lambda$toJson$22:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #767 = MethodHandle       7:#766       // REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$toJson$22:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #768 = MethodType         #755         //  ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #769 = Utf8               get
+   #770 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/function/Supplier;
+   #771 = NameAndType        #769:#770    // get:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/function/Supplier;
+   #772 = InvokeDynamic      #13:#771     // #13:get:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/function/Supplier;
+   #773 = Utf8               orElseGet
+   #774 = Utf8               (Ljava/util/function/Supplier;)Ljava/lang/Object;
+   #775 = NameAndType        #773:#774    // orElseGet:(Ljava/util/function/Supplier;)Ljava/lang/Object;
+   #776 = Methodref          #716.#775    // java/util/Optional.orElseGet:(Ljava/util/function/Supplier;)Ljava/lang/Object;
+   #777 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/lang/String;
+   #778 = NameAndType        #252:#777    // toString:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/lang/String;
+   #779 = Methodref          #2.#778      // com/unascribed/nilgradle/NilPlugin.toString:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/lang/String;
+   #780 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature
+   #781 = Class              #780         // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature
+   #782 = Utf8               lambda$toJson$23
+   #783 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #784 = NameAndType        #782:#783    // lambda$toJson$23:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #785 = Methodref          #2.#784      // com/unascribed/nilgradle/NilPlugin.lambda$toJson$23:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #786 = MethodHandle       6:#785       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$toJson$23:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+   #787 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/function/Function;
+   #788 = NameAndType        #44:#787     // apply:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/function/Function;
+   #789 = InvokeDynamic      #14:#788     // #14:apply:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/function/Function;
+   #790 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping
+   #791 = Class              #790         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping
+   #792 = Utf8               ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #793 = NameAndType        #754:#792    // getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #794 = InterfaceMethodref #791.#793    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping.getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #795 = MethodHandle       9:#794       // REF_invokeInterface com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping.getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #796 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #797 = MethodType         #796         //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #798 = InvokeDynamic      #15:#713     // #15:apply:()Ljava/util/function/Function;
+   #799 = Utf8               lambda$toJson$24
+   #800 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #801 = NameAndType        #799:#800    // lambda$toJson$24:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #802 = Methodref          #2.#801      // com/unascribed/nilgradle/NilPlugin.lambda$toJson$24:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #803 = MethodHandle       7:#802       // REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$toJson$24:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #804 = MethodType         #792         //  ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #805 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/function/Supplier;
+   #806 = NameAndType        #769:#805    // get:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/function/Supplier;
+   #807 = InvokeDynamic      #16:#806     // #16:get:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/function/Supplier;
+   #808 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/lang/String;
+   #809 = NameAndType        #252:#808    // toString:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/lang/String;
+   #810 = Methodref          #2.#809      // com/unascribed/nilgradle/NilPlugin.toString:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/lang/String;
+   #811 = Methodref          #676.#361    // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonArray.isEmpty:()Z
+   #812 = Utf8               methods
+   #813 = String             #812         // methods
+   #814 = Utf8               fields
+   #815 = String             #814         // fields
+   #816 = Methodref          #673.#361    // com/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject.isEmpty:()Z
+   #817 = Utf8               widen
+   #818 = String             #817         // widen
+   #819 = Utf8               clazz
+   #820 = Utf8               Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #821 = Utf8               tlcm
+   #822 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/TopLevelClassMapping;
+   #823 = Utf8               s
+   #824 = Utf8               widenClasses
+   #825 = Utf8               Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonArray;
+   #826 = Utf8               ms
+   #827 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #828 = Utf8               fs
+   #829 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #830 = Utf8               entry
+   #831 = Utf8               cm
+   #832 = Utf8               Ljava/util/Optional<+Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping<**>;>;
+   #833 = Utf8               Ljava/util/Optional;
+   #834 = Utf8               m
+   #835 = Utf8               Lcom/unascribed/nilgradle/Member;
+   #836 = Utf8               widenMethods
+   #837 = Utf8               widenFields
+   #838 = Utf8               filter
+   #839 = Utf8               Ljava/util/function/Predicate<Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping<**>;>;
+   #840 = Utf8               Ljava/util/function/Predicate;
+   #841 = Utf8               classesToWiden
+   #842 = Utf8               membersToWiden
+   #843 = Utf8               Ljava/util/Set<Lcom/unascribed/nilgradle/Member;>;
+   #844 = Utf8               obj
+   #845 = Utf8               deobf
+   #846 = Methodref          #735.#354    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature.getName:()Ljava/lang/String;
+   #847 = Utf8               getDescriptor
+   #848 = Utf8               ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;
+   #849 = NameAndType        #847:#848    // getDescriptor:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;
+   #850 = Methodref          #735.#849    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature.getDescriptor:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;
+   #851 = Utf8               deobfuscate
+   #852 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;
+   #853 = NameAndType        #851:#852    // deobfuscate:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;
+   #854 = InterfaceMethodref #340.#853    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet.deobfuscate:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor;
+   #855 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor
+   #856 = Class              #855         // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor
+   #857 = Methodref          #856.#254    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/MethodDescriptor.toString:()Ljava/lang/String;
+   #858 = Utf8               of
+   #859 = Utf8               (Ljava/lang/String;Ljava/lang/String;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #860 = NameAndType        #858:#859    // of:(Ljava/lang/String;Ljava/lang/String;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #861 = Methodref          #735.#860    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature.of:(Ljava/lang/String;Ljava/lang/String;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #862 = Utf8               getType
+   #863 = NameAndType        #862:#749    // getType:()Ljava/util/Optional;
+   #864 = Methodref          #781.#863    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature.getType:()Ljava/util/Optional;
+   #865 = Utf8               isPresent
+   #866 = NameAndType        #865:#360    // isPresent:()Z
+   #867 = Methodref          #716.#866    // java/util/Optional.isPresent:()Z
+   #868 = Methodref          #781.#354    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature.getName:()Ljava/lang/String;
+   #869 = NameAndType        #769:#431    // get:()Ljava/lang/Object;
+   #870 = Methodref          #716.#869    // java/util/Optional.get:()Ljava/lang/Object;
+   #871 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType
+   #872 = Class              #871         // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType
+   #873 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;
+   #874 = NameAndType        #851:#873    // deobfuscate:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;
+   #875 = InterfaceMethodref #340.#874    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet.deobfuscate:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;
+   #876 = Methodref          #5.#254      // java/lang/Object.toString:()Ljava/lang/String;
+   #877 = Utf8               (Ljava/lang/String;Ljava/lang/String;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #878 = NameAndType        #858:#877    // of:(Ljava/lang/String;Ljava/lang/String;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #879 = Methodref          #781.#878    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature.of:(Ljava/lang/String;Ljava/lang/String;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #880 = Utf8               type
+   #881 = Utf8               Ljava/util/Optional<Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;>;
+   #882 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping<**>;Ljava/util/function/Predicate<Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping<**>;>;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+   #883 = String             #269         // from
+   #884 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping
+   #885 = Class              #884         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping
+   #886 = Utf8               getObfuscatedName
+   #887 = NameAndType        #886:#253    // getObfuscatedName:()Ljava/lang/String;
+   #888 = InterfaceMethodref #885.#887    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.getObfuscatedName:()Ljava/lang/String;
+   #889 = Utf8               to
+   #890 = String             #889         // to
+   #891 = Utf8               getDeobfuscatedName
+   #892 = NameAndType        #891:#253    // getDeobfuscatedName:()Ljava/lang/String;
+   #893 = InterfaceMethodref #885.#892    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.getDeobfuscatedName:()Ljava/lang/String;
+   #894 = Utf8               getInnerClassMappings
+   #895 = NameAndType        #894:#679    // getInnerClassMappings:()Ljava/util/Collection;
+   #896 = InterfaceMethodref #885.#895    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.getInnerClassMappings:()Ljava/util/Collection;
+   #897 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/InnerClassMapping
+   #898 = Class              #897         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/InnerClassMapping
+   #899 = Utf8               inner-classes
+   #900 = String             #899         // inner-classes
+   #901 = Utf8               getMethodMappings
+   #902 = NameAndType        #901:#679    // getMethodMappings:()Ljava/util/Collection;
+   #903 = InterfaceMethodref #885.#902    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.getMethodMappings:()Ljava/util/Collection;
+   #904 = Utf8               getSignature
+   #905 = NameAndType        #904:#755    // getSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #906 = InterfaceMethodref #753.#905    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping.getSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #907 = Utf8               getFieldMappings
+   #908 = NameAndType        #907:#679    // getFieldMappings:()Ljava/util/Collection;
+   #909 = InterfaceMethodref #885.#908    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.getFieldMappings:()Ljava/util/Collection;
+   #910 = NameAndType        #904:#792    // getSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #911 = InterfaceMethodref #791.#910    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping.getSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #912 = Utf8               icm
+   #913 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/InnerClassMapping;
+   #914 = Utf8               mm
+   #915 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping;
+   #916 = Utf8               fm
+   #917 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping;
+   #918 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping<**>;
+   #919 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;
+   #920 = Utf8               inner
+   #921 = Utf8               lambda$toString$25
+   #922 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+   #923 = NameAndType        #921:#922    // lambda$toString$25:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+   #924 = Methodref          #2.#923      // com/unascribed/nilgradle/NilPlugin.lambda$toString$25:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+   #925 = MethodHandle       6:#924       // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$toString$25:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+   #926 = MethodType         #922         //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+   #927 = InvokeDynamic      #17:#713     // #17:apply:()Ljava/util/function/Function;
+   #928 = Utf8               toJvmsIdentifier
+   #929 = NameAndType        #928:#253    // toJvmsIdentifier:()Ljava/lang/String;
+   #930 = Methodref          #735.#929    // com/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature.toJvmsIdentifier:()Ljava/lang/String;
+   #931 = Utf8               completeRecursively
+   #932 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+   #933 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping<**>;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+   #934 = Utf8               complete
+   #935 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+   #936 = NameAndType        #934:#935    // complete:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+   #937 = InterfaceMethodref #885.#936    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.complete:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+   #938 = Utf8               child
+   #939 = Utf8               inh
+   #940 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;
+   #941 = Utf8               nil/debug/mappings/
+   #942 = String             #941         // nil/debug/mappings/
+   #943 = Utf8               java/io/OutputStreamWriter
+   #944 = Class              #943         // java/io/OutputStreamWriter
+   #945 = Utf8               java/nio/charset/StandardCharsets
+   #946 = Class              #945         // java/nio/charset/StandardCharsets
+   #947 = Utf8               UTF_8
+   #948 = Utf8               Ljava/nio/charset/Charset;
+   #949 = NameAndType        #947:#948    // UTF_8:Ljava/nio/charset/Charset;
+   #950 = Fieldref           #946.#949    // java/nio/charset/StandardCharsets.UTF_8:Ljava/nio/charset/Charset;
+   #951 = Utf8               (Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V
+   #952 = NameAndType        #38:#951     // "<init>":(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V
+   #953 = Methodref          #944.#952    // java/io/OutputStreamWriter."<init>":(Ljava/io/OutputStream;Ljava/nio/charset/Charset;)V
+   #954 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/io/srg/tsrg/TSrgWriter
+   #955 = Class              #954         // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/io/srg/tsrg/TSrgWriter
+   #956 = Utf8               (Ljava/io/Writer;)V
+   #957 = NameAndType        #38:#956     // "<init>":(Ljava/io/Writer;)V
+   #958 = Methodref          #955.#957    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/io/srg/tsrg/TSrgWriter."<init>":(Ljava/io/Writer;)V
+   #959 = Utf8               write
+   #960 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+   #961 = NameAndType        #959:#960    // write:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+   #962 = Methodref          #955.#961    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/io/srg/tsrg/TSrgWriter.write:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+   #963 = Utf8               java/io/Writer
+   #964 = Class              #963         // java/io/Writer
+   #965 = Methodref          #964.#515    // java/io/Writer.close:()V
+   #966 = Utf8               w
+   #967 = Utf8               Ljava/io/Writer;
+   #968 = Utf8               filename
+   #969 = Utf8               file
+   #970 = NameAndType        #44:#45      // apply:(Lorg/gradle/api/Project;)V
+   #971 = Methodref          #2.#970      // com/unascribed/nilgradle/NilPlugin.apply:(Lorg/gradle/api/Project;)V
+   #972 = Utf8               :
+   #973 = String             #972         // :
+   #974 = Utf8               (Ljava/lang/Object;)Ljava/lang/StringBuilder;
+   #975 = NameAndType        #366:#974    // append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+   #976 = Methodref          #364.#975    // java/lang/StringBuilder.append:(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+   #977 = Utf8               t
+   #978 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;
+   #979 = NameAndType        #845:#800    // deobf:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #980 = Methodref          #2.#979      // com/unascribed/nilgradle/NilPlugin.deobf:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+   #981 = Utf8               computeFieldMapping
+   #982 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/Optional;
+   #983 = NameAndType        #981:#982    // computeFieldMapping:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/Optional;
+   #984 = InterfaceMethodref #885.#983    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.computeFieldMapping:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Ljava/util/Optional;
+   #985 = Utf8               cmm
+   #986 = NameAndType        #845:#764    // deobf:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #987 = Methodref          #2.#986      // com/unascribed/nilgradle/NilPlugin.deobf:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+   #988 = Utf8               getMethodMapping
+   #989 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/Optional;
+   #990 = NameAndType        #988:#989    // getMethodMapping:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/Optional;
+   #991 = InterfaceMethodref #885.#990    // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping.getMethodMapping:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Ljava/util/Optional;
+   #992 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;)V
+   #993 = NameAndType        #38:#992     // "<init>":(Lcom/unascribed/nilgradle/NilPlugin;)V
+   #994 = Methodref          #18.#993     // com/unascribed/nilgradle/NilPlugin$5."<init>":(Lcom/unascribed/nilgradle/NilPlugin;)V
+   #995 = Utf8               ctx
+   #996 = Utf8               Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;
+   #997 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext
+   #998 = Class              #997         // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext
+   #999 = Utf8               inheritanceProvider
+  #1000 = Utf8               ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;
+  #1001 = NameAndType        #999:#1000   // inheritanceProvider:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;
+  #1002 = Methodref          #998.#1001   // com/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext.inheritanceProvider:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;
+  #1003 = NameAndType        #931:#932    // completeRecursively:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+  #1004 = Methodref          #2.#1003     // com/unascribed/nilgradle/NilPlugin.completeRecursively:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+  #1005 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+  #1006 = NameAndType        #38:#1005    // "<init>":(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+  #1007 = Methodref          #16.#1006    // com/unascribed/nilgradle/NilPlugin$2."<init>":(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+  #1008 = MethodType         #387         //  (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+  #1009 = Utf8               lambda$remap$18
+  #1010 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  #1011 = NameAndType        #1009:#1010  // lambda$remap$18:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  #1012 = Methodref          #2.#1011     // com/unascribed/nilgradle/NilPlugin.lambda$remap$18:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  #1013 = MethodHandle       7:#1012      // REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$remap$18:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  #1014 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  #1015 = MethodType         #1014        //  (Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  #1016 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Ljava/util/function/BiFunction;
+  #1017 = NameAndType        #44:#1016    // apply:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Ljava/util/function/BiFunction;
+  #1018 = InvokeDynamic      #18:#1017    // #18:apply:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Ljava/util/function/BiFunction;
+  #1019 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;Ljava/util/function/BiFunction;)V
+  #1020 = NameAndType        #38:#1019    // "<init>":(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;Ljava/util/function/BiFunction;)V
+  #1021 = Methodref          #14.#1020    // com/unascribed/nilgradle/NilPlugin$3."<init>":(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;Ljava/util/function/BiFunction;)V
+  #1022 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+  #1023 = NameAndType        #38:#1022    // "<init>":(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+  #1024 = Methodref          #12.#1023    // com/unascribed/nilgradle/NilPlugin$4."<init>":(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+  #1025 = Utf8               cv
+  #1026 = Utf8               Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;
+  #1027 = Utf8               re
+  #1028 = Utf8               Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;
+  #1029 = NameAndType        #347:#253    // getId:()Ljava/lang/String;
+  #1030 = Methodref          #202.#1029   // com/unascribed/nilgradle/NilExtension.getId:()Ljava/lang/String;
+  #1031 = NameAndType        #373:#431    // getVersion:()Ljava/lang/Object;
+  #1032 = InterfaceMethodref #49.#1031    // org/gradle/api/Project.getVersion:()Ljava/lang/Object;
+  #1033 = Utf8               version
+  #1034 = String             #1033        // version
+  #1035 = Utf8               .nilmod.css
+  #1036 = String             #1035        // .nilmod.css
+  #1037 = Utf8               lambda$apply$14
+  #1038 = Utf8               (Lorg/gradle/api/Project;Lorg/gradle/api/file/FileCopyDetails;)V
+  #1039 = NameAndType        #1037:#1038  // lambda$apply$14:(Lorg/gradle/api/Project;Lorg/gradle/api/file/FileCopyDetails;)V
+  #1040 = Methodref          #2.#1039     // com/unascribed/nilgradle/NilPlugin.lambda$apply$14:(Lorg/gradle/api/Project;Lorg/gradle/api/file/FileCopyDetails;)V
+  #1041 = MethodHandle       6:#1040      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$14:(Lorg/gradle/api/Project;Lorg/gradle/api/file/FileCopyDetails;)V
+  #1042 = Utf8               (Lorg/gradle/api/file/FileCopyDetails;)V
+  #1043 = MethodType         #1042        //  (Lorg/gradle/api/file/FileCopyDetails;)V
+  #1044 = InvokeDynamic      #19:#127     // #19:execute:(Lorg/gradle/api/Project;)Lorg/gradle/api/Action;
+  #1045 = Utf8               filesMatching
+  #1046 = Utf8               (Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+  #1047 = NameAndType        #1045:#1046  // filesMatching:(Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+  #1048 = Methodref          #239.#1047   // org/gradle/language/jvm/tasks/ProcessResources.filesMatching:(Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+  #1049 = Utf8               isStandalone
+  #1050 = NameAndType        #1049:#360   // isStandalone:()Z
+  #1051 = Methodref          #202.#1050   // com/unascribed/nilgradle/NilExtension.isStandalone:()Z
+  #1052 = Utf8               jar
+  #1053 = String             #1052        // jar
+  #1054 = Utf8               org/gradle/api/tasks/bundling/Jar
+  #1055 = Class              #1054        // org/gradle/api/tasks/bundling/Jar
+  #1056 = Utf8               zipTree
+  #1057 = Utf8               (Ljava/lang/Object;)Lorg/gradle/api/file/FileTree;
+  #1058 = NameAndType        #1056:#1057  // zipTree:(Ljava/lang/Object;)Lorg/gradle/api/file/FileTree;
+  #1059 = InterfaceMethodref #49.#1058    // org/gradle/api/Project.zipTree:(Ljava/lang/Object;)Lorg/gradle/api/file/FileTree;
+  #1060 = Utf8               ([Ljava/lang/Object;)Lorg/gradle/api/tasks/AbstractCopyTask;
+  #1061 = NameAndType        #269:#1060   // from:([Ljava/lang/Object;)Lorg/gradle/api/tasks/AbstractCopyTask;
+  #1062 = Methodref          #1055.#1061  // org/gradle/api/tasks/bundling/Jar.from:([Ljava/lang/Object;)Lorg/gradle/api/tasks/AbstractCopyTask;
+  #1063 = Utf8               1.3.0
+  #1064 = String             #1063        // 1.3.0
+  #1065 = Utf8               com/unascribed/nilgradle/repackage/com/unascribed/flexver/FlexVerComparator
+  #1066 = Class              #1065        // com/unascribed/nilgradle/repackage/com/unascribed/flexver/FlexVerComparator
+  #1067 = Utf8               compare
+  #1068 = Utf8               (Ljava/lang/String;Ljava/lang/String;)I
+  #1069 = NameAndType        #1067:#1068  // compare:(Ljava/lang/String;Ljava/lang/String;)I
+  #1070 = Methodref          #1066.#1069  // com/unascribed/nilgradle/repackage/com/unascribed/flexver/FlexVerComparator.compare:(Ljava/lang/String;Ljava/lang/String;)I
+  #1071 = Utf8               getManifest
+  #1072 = Utf8               ()Lorg/gradle/api/java/archives/Manifest;
+  #1073 = NameAndType        #1071:#1072  // getManifest:()Lorg/gradle/api/java/archives/Manifest;
+  #1074 = Methodref          #1055.#1073  // org/gradle/api/tasks/bundling/Jar.getManifest:()Lorg/gradle/api/java/archives/Manifest;
+  #1075 = Utf8               Premain-Class
+  #1076 = String             #1075        // Premain-Class
+  #1077 = Utf8               nilloader.NilAgent
+  #1078 = String             #1077        // nilloader.NilAgent
+  #1079 = Utf8               singletonMap
+  #1080 = Utf8               (Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/Map;
+  #1081 = NameAndType        #1079:#1080  // singletonMap:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/Map;
+  #1082 = Methodref          #484.#1081   // java/util/Collections.singletonMap:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/Map;
+  #1083 = Utf8               org/gradle/api/java/archives/Manifest
+  #1084 = Class              #1083        // org/gradle/api/java/archives/Manifest
+  #1085 = Utf8               attributes
+  #1086 = Utf8               (Ljava/util/Map;)Lorg/gradle/api/java/archives/Manifest;
+  #1087 = NameAndType        #1085:#1086  // attributes:(Ljava/util/Map;)Lorg/gradle/api/java/archives/Manifest;
+  #1088 = InterfaceMethodref #1084.#1087  // org/gradle/api/java/archives/Manifest.attributes:(Ljava/util/Map;)Lorg/gradle/api/java/archives/Manifest;
+  #1089 = Utf8               Agent-Class
+  #1090 = String             #1089        // Agent-Class
+  #1091 = Utf8               Can-Retransform-Classes
+  #1092 = String             #1091        // Can-Retransform-Classes
+  #1093 = Utf8               true
+  #1094 = String             #1093        // true
+  #1095 = Utf8               nilloader.NilLoader
+  #1096 = String             #1095        // nilloader.NilLoader
+  #1097 = Utf8               java/lang/IllegalStateException
+  #1098 = Class              #1097        // java/lang/IllegalStateException
+  #1099 = Utf8               No game dependency present! Retrieving and remapping a game jar is the entire purpose of NilGradle - if you\'re making a universal nilmod, you can just use the Gradle Java plugin.
+  #1100 = String             #1099        // No game dependency present! Retrieving and remapping a game jar is the entire purpose of NilGradle - if you\'re making a universal nilmod, you can just use the Gradle Java plugin.
+  #1101 = NameAndType        #38:#546     // "<init>":(Ljava/lang/String;)V
+  #1102 = Methodref          #1098.#1101  // java/lang/IllegalStateException."<init>":(Ljava/lang/String;)V
+  #1103 = Utf8               size
+  #1104 = Utf8               ()I
+  #1105 = NameAndType        #1103:#1104  // size:()I
+  #1106 = InterfaceMethodref #420.#1105   // java/util/Set.size:()I
+  #1107 = Utf8               Multiple game dependencies present! If you want to merge jars together, add the additional jars under the \'jarmod\' configuration.
+  #1108 = String             #1107        // Multiple game dependencies present! If you want to merge jars together, add the additional jars under the \'jarmod\' configuration.
+  #1109 = Utf8               java/util/HashMap
+  #1110 = Class              #1109        // java/util/HashMap
+  #1111 = Methodref          #1110.#40    // java/util/HashMap."<init>":()V
+  #1112 = Utf8               lambda$apply$15
+  #1113 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1114 = NameAndType        #1112:#1113  // lambda$apply$15:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1115 = Methodref          #2.#1114     // com/unascribed/nilgradle/NilPlugin.lambda$apply$15:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1116 = MethodHandle       6:#1115      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$15:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1117 = MethodType         #1113        //  (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1118 = InvokeDynamic      #20:#713     // #20:apply:()Ljava/util/function/Function;
+  #1119 = NameAndType        #312:#313    // loadTargetMappings:(Ljava/util/Map;Lorg/gradle/api/artifacts/ResolvedArtifact;Ljava/util/function/Function;)V
+  #1120 = Methodref          #2.#1119     // com/unascribed/nilgradle/NilPlugin.loadTargetMappings:(Ljava/util/Map;Lorg/gradle/api/artifacts/ResolvedArtifact;Ljava/util/function/Function;)V
+  #1121 = Utf8               lambda$apply$16
+  #1122 = NameAndType        #1121:#1113  // lambda$apply$16:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1123 = Methodref          #2.#1122     // com/unascribed/nilgradle/NilPlugin.lambda$apply$16:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1124 = MethodHandle       6:#1123      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$16:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1125 = InvokeDynamic      #21:#713     // #21:apply:()Ljava/util/function/Function;
+  #1126 = Utf8               Multiple work mappings present!
+  #1127 = String             #1126        // Multiple work mappings present!
+  #1128 = NameAndType        #34:#35      // log:Lorg/slf4j/Logger;
+  #1129 = Fieldref           #2.#1128     // com/unascribed/nilgradle/NilPlugin.log:Lorg/slf4j/Logger;
+  #1130 = Utf8               Detecting and loading work mappings from
+  #1131 = String             #1130        // Detecting and loading work mappings from
+  #1132 = Utf8               org/slf4j/Logger
+  #1133 = Class              #1132        // org/slf4j/Logger
+  #1134 = Utf8               info
+  #1135 = NameAndType        #1134:#546   // info:(Ljava/lang/String;)V
+  #1136 = InterfaceMethodref #1133.#1135  // org/slf4j/Logger.info:(Ljava/lang/String;)V
+  #1137 = Utf8               (Ljava/io/File;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1138 = NameAndType        #332:#1137   // detectAndLoad:(Ljava/io/File;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1139 = Methodref          #331.#1138   // com/unascribed/nilgradle/MappingDetector.detectAndLoad:(Ljava/io/File;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1140 = Utf8               Detecting and loading via mappings from
+  #1141 = String             #1140        // Detecting and loading via mappings from
+  #1142 = Utf8               com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger
+  #1143 = Class              #1142        // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger
+  #1144 = Utf8               (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger;
+  #1145 = NameAndType        #141:#1144   // create:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger;
+  #1146 = InterfaceMethodref #1143.#1145  // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger.create:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger;
+  #1147 = Utf8               ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1148 = NameAndType        #668:#1147   // merge:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1149 = InterfaceMethodref #1143.#1148  // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/merge/MappingSetMerger.merge:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1150 = Utf8               work.tsrg
+  #1151 = String             #1150        // work.tsrg
+  #1152 = Utf8               entrySet
+  #1153 = NameAndType        #1152:#416   // entrySet:()Ljava/util/Set;
+  #1154 = InterfaceMethodref #22.#1153    // java/util/Map.entrySet:()Ljava/util/Set;
+  #1155 = NameAndType        #485:#1147   // reverse:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1156 = InterfaceMethodref #340.#1155   // com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet.reverse:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  #1157 = Utf8               getValue
+  #1158 = NameAndType        #1157:#431   // getValue:()Ljava/lang/Object;
+  #1159 = InterfaceMethodref #20.#1158    // java/util/Map$Entry.getValue:()Ljava/lang/Object;
+  #1160 = Utf8               target/fromWork/
+  #1161 = String             #1160        // target/fromWork/
+  #1162 = Utf8               getKey
+  #1163 = NameAndType        #1162:#431   // getKey:()Ljava/lang/Object;
+  #1164 = InterfaceMethodref #20.#1163    // java/util/Map$Entry.getKey:()Ljava/lang/Object;
+  #1165 = Utf8               target/toWork/
+  #1166 = String             #1165        // target/toWork/
+  #1167 = Utf8               setValue
+  #1168 = NameAndType        #1167:#336   // setValue:(Ljava/lang/Object;)Ljava/lang/Object;
+  #1169 = InterfaceMethodref #20.#1168    // java/util/Map$Entry.setValue:(Ljava/lang/Object;)Ljava/lang/Object;
+  #1170 = NameAndType        #403:#404    // remap:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+  #1171 = Methodref          #2.#1170     // com/unascribed/nilgradle/NilPlugin.remap:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)V
+  #1172 = Utf8               default
+  #1173 = String             #1172        // default
+  #1174 = Utf8               addAll
+  #1175 = Utf8               (Ljava/util/Collection;)Z
+  #1176 = NameAndType        #1174:#1175  // addAll:(Ljava/util/Collection;)Z
+  #1177 = InterfaceMethodref #641.#1176   // org/gradle/api/artifacts/DependencySet.addAll:(Ljava/util/Collection;)Z
+  #1178 = InterfaceMethodref #22.#361     // java/util/Map.isEmpty:()Z
+  #1179 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Ljava/io/File;Lorg/gradle/api/Project;Ljava/util/Map;Lcom/unascribed/nilgradle/NilExtension;)V
+  #1180 = NameAndType        #38:#1179    // "<init>":(Lcom/unascribed/nilgradle/NilPlugin;Ljava/io/File;Lorg/gradle/api/Project;Ljava/util/Map;Lcom/unascribed/nilgradle/NilExtension;)V
+  #1181 = Methodref          #10.#1180    // com/unascribed/nilgradle/NilPlugin$1."<init>":(Lcom/unascribed/nilgradle/NilPlugin;Ljava/io/File;Lorg/gradle/api/Project;Ljava/util/Map;Lcom/unascribed/nilgradle/NilExtension;)V
+  #1182 = Utf8               doFirst
+  #1183 = Utf8               (Lorg/gradle/api/Action;)Lorg/gradle/api/Task;
+  #1184 = NameAndType        #1182:#1183  // doFirst:(Lorg/gradle/api/Action;)Lorg/gradle/api/Task;
+  #1185 = Methodref          #239.#1184   // org/gradle/language/jvm/tasks/ProcessResources.doFirst:(Lorg/gradle/api/Action;)Lorg/gradle/api/Task;
+  #1186 = Utf8               ra
+  #1187 = Utf8               Lorg/gradle/api/tasks/bundling/Jar;
+  #1188 = Utf8               viaFile
+  #1189 = Utf8               via
+  #1190 = Utf8               work
+  #1191 = Utf8               workToTarget
+  #1192 = Utf8               Ljava/util/Map$Entry<Ljava/lang/String;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;>;
+  #1193 = Utf8               Ljava/util/Map$Entry;
+  #1194 = Utf8               workFile
+  #1195 = Utf8               workRaw
+  #1196 = Utf8               viaFiles
+  #1197 = Utf8               Ljava/util/Set<Ljava/io/File;>;
+  #1198 = Utf8               unused
+  #1199 = Utf8               gameFiles
+  #1200 = Utf8               workFiles
+  #1201 = Utf8               org/gradle/api/file/FileCopyDetails
+  #1202 = Class              #1201        // org/gradle/api/file/FileCopyDetails
+  #1203 = Utf8               expand
+  #1204 = Utf8               (Ljava/util/Map;)Lorg/gradle/api/file/ContentFilterable;
+  #1205 = NameAndType        #1203:#1204  // expand:(Ljava/util/Map;)Lorg/gradle/api/file/ContentFilterable;
+  #1206 = InterfaceMethodref #1202.#1205  // org/gradle/api/file/FileCopyDetails.expand:(Ljava/util/Map;)Lorg/gradle/api/file/ContentFilterable;
+  #1207 = Utf8               Lorg/gradle/api/file/FileCopyDetails;
+  #1208 = Utf8               META-INF/nil
+  #1209 = String             #1208        // META-INF/nil
+  #1210 = Utf8               org/gradle/api/file/CopySpec
+  #1211 = Class              #1210        // org/gradle/api/file/CopySpec
+  #1212 = Utf8               into
+  #1213 = Utf8               (Ljava/lang/Object;)Lorg/gradle/api/file/CopySpec;
+  #1214 = NameAndType        #1212:#1213  // into:(Ljava/lang/Object;)Lorg/gradle/api/file/CopySpec;
+  #1215 = InterfaceMethodref #1211.#1214  // org/gradle/api/file/CopySpec.into:(Ljava/lang/Object;)Lorg/gradle/api/file/CopySpec;
+  #1216 = Utf8               Lorg/gradle/api/file/CopySpec;
+  #1217 = Utf8               extendsFrom
+  #1218 = Utf8               ([Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/artifacts/Configuration;
+  #1219 = NameAndType        #1217:#1218  // extendsFrom:([Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/artifacts/Configuration;
+  #1220 = InterfaceMethodref #146.#1219   // org/gradle/api/artifacts/Configuration.extendsFrom:([Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/artifacts/Configuration;
+  #1221 = Utf8               compile
+  #1222 = Utf8               setVisible
+  #1223 = Utf8               (Z)Lorg/gradle/api/artifacts/Configuration;
+  #1224 = NameAndType        #1222:#1223  // setVisible:(Z)Lorg/gradle/api/artifacts/Configuration;
+  #1225 = InterfaceMethodref #146.#1224   // org/gradle/api/artifacts/Configuration.setVisible:(Z)Lorg/gradle/api/artifacts/Configuration;
+  #1226 = Utf8               setCanBeConsumed
+  #1227 = Utf8               (Z)V
+  #1228 = NameAndType        #1226:#1227  // setCanBeConsumed:(Z)V
+  #1229 = InterfaceMethodref #146.#1228   // org/gradle/api/artifacts/Configuration.setCanBeConsumed:(Z)V
+  #1230 = Utf8               c
+  #1231 = Utf8               NilGradle: Dynamic outputs
+  #1232 = String             #1231        // NilGradle: Dynamic outputs
+  #1233 = Utf8               org/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository
+  #1234 = Class              #1233        // org/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository
+  #1235 = Utf8               setName
+  #1236 = NameAndType        #1235:#546   // setName:(Ljava/lang/String;)V
+  #1237 = InterfaceMethodref #1234.#1236  // org/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository.setName:(Ljava/lang/String;)V
+  #1238 = Utf8               nil/cache
+  #1239 = String             #1238        // nil/cache
+  #1240 = Utf8               dir
+  #1241 = NameAndType        #1240:#65    // dir:(Ljava/lang/Object;)V
+  #1242 = InterfaceMethodref #1234.#1241  // org/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository.dir:(Ljava/lang/Object;)V
+  #1243 = Utf8               lambda$apply$9
+  #1244 = Utf8               (Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1245 = NameAndType        #1243:#1244  // lambda$apply$9:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1246 = Methodref          #2.#1245     // com/unascribed/nilgradle/NilPlugin.lambda$apply$9:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1247 = MethodHandle       6:#1246      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$9:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1248 = MethodType         #1244        //  (Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1249 = InvokeDynamic      #22:#82      // #22:execute:()Lorg/gradle/api/Action;
+  #1250 = Utf8               content
+  #1251 = NameAndType        #1250:#283   // content:(Lorg/gradle/api/Action;)V
+  #1252 = InterfaceMethodref #1234.#1251  // org/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository.content:(Lorg/gradle/api/Action;)V
+  #1253 = Utf8               repo
+  #1254 = Utf8               Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;
+  #1255 = Utf8               nilgradle.dynamic
+  #1256 = String             #1255        // nilgradle.dynamic
+  #1257 = Utf8               org/gradle/api/artifacts/repositories/RepositoryContentDescriptor
+  #1258 = Class              #1257        // org/gradle/api/artifacts/repositories/RepositoryContentDescriptor
+  #1259 = Utf8               includeGroup
+  #1260 = NameAndType        #1259:#546   // includeGroup:(Ljava/lang/String;)V
+  #1261 = InterfaceMethodref #1258.#1260  // org/gradle/api/artifacts/repositories/RepositoryContentDescriptor.includeGroup:(Ljava/lang/String;)V
+  #1262 = Utf8               desc
+  #1263 = Utf8               Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;
+  #1264 = Utf8               NilGradle: archive.org MCP
+  #1265 = String             #1264        // NilGradle: archive.org MCP
+  #1266 = InterfaceMethodref #27.#1236    // org/gradle/api/artifacts/repositories/IvyArtifactRepository.setName:(Ljava/lang/String;)V
+  #1267 = Utf8               https://archive.org/download/minecraftcoderpack/minecraftcoderpack.zip/minecraftcoderpack/[module]/mcp[revision].[ext]
+  #1268 = String             #1267        // https://archive.org/download/minecraftcoderpack/minecraftcoderpack.zip/minecraftcoderpack/[module]/mcp[revision].[ext]
+  #1269 = Utf8               artifactPattern
+  #1270 = NameAndType        #1269:#546   // artifactPattern:(Ljava/lang/String;)V
+  #1271 = InterfaceMethodref #27.#1270    // org/gradle/api/artifacts/repositories/IvyArtifactRepository.artifactPattern:(Ljava/lang/String;)V
+  #1272 = Utf8               lambda$apply$6
+  #1273 = Utf8               (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1274 = NameAndType        #1272:#1273  // lambda$apply$6:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1275 = Methodref          #2.#1274     // com/unascribed/nilgradle/NilPlugin.lambda$apply$6:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1276 = MethodHandle       6:#1275      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$6:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1277 = MethodType         #1273        //  (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1278 = InvokeDynamic      #23:#82      // #23:execute:()Lorg/gradle/api/Action;
+  #1279 = Utf8               metadataSources
+  #1280 = NameAndType        #1279:#283   // metadataSources:(Lorg/gradle/api/Action;)V
+  #1281 = InterfaceMethodref #27.#1280    // org/gradle/api/artifacts/repositories/IvyArtifactRepository.metadataSources:(Lorg/gradle/api/Action;)V
+  #1282 = Utf8               lambda$apply$7
+  #1283 = NameAndType        #1282:#1244  // lambda$apply$7:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1284 = Methodref          #2.#1283     // com/unascribed/nilgradle/NilPlugin.lambda$apply$7:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1285 = MethodHandle       6:#1284      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$7:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1286 = InvokeDynamic      #24:#82      // #24:execute:()Lorg/gradle/api/Action;
+  #1287 = InterfaceMethodref #27.#1251    // org/gradle/api/artifacts/repositories/IvyArtifactRepository.content:(Lorg/gradle/api/Action;)V
+  #1288 = Utf8               Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+  #1289 = Utf8               org.archive.minecraftcoderpack
+  #1290 = String             #1289        // org.archive.minecraftcoderpack
+  #1291 = NameAndType        #666:#39     // artifact:()V
+  #1292 = InterfaceMethodref #25.#1291    // org/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources.artifact:()V
+  #1293 = Utf8               src
+  #1294 = Utf8               Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;
+  #1295 = Utf8               NilGradle: archive.org Minecraft-JE-
+  #1296 = String             #1295        // NilGradle: archive.org Minecraft-JE-
+  #1297 = Utf8               https://archive.org/download/Minecraft-JE-
+  #1298 = String             #1297        // https://archive.org/download/Minecraft-JE-
+  #1299 = Utf8               /[module]/[module].[ext]
+  #1300 = String             #1299        // /[module]/[module].[ext]
+  #1301 = Utf8               lambda$apply$3
+  #1302 = NameAndType        #1301:#1273  // lambda$apply$3:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1303 = Methodref          #2.#1302     // com/unascribed/nilgradle/NilPlugin.lambda$apply$3:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1304 = MethodHandle       6:#1303      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$3:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1305 = InvokeDynamic      #25:#82      // #25:execute:()Lorg/gradle/api/Action;
+  #1306 = Utf8               lambda$apply$4
+  #1307 = Utf8               (Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1308 = NameAndType        #1306:#1307  // lambda$apply$4:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1309 = Methodref          #2.#1308     // com/unascribed/nilgradle/NilPlugin.lambda$apply$4:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1310 = MethodHandle       6:#1309      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$4:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1311 = InvokeDynamic      #26:#112     // #26:execute:(Ljava/lang/String;)Lorg/gradle/api/Action;
+  #1312 = Utf8               org.archive.minecraft-je-
+  #1313 = String             #1312        // org.archive.minecraft-je-
+  #1314 = Utf8               java/util/Locale
+  #1315 = Class              #1314        // java/util/Locale
+  #1316 = Utf8               ROOT
+  #1317 = Utf8               Ljava/util/Locale;
+  #1318 = NameAndType        #1316:#1317  // ROOT:Ljava/util/Locale;
+  #1319 = Fieldref           #1315.#1318  // java/util/Locale.ROOT:Ljava/util/Locale;
+  #1320 = Utf8               toLowerCase
+  #1321 = Utf8               (Ljava/util/Locale;)Ljava/lang/String;
+  #1322 = NameAndType        #1320:#1321  // toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;
+  #1323 = Methodref          #91.#1322    // java/lang/String.toLowerCase:(Ljava/util/Locale;)Ljava/lang/String;
+  #1324 = Utf8               NilGradle: Mojang launcher data
+  #1325 = String             #1324        // NilGradle: Mojang launcher data
+  #1326 = Utf8               https://launcher.mojang.com/v1/objects/[revision]/[module].[ext]
+  #1327 = String             #1326        // https://launcher.mojang.com/v1/objects/[revision]/[module].[ext]
+  #1328 = Utf8               lambda$apply$0
+  #1329 = NameAndType        #1328:#1273  // lambda$apply$0:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1330 = Methodref          #2.#1329     // com/unascribed/nilgradle/NilPlugin.lambda$apply$0:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1331 = MethodHandle       6:#1330      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$0:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  #1332 = InvokeDynamic      #27:#82      // #27:execute:()Lorg/gradle/api/Action;
+  #1333 = Utf8               lambda$apply$1
+  #1334 = NameAndType        #1333:#1244  // lambda$apply$1:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1335 = Methodref          #2.#1334     // com/unascribed/nilgradle/NilPlugin.lambda$apply$1:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1336 = MethodHandle       6:#1335      // REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$1:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  #1337 = InvokeDynamic      #28:#82      // #28:execute:()Lorg/gradle/api/Action;
+  #1338 = Utf8               com.mojang.launcher
+  #1339 = String             #1338        // com.mojang.launcher
+  #1340 = Utf8               access$000
+  #1341 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;)Lorg/gradle/api/Project;
+  #1342 = Utf8               x0
+  #1343 = Utf8               access$200
+  #1344 = Utf8               x1
+  #1345 = Utf8               access$300
+  #1346 = Utf8               (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate;Ljava/util/Set;Ljava/util/Set;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+  #1347 = NameAndType        #669:#670    // toJson:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate;Ljava/util/Set;Ljava/util/Set;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+  #1348 = Methodref          #2.#1347     // com/unascribed/nilgradle/NilPlugin.toJson:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate;Ljava/util/Set;Ljava/util/Set;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+  #1349 = Utf8               x2
+  #1350 = Utf8               x3
+  #1351 = Utf8               x4
+  #1352 = Utf8               <clinit>
+  #1353 = Utf8               org/slf4j/LoggerFactory
+  #1354 = Class              #1353        // org/slf4j/LoggerFactory
+  #1355 = Utf8               getLogger
+  #1356 = Utf8               (Ljava/lang/Class;)Lorg/slf4j/Logger;
+  #1357 = NameAndType        #1355:#1356  // getLogger:(Ljava/lang/Class;)Lorg/slf4j/Logger;
+  #1358 = Methodref          #1354.#1357  // org/slf4j/LoggerFactory.getLogger:(Ljava/lang/Class;)Lorg/slf4j/Logger;
+  #1359 = Utf8               Code
+  #1360 = Utf8               LineNumberTable
+  #1361 = Utf8               LocalVariableTable
+  #1362 = Utf8               StackMapTable
+  #1363 = Utf8               LocalVariableTypeTable
+  #1364 = Utf8               Signature
+  #1365 = Utf8               InnerClasses
+  #1366 = Utf8               SourceFile
+  #1367 = Utf8               BootstrapMethods
+{
+  public static final org.slf4j.Logger log;
+    descriptor: Lorg/slf4j/Logger;
+    flags: (0x0019) ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+
+  public com.unascribed.nilgradle.NilPlugin();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #41                 // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 90: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/unascribed/nilgradle/NilPlugin;
+
+  public void apply(org.gradle.api.Project);
+    descriptor: (Lorg/gradle/api/Project;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=17, locals=19, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #47                 // Field project:Lorg/gradle/api/Project;
+         5: aload_1
+         6: invokeinterface #53,  1           // InterfaceMethod org/gradle/api/Project.getPlugins:()Lorg/gradle/api/plugins/PluginContainer;
+        11: ldc           #55                 // class org/gradle/api/plugins/JavaPlugin
+        13: invokeinterface #60,  2           // InterfaceMethod org/gradle/api/plugins/PluginContainer.apply:(Ljava/lang/Class;)Lorg/gradle/api/Plugin;
+        18: pop
+        19: aload_1
+        20: invokeinterface #64,  1           // InterfaceMethod org/gradle/api/Project.getRepositories:()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+        25: invokedynamic #83,  0             // InvokeDynamic #0:execute:()Lorg/gradle/api/Action;
+        30: invokeinterface #89,  2           // InterfaceMethod org/gradle/api/artifacts/dsl/RepositoryHandler.ivy:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+        35: pop
+        36: bipush        6
+        38: anewarray     #91                 // class java/lang/String
+        41: dup
+        42: iconst_0
+        43: ldc           #93                 // String Beta
+        45: aastore
+        46: dup
+        47: iconst_1
+        48: ldc           #95                 // String Alpha
+        50: aastore
+        51: dup
+        52: iconst_2
+        53: ldc           #97                 // String Infdev
+        55: aastore
+        56: dup
+        57: iconst_3
+        58: ldc           #99                 // String Indev
+        60: aastore
+        61: dup
+        62: iconst_4
+        63: ldc           #101                // String Classic
+        65: aastore
+        66: dup
+        67: iconst_5
+        68: ldc           #103                // String Pre-Classic
+        70: aastore
+        71: astore_2
+        72: aload_2
+        73: astore_3
+        74: aload_3
+        75: arraylength
+        76: istore        4
+        78: iconst_0
+        79: istore        5
+        81: iload         5
+        83: iload         4
+        85: if_icmpge     119
+        88: aload_3
+        89: iload         5
+        91: aaload
+        92: astore        6
+        94: aload_1
+        95: invokeinterface #64,  1           // InterfaceMethod org/gradle/api/Project.getRepositories:()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+       100: aload         6
+       102: invokedynamic #113,  0            // InvokeDynamic #1:execute:(Ljava/lang/String;)Lorg/gradle/api/Action;
+       107: invokeinterface #89,  2           // InterfaceMethod org/gradle/api/artifacts/dsl/RepositoryHandler.ivy:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+       112: pop
+       113: iinc          5, 1
+       116: goto          81
+       119: aload_1
+       120: invokeinterface #64,  1           // InterfaceMethod org/gradle/api/Project.getRepositories:()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+       125: invokedynamic #118,  0            // InvokeDynamic #2:execute:()Lorg/gradle/api/Action;
+       130: invokeinterface #89,  2           // InterfaceMethod org/gradle/api/artifacts/dsl/RepositoryHandler.ivy:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;
+       135: pop
+       136: aload_1
+       137: invokeinterface #64,  1           // InterfaceMethod org/gradle/api/Project.getRepositories:()Lorg/gradle/api/artifacts/dsl/RepositoryHandler;
+       142: aload_1
+       143: invokedynamic #128,  0            // InvokeDynamic #3:execute:(Lorg/gradle/api/Project;)Lorg/gradle/api/Action;
+       148: invokeinterface #132,  2          // InterfaceMethod org/gradle/api/artifacts/dsl/RepositoryHandler.flatDir:(Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;
+       153: pop
+       154: aload_1
+       155: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       160: ldc           #138                // String loader
+       162: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       167: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       170: astore_3
+       171: aload_1
+       172: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       177: ldc           #148                // String game
+       179: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       184: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       187: astore        4
+       189: aload_1
+       190: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       195: ldc           #150                // String jarmod
+       197: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       202: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       205: astore        5
+       207: aload_1
+       208: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       213: ldc           #152                // String remappedGame
+       215: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       220: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       223: astore        6
+       225: aload_1
+       226: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       231: ldc           #154                // String mod
+       233: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       238: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       241: astore        7
+       243: aload_1
+       244: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       249: ldc           #156                // String modVia
+       251: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       256: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       259: astore        8
+       261: aload_1
+       262: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       267: ldc           #158                // String remappedMod
+       269: invokeinterface #144,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;)Ljava/lang/Object;
+       274: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       277: astore        9
+       279: invokedynamic #165,  0            // InvokeDynamic #4:execute:()Lorg/gradle/api/Action;
+       284: astore        10
+       286: aload_1
+       287: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       292: ldc           #167                // String nilInternalTargetMapping
+       294: aload         10
+       296: invokeinterface #170,  3          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+       301: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       304: astore        11
+       306: aload_1
+       307: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       312: ldc           #172                // String nilInternalAltTargetMapping
+       314: aload         10
+       316: invokeinterface #170,  3          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+       321: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       324: astore        12
+       326: aload_1
+       327: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       332: ldc           #174                // String nilInternalViaMapping
+       334: aload         10
+       336: invokeinterface #170,  3          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+       341: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       344: astore        13
+       346: aload_1
+       347: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       352: ldc           #176                // String nilInternalWorkMapping
+       354: aload         10
+       356: invokeinterface #170,  3          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.create:(Ljava/lang/String;Lorg/gradle/api/Action;)Ljava/lang/Object;
+       361: checkcast     #146                // class org/gradle/api/artifacts/Configuration
+       364: astore        14
+       366: aload_1
+       367: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       372: aload_3
+       373: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       378: pop
+       379: aload_1
+       380: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       385: aload         4
+       387: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       392: pop
+       393: aload_1
+       394: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       399: aload         5
+       401: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       406: pop
+       407: aload_1
+       408: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       413: aload         6
+       415: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       420: pop
+       421: aload_1
+       422: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       427: aload         7
+       429: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       434: pop
+       435: aload_1
+       436: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       441: aload         8
+       443: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       448: pop
+       449: aload_1
+       450: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       455: aload         9
+       457: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       462: pop
+       463: aload_1
+       464: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       469: aload         11
+       471: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       476: pop
+       477: aload_1
+       478: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       483: aload         12
+       485: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       490: pop
+       491: aload_1
+       492: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       497: aload         13
+       499: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       504: pop
+       505: aload_1
+       506: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       511: aload         14
+       513: invokeinterface #180,  2          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.add:(Ljava/lang/Object;)Z
+       518: pop
+       519: aload_1
+       520: invokeinterface #136,  1          // InterfaceMethod org/gradle/api/Project.getConfigurations:()Lorg/gradle/api/artifacts/ConfigurationContainer;
+       525: ldc           #182                // String compileClasspath
+       527: aload         6
+       529: aload         9
+       531: aload_3
+       532: invokedynamic #190,  0            // InvokeDynamic #5:execute:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)Lorg/gradle/api/Action;
+       537: invokeinterface #194,  3          // InterfaceMethod org/gradle/api/artifacts/ConfigurationContainer.getByName:(Ljava/lang/String;Lorg/gradle/api/Action;)Lorg/gradle/api/artifacts/Configuration;
+       542: pop
+       543: aload_1
+       544: invokeinterface #198,  1          // InterfaceMethod org/gradle/api/Project.getExtensions:()Lorg/gradle/api/plugins/ExtensionContainer;
+       549: ldc           #200                // String nil
+       551: ldc           #202                // class com/unascribed/nilgradle/NilExtension
+       553: iconst_0
+       554: anewarray     #5                  // class java/lang/Object
+       557: invokeinterface #207,  4          // InterfaceMethod org/gradle/api/plugins/ExtensionContainer.create:(Ljava/lang/String;Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;
+       562: checkcast     #202                // class com/unascribed/nilgradle/NilExtension
+       565: astore        15
+       567: aload         15
+       569: aload_1
+       570: invokevirtual #210                // Method com/unascribed/nilgradle/NilExtension.setProject:(Lorg/gradle/api/Project;)V
+       573: aload_1
+       574: invokeinterface #198,  1          // InterfaceMethod org/gradle/api/Project.getExtensions:()Lorg/gradle/api/plugins/ExtensionContainer;
+       579: ldc           #212                // String mappings
+       581: ldc           #214                // class com/unascribed/nilgradle/MappingsExtension
+       583: iconst_0
+       584: anewarray     #5                  // class java/lang/Object
+       587: invokeinterface #207,  4          // InterfaceMethod org/gradle/api/plugins/ExtensionContainer.create:(Ljava/lang/String;Ljava/lang/Class;[Ljava/lang/Object;)Ljava/lang/Object;
+       592: checkcast     #214                // class com/unascribed/nilgradle/MappingsExtension
+       595: astore        16
+       597: aload         16
+       599: aload_1
+       600: invokevirtual #215                // Method com/unascribed/nilgradle/MappingsExtension.setProject:(Lorg/gradle/api/Project;)V
+       603: new           #217                // class java/io/File
+       606: dup
+       607: aload_1
+       608: invokeinterface #221,  1          // InterfaceMethod org/gradle/api/Project.getBuildDir:()Ljava/io/File;
+       613: ldc           #223                // String nil/output/mappings.json
+       615: invokespecial #226                // Method java/io/File."<init>":(Ljava/io/File;Ljava/lang/String;)V
+       618: astore        17
+       620: aload_1
+       621: invokeinterface #230,  1          // InterfaceMethod org/gradle/api/Project.getTasks:()Lorg/gradle/api/tasks/TaskContainer;
+       626: ldc           #232                // String processResources
+       628: invokeinterface #237,  2          // InterfaceMethod org/gradle/api/tasks/TaskContainer.getByName:(Ljava/lang/String;)Lorg/gradle/api/Task;
+       633: checkcast     #239                // class org/gradle/language/jvm/tasks/ProcessResources
+       636: astore        18
+       638: aload         18
+       640: invokevirtual #243                // Method org/gradle/language/jvm/tasks/ProcessResources.getInputs:()Lorg/gradle/api/internal/TaskInputsInternal;
+       643: ldc           #245                // String cachebuster
+       645: invokestatic  #251                // Method java/util/UUID.randomUUID:()Ljava/util/UUID;
+       648: invokevirtual #255                // Method java/util/UUID.toString:()Ljava/lang/String;
+       651: invokeinterface #261,  3          // InterfaceMethod org/gradle/api/internal/TaskInputsInternal.property:(Ljava/lang/String;Ljava/lang/Object;)Lorg/gradle/api/tasks/TaskInputPropertyBuilder;
+       656: pop
+       657: aload         18
+       659: aload         17
+       661: invokedynamic #268,  0            // InvokeDynamic #6:execute:()Lorg/gradle/api/Action;
+       666: invokevirtual #272                // Method org/gradle/language/jvm/tasks/ProcessResources.from:(Ljava/lang/Object;Lorg/gradle/api/Action;)Lorg/gradle/api/tasks/AbstractCopyTask;
+       669: pop
+       670: aload_1
+       671: aload_0
+       672: aload         15
+       674: aload_1
+       675: aload         18
+       677: aload_3
+       678: aload         4
+       680: aload         11
+       682: aload         12
+       684: aload         14
+       686: aload         13
+       688: aload         5
+       690: aload         6
+       692: aload         7
+       694: aload         9
+       696: aload         8
+       698: aload         17
+       700: invokedynamic #281,  0            // InvokeDynamic #7:execute:(Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;)Lorg/gradle/api/Action;
+       705: invokeinterface #285,  2          // InterfaceMethod org/gradle/api/Project.afterEvaluate:(Lorg/gradle/api/Action;)V
+       710: return
+      StackMapTable: number_of_entries = 2
+        frame_type = 255 /* full_frame */
+          offset_delta = 81
+          locals = [ class com/unascribed/nilgradle/NilPlugin, class org/gradle/api/Project, class "[Ljava/lang/String;", class "[Ljava/lang/String;", int, int ]
+          stack = []
+        frame_type = 248 /* chop */
+          offset_delta = 37
+      LineNumberTable:
+        line 98: 0
+        line 99: 5
+        line 101: 19
+        line 112: 36
+        line 120: 72
+        line 121: 94
+        line 120: 113
+        line 133: 119
+        line 144: 136
+        line 152: 154
+        line 153: 171
+        line 154: 189
+        line 155: 207
+        line 156: 225
+        line 157: 243
+        line 158: 261
+        line 159: 279
+        line 163: 286
+        line 164: 306
+        line 165: 326
+        line 166: 346
+        line 168: 366
+        line 169: 379
+        line 170: 393
+        line 171: 407
+        line 172: 421
+        line 173: 435
+        line 174: 449
+        line 175: 463
+        line 176: 477
+        line 177: 491
+        line 178: 505
+        line 180: 519
+        line 186: 543
+        line 187: 567
+        line 189: 573
+        line 190: 597
+        line 192: 603
+        line 193: 620
+        line 195: 638
+        line 196: 657
+        line 200: 670
+        line 348: 710
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+           94      19     6   era   Ljava/lang/String;
+            0     711     0  this   Lcom/unascribed/nilgradle/NilPlugin;
+            0     711     1 project   Lorg/gradle/api/Project;
+           72     639     2  eras   [Ljava/lang/String;
+          171     540     3 loaderCfg   Lorg/gradle/api/artifacts/Configuration;
+          189     522     4 gameCfg   Lorg/gradle/api/artifacts/Configuration;
+          207     504     5 jarmodCfg   Lorg/gradle/api/artifacts/Configuration;
+          225     486     6 remappedGameCfg   Lorg/gradle/api/artifacts/Configuration;
+          243     468     7 modCfg   Lorg/gradle/api/artifacts/Configuration;
+          261     450     8 modViaCfg   Lorg/gradle/api/artifacts/Configuration;
+          279     432     9 remappedModCfg   Lorg/gradle/api/artifacts/Configuration;
+          286     425    10 setupMappingsConfig   Lorg/gradle/api/Action;
+          306     405    11 targetMappingCfg   Lorg/gradle/api/artifacts/Configuration;
+          326     385    12 altTargetMappingCfg   Lorg/gradle/api/artifacts/Configuration;
+          346     365    13 viaMappingCfg   Lorg/gradle/api/artifacts/Configuration;
+          366     345    14 workMappingCfg   Lorg/gradle/api/artifacts/Configuration;
+          567     144    15 nilExt   Lcom/unascribed/nilgradle/NilExtension;
+          597     114    16 mappingsExt   Lcom/unascribed/nilgradle/MappingsExtension;
+          620      91    17 mappingsJsonOutFile   Ljava/io/File;
+          638      73    18 process   Lorg/gradle/language/jvm/tasks/ProcessResources;
+      LocalVariableTypeTable:
+        Start  Length  Slot  Name   Signature
+          286     425    10 setupMappingsConfig   Lorg/gradle/api/Action<-Lorg/gradle/api/artifacts/Configuration;>;
+
+  public void apply(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+    flags: (0x1041) ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: checkcast     #49                 // class org/gradle/api/Project
+         5: invokevirtual #971                // Method apply:(Lorg/gradle/api/Project;)V
+         8: return
+      LineNumberTable:
+        line 90: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       9     0  this   Lcom/unascribed/nilgradle/NilPlugin;
+
+  static org.gradle.api.Project access$000(com.unascribed.nilgradle.NilPlugin);
+    descriptor: (Lcom/unascribed/nilgradle/NilPlugin;)Lorg/gradle/api/Project;
+    flags: (0x1008) ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #47                 // Field project:Lorg/gradle/api/Project;
+         4: areturn
+      LineNumberTable:
+        line 90: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0    x0   Lcom/unascribed/nilgradle/NilPlugin;
+
+  static void access$200(com.unascribed.nilgradle.repackage.org.cadixdev.lorenz.model.ClassMapping, com.unascribed.nilgradle.repackage.org.cadixdev.bombe.analysis.InheritanceProvider);
+    descriptor: (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+    flags: (0x1008) ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: invokestatic  #1004               // Method completeRecursively:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;)V
+         5: return
+      LineNumberTable:
+        line 90: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       6     0    x0   Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;
+            0       6     1    x1   Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/analysis/InheritanceProvider;
+
+  static com.unascribed.nilgradle.repackage.com.grack.nanojson.JsonObject access$300(com.unascribed.nilgradle.NilPlugin, com.unascribed.nilgradle.repackage.org.cadixdev.lorenz.MappingSet, java.util.function.Predicate, java.util.Set, java.util.Set);
+    descriptor: (Lcom/unascribed/nilgradle/NilPlugin;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate;Ljava/util/Set;Ljava/util/Set;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+    flags: (0x1008) ACC_STATIC, ACC_SYNTHETIC
+    Code:
+      stack=5, locals=5, args_size=5
+         0: aload_0
+         1: aload_1
+         2: aload_2
+         3: aload_3
+         4: aload         4
+         6: invokespecial #1348               // Method toJson:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Ljava/util/function/Predicate;Ljava/util/Set;Ljava/util/Set;)Lcom/unascribed/nilgradle/repackage/com/grack/nanojson/JsonObject;
+         9: areturn
+      LineNumberTable:
+        line 90: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      10     0    x0   Lcom/unascribed/nilgradle/NilPlugin;
+            0      10     1    x1   Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+            0      10     2    x2   Ljava/util/function/Predicate;
+            0      10     3    x3   Ljava/util/Set;
+            0      10     4    x4   Ljava/util/Set;
+
+  static {};
+    descriptor: ()V
+    flags: (0x0008) ACC_STATIC
+    Code:
+      stack=1, locals=0, args_size=0
+         0: ldc           #2                  // class com/unascribed/nilgradle/NilPlugin
+         2: invokestatic  #1358               // Method org/slf4j/LoggerFactory.getLogger:(Ljava/lang/Class;)Lorg/slf4j/Logger;
+         5: putstatic     #1129               // Field log:Lorg/slf4j/Logger;
+         8: return
+      LineNumberTable:
+        line 92: 0
+}
+InnerClasses:
+  #10;                                    // class com/unascribed/nilgradle/NilPlugin$1
+  #12;                                    // class com/unascribed/nilgradle/NilPlugin$4
+  #14;                                    // class com/unascribed/nilgradle/NilPlugin$3
+  #16;                                    // class com/unascribed/nilgradle/NilPlugin$2
+  #18;                                    // class com/unascribed/nilgradle/NilPlugin$5
+  public static #23= #20 of #22;          // Entry=class java/util/Map$Entry of class java/util/Map
+  public static #28= #25 of #27;          // MetadataSources=class org/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources of class org/gradle/api/artifacts/repositories/IvyArtifactRepository
+  public static final #33= #30 of #32;    // Lookup=class java/lang/invoke/MethodHandles$Lookup of class java/lang/invoke/MethodHandles
+Signature: #3                           // Ljava/lang/Object;Lorg/gradle/api/Plugin<Lorg/gradle/api/Project;>;
+SourceFile: "NilPlugin.java"
+BootstrapMethods:
+  0: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #71 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$2:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+      #72 (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+  1: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #110 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$5:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+      #72 (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+  2: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #117 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$8:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+      #72 (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository;)V
+  3: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #123 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$10:(Lorg/gradle/api/Project;Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+      #125 (Lorg/gradle/api/artifacts/repositories/FlatDirectoryArtifactRepository;)V
+  4: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #163 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$11:(Lorg/gradle/api/artifacts/Configuration;)V
+      #164 (Lorg/gradle/api/artifacts/Configuration;)V
+  5: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #187 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$12:(Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;)V
+      #164 (Lorg/gradle/api/artifacts/Configuration;)V
+  6: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #266 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$13:(Lorg/gradle/api/file/CopySpec;)V
+      #267 (Lorg/gradle/api/file/CopySpec;)V
+  7: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #277 REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$apply$17:(Lcom/unascribed/nilgradle/NilExtension;Lorg/gradle/api/Project;Lorg/gradle/language/jvm/tasks/ProcessResources;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Lorg/gradle/api/artifacts/Configuration;Ljava/io/File;Lorg/gradle/api/Project;)V
+      #278 (Lorg/gradle/api/Project;)V
+  8: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #565 REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$remap$19:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+      #567 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+  9: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #582 REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$remap$20:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+      #567 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/atlas/AtlasTransformerContext;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/jar/JarEntryTransformer;
+  10: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #709 REF_invokeInterface com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/Mapping.getFullDeobfuscatedName:()Ljava/lang/String;
+      #711 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/lang/String;
+  11: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #742 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$toJson$21:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+      #744 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+  12: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #758 REF_invokeInterface com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping.getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+      #760 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/MethodMapping;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+  13: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #762 ()Ljava/lang/Object;
+      #767 REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$toJson$22:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+      #768 ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/MethodSignature;
+  14: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #786 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$toJson$23:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+      #744 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/ClassMapping;)Ljava/util/Optional;
+  15: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #795 REF_invokeInterface com/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping.getDeobfuscatedSignature:()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+      #797 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/model/FieldMapping;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+  16: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #762 ()Ljava/lang/Object;
+      #803 REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$toJson$24:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+      #804 ()Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/signature/FieldSignature;
+  17: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #925 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$toString$25:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+      #926 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/bombe/type/FieldType;)Ljava/lang/String;
+  18: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #1008 (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+      #1013 REF_invokeSpecial com/unascribed/nilgradle/NilPlugin.lambda$remap$18:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+      #1015 (Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/ClassVisitor;Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/Remapper;)Lcom/unascribed/nilgradle/repackage/org/objectweb/asm/commons/ClassRemapper;
+  19: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1041 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$14:(Lorg/gradle/api/Project;Lorg/gradle/api/file/FileCopyDetails;)V
+      #1043 (Lorg/gradle/api/file/FileCopyDetails;)V
+  20: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #1116 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$15:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+      #1117 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  21: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #560 (Ljava/lang/Object;)Ljava/lang/Object;
+      #1124 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$16:(Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+      #1117 (Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;)Lcom/unascribed/nilgradle/repackage/org/cadixdev/lorenz/MappingSet;
+  22: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1247 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$9:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+      #1248 (Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  23: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1276 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$6:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+      #1277 (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  24: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1285 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$7:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+      #1248 (Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  25: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1304 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$3:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+      #1277 (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  26: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1310 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$4:(Ljava/lang/String;Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+      #1248 (Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+  27: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1331 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$0:(Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+      #1277 (Lorg/gradle/api/artifacts/repositories/IvyArtifactRepository$MetadataSources;)V
+  28: #79 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #66 (Ljava/lang/Object;)V
+      #1336 REF_invokeStatic com/unascribed/nilgradle/NilPlugin.lambda$apply$1:(Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
+      #1248 (Lorg/gradle/api/artifacts/repositories/RepositoryContentDescriptor;)V
