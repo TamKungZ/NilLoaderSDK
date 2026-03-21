@@ -4,18 +4,6 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 
 ---
 
-## Latest Project Updates
-
-This README reflects the latest project-wide updates:
-
-1. Logging standardized around `NilLoaderSDK` as the single root logger.
-2. Added class-scoped logger support (`NilLoaderSDK/<ClassName>`).
-3. Removed manual `[]` prefixes from log messages (formatter should handle it).
-4. Added recursion protection in entrypoint dispatching (fixes stack overflow loop).
-5. Updated default entrypoint property routing to safe values.
-
----
-
 ## Project Layout (File-by-File)
 
 ### Root
@@ -175,6 +163,18 @@ gradlew.bat publishToMavenLocal
   - `https://repo.tamkungz.me/me/tamkungz/nilloadersdk/nilloadersdk/1.0.0/`
 - Repository web UI (browse/search):
   - `https://repo.tamkungz.me`
+
+### Use in another project
+
+```kotlin
+repositories {
+    maven { url = uri("https://repo.tamkungz.me") }
+}
+
+dependencies {
+    implementation("me.tamkungz.nilloadersdk:nilloadersdk:1.0.0")
+}
+```
 
 ### Publish to a remote Maven repository
 
