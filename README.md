@@ -169,6 +169,13 @@ The Gradle build is configured with `maven-publish` in `build.gradle`.
 gradlew.bat publishToMavenLocal
 ```
 
+### Public package pages
+
+- Package index (direct artifact path):
+  - `https://repo.tamkungz.me/me/tamkungz/nilloadersdk/nilloadersdk/1.0.0/`
+- Repository web UI (browse/search):
+  - `https://repo.tamkungz.me`
+
 ### Publish to a remote Maven repository
 
 You can configure publishing via Gradle properties or environment variables.

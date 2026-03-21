@@ -103,7 +103,7 @@ publishing {
             pom {
                 name = 'NilLoaderSDK'
                 description = 'SDK for NilLoader-based Minecraft mods'
-                url = 'https://github.com/exaskye/NilLoader'
+                url = 'https://github.com/TamKungZ/NilLoaderSDK'
 
                 licenses {
                     license {
@@ -114,7 +114,7 @@ publishing {
                 }
 
                 scm {
-                    url = 'https://git.sleeping.town/Nil/NilLoader'
+                    url = 'https://github.com/TamKungZ/NilLoaderSDK.git'
                 }
             }
         }
