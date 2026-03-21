@@ -166,13 +166,15 @@ gradlew.bat publishToMavenLocal
 
 ### Use in another project
 
-```kotlin
+```gradle
 repositories {
-    maven { url = uri("https://repo.tamkungz.me") }
+  maven {
+    url "https://repo.tamkungz.me"
+  }
 }
 
 dependencies {
-    implementation("me.tamkungz.nilloadersdk:nilloadersdk:1.0.0")
+  implementation "me.tamkungz.nilloadersdk:nilloadersdk:1.0.0"
 }
 ```
 
