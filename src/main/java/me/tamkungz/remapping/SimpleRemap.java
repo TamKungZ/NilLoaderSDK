@@ -39,16 +39,20 @@ public final class SimpleRemap {
     public static SimpleRemap forVersion(String version) {
         if ("1.4.7".equals(version)) {
             SimpleRemap r = build147();
-            loadFromSrgIfPresent(r, version);
+            // Keep manual/default build147 mappings as source of truth.
+            // SRG is used only to fill missing entries, not overwrite existing ones.
+            loadFromSrgIfPresent(r, version, false);
             return r;
         }
-        if ("1.6.2".equals(version)) {
-            SimpleRemap r = new SimpleRemap("1.6.2");
-            if (loadFromSrgIfPresent(r, version)) {
-                return r;
-            }
+
+        // Any other version: load fully from SRG if available.
+        // This allows build/runtime remap support for every version that has
+        // .remapping/<version>/mcp2obf.srg present.
+        SimpleRemap r = new SimpleRemap(version);
+        if (loadFromSrgIfPresent(r, version, true)) {
             return r;
         }
+
         throw new IllegalArgumentException("No built-in mappings for version: " + version);
     }
 
@@ -84,13 +88,20 @@ public final class SimpleRemap {
 
     public String getVersion() { return version; }
 
-    private static boolean loadFromSrgIfPresent(SimpleRemap r, String version) {
+    private static boolean loadFromSrgIfPresent(SimpleRemap r, String version, boolean overwriteExisting) {
+        // 0) Load from build-time generated mappings (compiled Java, no SRG packaging)
+        try {
+            if (GeneratedSrgMappings.apply(version, r, overwriteExisting)) {
+                return true;
+            }
+        } catch (Throwable ignored) {}
+
         // 1) Load from bundled resource (inside JAR)
         String resourcePath = "/remapping/" + version + "/mcp2obf.srg";
         try (InputStream in = SimpleRemap.class.getResourceAsStream(resourcePath)) {
             if (in != null) {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                    parseSrg(br, r);
+                    parseSrg(br, r, overwriteExisting);
                     return true;
                 }
             }
@@ -101,14 +112,14 @@ public final class SimpleRemap {
         if (!srg.exists()) return false;
 
         try (BufferedReader br = new BufferedReader(new FileReader(srg))) {
-            parseSrg(br, r);
+            parseSrg(br, r, overwriteExisting);
             return true;
         } catch (Exception ignored) {
             return false;
         }
     }
 
-    private static void parseSrg(BufferedReader br, SimpleRemap r) throws Exception {
+    private static void parseSrg(BufferedReader br, SimpleRemap r, boolean overwriteExisting) throws Exception {
         String line;
         while ((line = br.readLine()) != null) {
             line = line.trim();
@@ -119,7 +130,7 @@ public final class SimpleRemap {
                 if (p.length >= 2) {
                     String friendly = simpleClass(p[0]);
                     String obf = normalizeClass(p[1]);
-                    r.addClass(friendly, obf);
+                    r.addClass(friendly, obf, overwriteExisting);
                 }
             } else if (line.startsWith("FD: ")) {
                 String[] p = line.substring(4).trim().split("\\s+");
@@ -127,7 +138,7 @@ public final class SimpleRemap {
                     String[] left = splitOwnerName(p[0]);
                     String[] right = splitOwnerName(p[1]);
                     if (left != null && right != null) {
-                        r.addField(simpleClass(left[0]), left[1], right[1]);
+                        r.addField(simpleClass(left[0]), left[1], right[1], overwriteExisting);
                     }
                 }
             } else if (line.startsWith("MD: ")) {
@@ -136,7 +147,7 @@ public final class SimpleRemap {
                     String[] left = splitOwnerName(p[0]);
                     String[] right = splitOwnerName(p[2]);
                     if (left != null && right != null) {
-                        r.addMethod(simpleClass(left[0]), left[1], right[1]);
+                        r.addMethod(simpleClass(left[0]), left[1], right[1], overwriteExisting);
                     }
                 }
             }
@@ -169,17 +180,43 @@ public final class SimpleRemap {
     // ─────────────────────────────────────────────
 
     public SimpleRemap addField(String className, String friendly, String obf) {
-        fields.put(className + "." + friendly, obf);
+        return addField(className, friendly, obf, true);
+    }
+
+    public SimpleRemap addField(String className, String friendly, String obf, boolean overwriteExisting) {
+        String key = className + "." + friendly;
+        if (overwriteExisting) {
+            fields.put(key, obf);
+        } else {
+            fields.putIfAbsent(key, obf);
+        }
         return this;
     }
 
     public SimpleRemap addMethod(String className, String friendly, String obf) {
-        methods.put(className + "." + friendly, obf);
+        return addMethod(className, friendly, obf, true);
+    }
+
+    public SimpleRemap addMethod(String className, String friendly, String obf, boolean overwriteExisting) {
+        String key = className + "." + friendly;
+        if (overwriteExisting) {
+            methods.put(key, obf);
+        } else {
+            methods.putIfAbsent(key, obf);
+        }
         return this;
     }
 
     public SimpleRemap addClass(String friendly, String obf) {
-        classes.put(friendly, obf);
+        return addClass(friendly, obf, true);
+    }
+
+    public SimpleRemap addClass(String friendly, String obf, boolean overwriteExisting) {
+        if (overwriteExisting) {
+            classes.put(friendly, obf);
+        } else {
+            classes.putIfAbsent(friendly, obf);
+        }
         return this;
     }
 

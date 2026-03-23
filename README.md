@@ -45,6 +45,36 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 - `src/main/java/me/tamkungz/nilloadersdk/helper/McHelper.java`
 - `src/main/java/me/tamkungz/nilloadersdk/helper/PacketHelper.java`
 - `src/main/java/me/tamkungz/nilloadersdk/helper/ProxyHelper.java`
+- `src/main/java/me/tamkungz/nilloadersdk/helper/NilLoaderHelper.java`
+  - Convenience APIs for loaded mod lookup (`isModLoaded`, `getAllLoadedMods`)
+  - Metadata extraction (`getLoadedModIds`, `getLoadedModNames`, `describeMod`)
+  - Entrypoint metadata utilities (`getEntrypointNames`, `getEntrypointClass`)
+- `src/main/java/me/tamkungz/nilloadersdk/helper/TransformerHelper.java`
+  - Register class patchers without Mixin using NilLoader transformers
+  - Supports raw bytecode patch callback and ASM `ClassNode` patch callback
+  - Useful for Java-agent style class overwrite/edit during `premain` / `hijack`
+
+### Class Patching (No Mixin)
+
+If your environment cannot use Mixin, you can patch classes via NilLoader transformer APIs:
+
+```java
+TransformerHelper.registerAsmPatch("net.minecraft.client.Minecraft", (loader, cn) -> {
+    // modify cn.methods / instructions here
+    return true; // true when frame recomputation is needed
+});
+```
+
+Or use raw byte arrays:
+
+```java
+TransformerHelper.registerBytecodePatch("net.minecraft.client.Minecraft", (loader, name, bytes) -> {
+    // return modified class bytes (or null to keep original)
+    return bytes;
+});
+```
+
+Important: register patches in SDK entrypoint phases (`premain` / `hijack`) before transformer registration is frozen.
 
 ### Utilities
 - `src/main/java/me/tamkungz/nilloadersdk/util/TargetFinder.java`

@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'me.tamkungz.nilloadersdk'
-version = '1.0.0'
+version = '1.0.2'
 
 java {
     toolchain {
@@ -80,6 +80,162 @@ task decompileNilloader(type: JavaExec) {
 }
 
 build.dependsOn decompileNilloader
+
+def generatedRemapJavaDir = "$buildDir/generated/sources/remapping/main"
+
+task generateSimpleRemapMappings {
+    inputs.dir '.remapping'
+    inputs.files fileTree('src/main/java') { include '**/*.java' }
+    outputs.file "$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java"
+
+    doLast {
+        def fieldNeed = new LinkedHashSet<String>()
+        def methodNeed = new LinkedHashSet<String>()
+        def classNeed = new LinkedHashSet<String>()
+
+        fileTree('src/main/java').matching { include '**/*.java' }.each { f ->
+            String txt = f.getText('UTF-8')
+
+            def fm = (txt =~ /remap\.field\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)/)
+            fm.each { m -> fieldNeed.add("${m[1]}.${m[2]}") }
+
+            def mm = (txt =~ /remap\.method\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*\)/)
+            mm.each { m -> methodNeed.add("${m[1]}.${m[2]}") }
+
+            def cm = (txt =~ /remap\.cls\(\s*"([^"]+)"\s*\)/)
+            cm.each { m -> classNeed.add("${m[1]}") }
+        }
+
+        def versionData = new LinkedHashMap<String, Map<String, Map<String, String>>>()
+        def root = file('.remapping')
+        if (root.exists()) {
+            root.listFiles()?.findAll { it.isDirectory() }?.sort { a, b -> a.name <=> b.name }?.each { vd ->
+                def srg = new File(vd, 'mcp2obf.srg')
+                if (!srg.exists()) return
+
+                def classes = new LinkedHashMap<String, String>()
+                def fields = new LinkedHashMap<String, String>()
+                def methods = new LinkedHashMap<String, String>()
+
+                srg.eachLine('UTF-8') { raw ->
+                    String line = raw.trim()
+                    if (line.isEmpty() || line.startsWith('#')) return
+
+                    if (line.startsWith('CL: ')) {
+                        String[] p = line.substring(4).trim().split(/\s+/)
+                        if (p.length >= 2) {
+                            String friendly = p[0]
+                            int idx = friendly.lastIndexOf('/')
+                            friendly = idx >= 0 ? friendly.substring(idx + 1) : friendly
+                            if (classNeed.contains(friendly) && !classes.containsKey(friendly)) {
+                                String obf = p[1]
+                                if (obf.indexOf('/') >= 0) obf = obf.replace('/', '.')
+                                classes.put(friendly, obf)
+                            }
+                        }
+                    } else if (line.startsWith('FD: ')) {
+                        String[] p = line.substring(4).trim().split(/\s+/)
+                        if (p.length >= 2) {
+                            int i1 = p[0].lastIndexOf('/')
+                            int i2 = p[1].lastIndexOf('/')
+                            if (i1 > 0 && i2 > 0 && i1 < p[0].length() - 1 && i2 < p[1].length() - 1) {
+                                String leftOwner = p[0].substring(0, i1)
+                                String leftName = p[0].substring(i1 + 1)
+                                String rightName = p[1].substring(i2 + 1)
+
+                                int cidx = leftOwner.lastIndexOf('/')
+                                String simpleOwner = cidx >= 0 ? leftOwner.substring(cidx + 1) : leftOwner
+                                String key = simpleOwner + '.' + leftName
+                                if (fieldNeed.contains(key) && !fields.containsKey(key)) {
+                                    fields.put(key, rightName)
+                                }
+                            }
+                        }
+                    } else if (line.startsWith('MD: ')) {
+                        String[] p = line.substring(4).trim().split(/\s+/)
+                        if (p.length >= 4) {
+                            int i1 = p[0].lastIndexOf('/')
+                            int i2 = p[2].lastIndexOf('/')
+                            if (i1 > 0 && i2 > 0 && i1 < p[0].length() - 1 && i2 < p[2].length() - 1) {
+                                String leftOwner = p[0].substring(0, i1)
+                                String leftName = p[0].substring(i1 + 1)
+                                String rightName = p[2].substring(i2 + 1)
+
+                                int cidx = leftOwner.lastIndexOf('/')
+                                String simpleOwner = cidx >= 0 ? leftOwner.substring(cidx + 1) : leftOwner
+                                String key = simpleOwner + '.' + leftName
+                                if (methodNeed.contains(key) && !methods.containsKey(key)) {
+                                    methods.put(key, rightName)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!classes.isEmpty() || !fields.isEmpty() || !methods.isEmpty()) {
+                    versionData.put(vd.name, [classes: classes, fields: fields, methods: methods])
+                }
+            }
+        }
+
+        def esc = { String s ->
+            s.replace('\\', '\\\\').replace('"', '\\"')
+        }
+
+        def out = new File("$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java")
+        out.parentFile.mkdirs()
+
+        StringBuilder sb = new StringBuilder()
+        sb.append('package me.tamkungz.remapping;\n\n')
+        sb.append('/** Auto-generated by Gradle task generateSimpleRemapMappings. */\n')
+        sb.append('public final class GeneratedSrgMappings {\n')
+        sb.append('    private GeneratedSrgMappings() {}\n\n')
+        sb.append('    public static boolean apply(String version, SimpleRemap r, boolean overwriteExisting) {\n')
+        sb.append('        if (version == null) return false;\n')
+        sb.append('        switch (version) {\n')
+
+        versionData.each { ver, maps ->
+            sb.append('            case "').append(esc(ver)).append('":\n')
+            maps.classes.entrySet().sort { a, b -> a.key <=> b.key }.each { e ->
+                sb.append('                r.addClass("').append(esc(e.key)).append('", "').append(esc(e.value)).append('", overwriteExisting);\n')
+            }
+            maps.fields.entrySet().sort { a, b -> a.key <=> b.key }.each { e ->
+                int idx = e.key.indexOf('.')
+                String cls = e.key.substring(0, idx)
+                String name = e.key.substring(idx + 1)
+                sb.append('                r.addField("').append(esc(cls)).append('", "').append(esc(name)).append('", "').append(esc(e.value)).append('", overwriteExisting);\n')
+            }
+            maps.methods.entrySet().sort { a, b -> a.key <=> b.key }.each { e ->
+                int idx = e.key.indexOf('.')
+                String cls = e.key.substring(0, idx)
+                String name = e.key.substring(idx + 1)
+                sb.append('                r.addMethod("').append(esc(cls)).append('", "').append(esc(name)).append('", "').append(esc(e.value)).append('", overwriteExisting);\n')
+            }
+            sb.append('                return true;\n')
+        }
+
+        sb.append('            default:\n')
+        sb.append('                return false;\n')
+        sb.append('        }\n')
+        sb.append('    }\n')
+        sb.append('}\n')
+
+        out.setText(sb.toString(), 'UTF-8')
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir generatedRemapJavaDir
+        }
+    }
+}
+
+compileJava.dependsOn generateSimpleRemapMappings
+tasks.named('sourcesJar') {
+    dependsOn generateSimpleRemapMappings
+}
 
 jar {
     from {

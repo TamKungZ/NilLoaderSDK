@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2026-03-24
+
+### Added
+- New helper: `NilLoaderHelper` in `me.tamkungz.nilloadersdk.helper`.
+- Convenience APIs for NilLoader metadata and loaded-mod checks:
+  - `isModLoaded`, `isAnyModLoaded`
+  - `getModMetadata`, `getModMetadataOrNull`, `getAllLoadedMods`
+  - `getLoadedModIds`, `getLoadedModNames`, `getLoadedModsById`
+  - `getSourceFile`, `getEntrypointNames`, `getEntrypointClass`, `describeMod`
+- New helper: `TransformerHelper` in `me.tamkungz.nilloadersdk.helper`.
+- Java-agent style class patch registration via NilLoader transformer pipeline (no Mixin required):
+  - `registerBytecodePatch` for raw byte[] transforms
+  - `registerAsmPatch` for ASM `ClassNode` transforms
+  - class-name normalization utilities for internal slash format
+
+### Changed
+- `SimpleRemap.forVersion("1.4.7")` preserves manual mappings from `build147()` as higher priority.
+- External SRG (`.remapping/1.4.7/mcp2obf.srg`) is used only to fill missing entries, not overwrite existing `build147()` mappings.
+- `SimpleRemap.forVersion(version)` can load remap for versions that provide local `.remapping/<version>/mcp2obf.srg`.
+
+### Packaging
+- SRG files are not bundled into the built JAR.
+- Build now auto-generates `GeneratedSrgMappings` from local `.remapping/*/mcp2obf.srg` and embeds only the extracted mappings used by SDK remap calls.
+- Runtime loads generated mappings first via `SimpleRemap`, then keeps fallback behavior for local development.
+
+### Notes
+- `.remapping` is not bundled in the repository contents.
+- If you want to build and use remapping locally, prepare/provide your own `.remapping` directory.
+
+### Docs
+- README helper section now includes `NilLoaderHelper` and summarizes key API groups.
+- README now documents class patching usage through `TransformerHelper` and phase timing notes (`premain` / `hijack`).
+
 ## [1.0.1] - 2026-03-22
 
 ### Added
