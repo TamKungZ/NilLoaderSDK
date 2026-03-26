@@ -82,6 +82,35 @@ task decompileNilloader(type: JavaExec) {
 build.dependsOn decompileNilloader
 
 def generatedRemapJavaDir = "$buildDir/generated/sources/remapping/main"
+def generatedBuildInfoJavaDir = "$buildDir/generated/sources/buildinfo/main"
+
+task generateModBuildInfoFallback {
+    outputs.file "$generatedBuildInfoJavaDir/me/tamkungz/nilloadersdk/build/ModBuildInfo.java"
+
+    doLast {
+        def sourceBuildInfo = file('src/main/java/me/tamkungz/nilloadersdk/build/ModBuildInfo.java')
+        if (sourceBuildInfo.exists()) {
+            return
+        }
+
+        def out = file("$generatedBuildInfoJavaDir/me/tamkungz/nilloadersdk/build/ModBuildInfo.java")
+        out.parentFile.mkdirs()
+        out.setText('''package me.tamkungz.nilloadersdk.build;
+
+public final class ModBuildInfo {
+    private final String buildTag;
+
+    public ModBuildInfo(String buildTag) {
+        this.buildTag = (buildTag == null || buildTag.trim().isEmpty()) ? "unknown-build" : buildTag.trim();
+    }
+
+    public String getBuildTag() {
+        return buildTag;
+    }
+}
+''', 'UTF-8')
+    }
+}
 
 task generateSimpleRemapMappings {
     inputs.dir '.remapping'
@@ -228,13 +257,16 @@ sourceSets {
     main {
         java {
             srcDir generatedRemapJavaDir
+            srcDir generatedBuildInfoJavaDir
         }
     }
 }
 
 compileJava.dependsOn generateSimpleRemapMappings
+compileJava.dependsOn generateModBuildInfoFallback
 tasks.named('sourcesJar') {
     dependsOn generateSimpleRemapMappings
+    dependsOn generateModBuildInfoFallback
 }
 
 jar {
