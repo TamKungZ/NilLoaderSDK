@@ -1,5 +1,7 @@
 package me.tamkungz.nilloadersdk.helper;
 
+import me.tamkungz.nilloadersdk.metadata.SdkMetadataIO;
+import me.tamkungz.nilloadersdk.metadata.SdkModMetadata;
 import nilloader.api.NilMetadata;
 import nilloader.api.NilModList;
 
@@ -145,5 +147,99 @@ public final class NilLoaderHelper {
         String version = mod.version != null ? mod.version : "?";
         String authors = mod.authors != null ? mod.authors : "?";
         return name + " (id=" + modId + ", version=" + version + ", authors=" + authors + ")";
+    }
+
+    /**
+     * Reads SDK-only metadata for a loaded mod by id from `.nilsdkmod.kdl`
+     * (fallback: legacy `.kdl` names).
+     *
+     * <p>This is optional metadata and does not affect base NilLoader metadata parsing.</p>
+     */
+    public static Optional<SdkModMetadata> getSdkMetadata(String id) {
+        NilMetadata mod = getModMetadataOrNull(id);
+        if (mod == null) return Optional.empty();
+        return getSdkMetadata(mod);
+    }
+
+    /**
+     * Reads SDK-only metadata from a {@link NilMetadata#source} location.
+     */
+    public static Optional<SdkModMetadata> getSdkMetadata(NilMetadata mod) {
+        if (mod == null || mod.source == null) return Optional.empty();
+        return SdkMetadataIO.readFromSource(mod.source, mod.id);
+    }
+
+    /**
+     * Returns list of missing required mod ids declared in SDK metadata.
+     */
+    public static List<String> getMissingRequiredMods(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        if (!metadata.isPresent()) return Collections.emptyList();
+
+        List<String> missing = new ArrayList<String>();
+        for (String dep : metadata.get().getRequiredMods()) {
+            if (!isModLoaded(dep)) missing.add(dep);
+        }
+        return Collections.unmodifiableList(missing);
+    }
+
+    /**
+     * True when all required SDK metadata dependencies are currently loaded.
+     */
+    public static boolean areRequiredModsLoaded(String id) {
+        return getMissingRequiredMods(id).isEmpty();
+    }
+
+    /**
+     * Returns ids this mod prefers to load before (advisory metadata).
+     */
+    public static List<String> getLoadBefore(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getLoadBefore() : Collections.<String>emptyList();
+    }
+
+    /**
+     * Returns ids this mod prefers to load after (advisory metadata).
+     */
+    public static List<String> getLoadAfter(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getLoadAfter() : Collections.<String>emptyList();
+    }
+
+    /**
+     * Returns icon path from SDK metadata, or null if not declared.
+     */
+    public static String getIconPath(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getIcon() : null;
+    }
+
+    /**
+     * Returns required mod ids declared in SDK metadata.
+     */
+    public static List<String> getRequiredMods(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getRequiredMods() : Collections.<String>emptyList();
+    }
+
+    /**
+     * Whether this mod should soft-fail on missing dependencies (default true).
+     */
+    public static boolean isSafeLoad(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return !metadata.isPresent() || metadata.get().isSafeLoad();
+    }
+
+    /**
+     * Easy icon map for UI integrations (e.g., mod menu).
+     */
+    public static Map<String, String> getLoadedModIcons() {
+        Map<String, String> out = new LinkedHashMap<String, String>();
+        for (NilMetadata mod : getAllLoadedMods()) {
+            if (mod == null || mod.id == null) continue;
+            String icon = getIconPath(mod.id);
+            if (icon != null) out.put(mod.id, icon);
+        }
+        return Collections.unmodifiableMap(out);
     }
 }

@@ -49,10 +49,73 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
   - Convenience APIs for loaded mod lookup (`isModLoaded`, `getAllLoadedMods`)
   - Metadata extraction (`getLoadedModIds`, `getLoadedModNames`, `describeMod`)
   - Entrypoint metadata utilities (`getEntrypointNames`, `getEntrypointClass`)
+  - SDK-only metadata utilities (`getSdkMetadata`, `getMissingRequiredMods`, `getLoadBefore`, `getLoadAfter`, `getIconPath`)
 - `src/main/java/me/tamkungz/nilloadersdk/helper/TransformerHelper.java`
   - Register class patchers without Mixin using NilLoader transformers
   - Supports raw bytecode patch callback and ASM `ClassNode` patch callback
   - Useful for Java-agent style class overwrite/edit during `premain` / `hijack`
+
+### SDK-only Metadata (.nilsdkmod.kdl)
+- `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkModMetadata.java`
+- `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkMetadataKdl.java`
+- `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkMetadataIO.java`
+- `src/main/java/me/tamkungz/nilloadersdk/metadata/NilMetadataBridge.java`
+- `src/main/java/me/tamkungz/nilloadersdk/metadata/NilMetadataPatchInstaller.java`
+- `src/main/resources/nilloadersdk.nilsdkmod.kdl`
+
+This metadata is **SDK-only** and kept separate from NilLoader base metadata to preserve compatibility:
+- NilLoader (without this SDK) ignores it.
+- SDK patches NilLoader metadata creation at runtime (`premain`) so users do not need custom Gradle metadata-generation steps.
+- Merge policy when both files exist: CSS is primary, missing fields are filled from KDL.
+- SDK-aware mods can declare:
+  - Required mod IDs
+  - Advisory load ordering (`load_before`, `load_after`)
+  - Icon path
+  - `safeload` (`true` default; when `false`, missing required mods cause hard error)
+
+Runtime dependency policy (SDK built-in):
+- Missing required mods + `safeload=true` => warn in SDK logger.
+- Missing required mods + `safeload=false` => error and stop startup.
+
+Easy APIs for UI/modmenu usage:
+- `NilLoaderHelper.getIconPath(id)`
+- `NilLoaderHelper.getLoadedModIcons()`
+- `NilLoaderHelper.getRequiredMods(id)`
+- `NilLoaderHelper.isSafeLoad(id)`
+
+Example KDL/KDS:
+
+```kdl
+nilloadersdk {
+  requires "nilloader" "other_core_mod"
+  load_before "optional_patch_mod"
+  load_after "library_mod"
+  icon "assets/example/icon.png"
+}
+```
+
+Combined source file example (`.nilsdkmod.kdl`):
+
+```kdl
+nilmod {
+  name "MyMod"
+  description "My mod"
+  authors "Author"
+  version "1.0.0"
+}
+
+entrypoints {
+  premain "com.example.MyPremain"
+  hijack "com.example.MyHijack"
+}
+
+nilloadersdk {
+  requires "nilloader" "other_core_mod"
+  load_before "optional_patch_mod"
+  load_after "library_mod"
+  icon "assets/example/icon.png"
+}
+```
 
 ### Class Patching (No Mixin)
 

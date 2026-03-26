@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+## [1.0.3] - 2026-03-26
+
+### Changed
+- Bumped SDK version to `1.0.3` in build and metadata resources.
+- KDL metadata parser remains custom/in-project (Java 8 compatible), without external KDL dependency.
+
+### Added
+- SDK-only metadata model and IO:
+  - `SdkModMetadata`
+  - `SdkMetadataKdl`
+  - `SdkMetadataIO`
+- Runtime metadata bridge in SDK:
+  - `NilMetadataBridge`
+  - `NilMetadataPatchInstaller`
+  - Patches `NilMetadata.from` during premain to merge CSS + KDL automatically.
+- New SDK metadata resource source-of-truth: `src/main/resources/nilloadersdk.nilsdkmod.kdl`.
+- `NilLoaderHelper` SDK metadata APIs:
+  - `getSdkMetadata(String)` / `getSdkMetadata(NilMetadata)`
+  - `getMissingRequiredMods(String)`
+  - `areRequiredModsLoaded(String)`
+  - `getLoadBefore(String)`
+  - `getLoadAfter(String)`
+  - `getIconPath(String)`
+  - `getLoadedModIcons()`
+  - `getRequiredMods(String)`
+  - `isSafeLoad(String)`
+
+### Notes
+- SDK-only metadata is separated from NilLoader base metadata for compatibility.
+- SDK metadata default file is now `.nilsdkmod.kdl` (legacy `.kdl` names are still readable).
+- Merge policy: CSS is primary; KDL only fills missing metadata fields.
+- No per-mod custom Gradle metadata-generation step required.
+- Dependency enforcement:
+  - Missing required mods + `safeload=true` -> warn log
+  - Missing required mods + `safeload=false` -> error and stop startup
+- If SDK is not installed, NilLoader still reads only original `*.nilmod.css` and continues to work normally.
+
 ## [1.0.2] - 2026-03-24
 
 ### Added

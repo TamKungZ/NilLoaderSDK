@@ -1,0 +1,27 @@
+nilmod {
+  name "NilLoaderSDK"
+  description "Utilities and helper SDK for NilLoader mod development."
+  authors "TamKungZ_"
+  version "1.0.3"
+}
+
+entrypoints {
+  premain "me.tamkungz.nilloadersdk.entrypoint.NilLoaderSDKPremain"
+  hijack "me.tamkungz.nilloadersdk.entrypoint.NilLoaderSDKHijack"
+}
+
+nilloadersdk {
+  // Required mods for this mod to run
+  // requires "nilloader"
+
+  // Advisory order hints for SDK-aware tooling/runtime
+  // load_before "example_optional_mod"
+  // load_after "another_optional_mod"
+
+  // Icon path inside the mod jar/resources
+  icon "assets/nilloadersdk/icon.png"
+
+  // Optional: when false, missing required mods will stop startup
+  // safeload false
+}
+

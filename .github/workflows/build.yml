@@ -1,0 +1,64 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches: [ "**" ]
+  pull_request:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [8, 17, 21]
+
+    name: JDK ${{ matrix.java }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew --no-daemon clean build
+
+      - name: Prepare release asset name
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          set -euo pipefail
+          JAR=""
+          if ls build/libs/*-all.jar >/dev/null 2>&1; then
+            JAR=$(ls -1 build/libs/*-all.jar | head -n 1)
+          else
+            JAR=$(find build/libs -maxdepth 1 -type f -name "*.jar" ! -name "*-sources.jar" ! -name "*-javadoc.jar" | head -n 1)
+          fi
+
+          if [ -z "$JAR" ]; then
+            echo "No build jar found in build/libs"
+            exit 1
+          fi
+
+          ASSET="build/libs/${{ github.event.repository.name }}-${{ github.ref_name }}-jdk${{ matrix.java }}.jar"
+          cp "$JAR" "$ASSET"
+          echo "ASSET_PATH=$ASSET" >> "$GITHUB_ENV"
+
+      - name: Upload release asset
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ASSET_PATH }}
