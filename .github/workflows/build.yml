@@ -33,6 +33,9 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Ensure .remapping directory exists
+        run: mkdir -p .remapping
+
       - name: Build
         run: ./gradlew --no-daemon clean build
 
