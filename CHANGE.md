@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-04-08
+
+### Added
+- Added SDK runtime bootstrap for KDL-only mods (archives with `.nilsdkmod.kdl` but no root `*.nilmod.css`).
+- Added `KdlOnlyModBootstrapper` to discover/inject such mods from `mods/` and `nilmods/` during SDK premain.
+- Added verbose bootstrap diagnostics for KDL-only loading flow (candidate scan, KDL entry detection, metadata parse status, classpath injection, premain invocation).
+- Added formatted loaded-mod summary table log:
+  - `ID | Name | Version | Authors | License`
+
+### Changed
+- Bumped SDK version to `2.0.1` in build and metadata resources.
+- `DefaultSdkEntrypointModule` now runs KDL-only bootstrap before dependency enforcement.
+
+### Fixed
+- Fixed KDL parser newline/block handling in nested sections, resolving `KdlParseException` during valid `.nilsdkmod.kdl` parsing.
+- Improved metadata text decoding for runtime reads (UTF-8/UTF-16 BOM and UTF-16 heuristic fallback) in bridge and SDK metadata IO.
+- Fixed KDL-only metadata resolution so injected mods now correctly expose `name`, `version`, and `entrypoints` instead of fallback `?` values.
+
 ## [2.0.0] - 2026-04-08
 
 ### Added

@@ -105,6 +105,7 @@ Inside `NilModBase`, convenience methods are available:
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkMetadataIO.java`
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/NilMetadataBridge.java`
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/NilMetadataPatchInstaller.java`
+- `src/main/java/me/tamkungz/nilloadersdk/metadata/KdlOnlyModBootstrapper.java`
 - `src/main/resources/nilloadersdk.nilsdkmod.kdl`
 
 ### General-purpose KDL Toolkit (SDK-wide)
@@ -121,10 +122,12 @@ This metadata is **SDK-only** and kept separate from NilLoader base metadata to 
 
 Version note:
 - SDK KDL metadata support is introduced as part of `2.0.0` (before that, metadata was CSS-only in `*.nilmod.css`).
+- `2.0.1` adds SDK-side runtime bootstrap for KDL-only mods (mods that ship `.nilsdkmod.kdl` without root `*.nilmod.css`).
 
 Compatibility/runtime behavior:
 - NilLoader (without this SDK) ignores it.
 - SDK patches NilLoader metadata creation at runtime (`premain`) so users do not need custom Gradle metadata-generation steps.
+- SDK can bootstrap KDL-only mods at runtime (mods that ship `.nilsdkmod.kdl` without root `*.nilmod.css`) after SDK premain is reached.
 - Merge policy when both files exist: CSS is primary, missing fields are filled from KDL.
 - KDL parsing in the runtime bridge now uses the shared in-project parser (`KdlParser`) instead of manual string parsing.
 - Metadata extraction supports both section blocks (`nilmod {}`, `entrypoints {}`) and top-level fallback keys (`name`, `description`, `authors`, `version`, `entrypoints.<phase>`).
@@ -141,6 +144,11 @@ Compatibility/runtime behavior:
 Runtime dependency policy (SDK built-in):
 - Missing required mods + `safeload=true` => warn in SDK logger.
 - Missing required mods + `safeload=false` => error and stop startup.
+
+Bootstrap observability/logging:
+- KDL-only bootstrap emits step-by-step diagnostics (candidate scan, metadata entry detection, parse status, inject status).
+- SDK prints a compact loaded-mod table for quick diagnostics:
+  - `ID | Name | Version | Authors | License`
 
 Easy APIs for UI/modmenu usage:
 - `NilLoaderHelper.getIconPath(id)`

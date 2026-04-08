@@ -2,7 +2,7 @@ nilmod {
   name "NilLoaderSDK"
   description "Utilities and helper SDK for NilLoader mod development."
   authors "TamKungZ_"
-  version "2.0.0"
+  version "2.0.1"
 }
 
 entrypoints {
@@ -28,7 +28,7 @@ nilloadersdk {
   sourceurl "https://github.com/TamKungZ/NilLoaderSDK"
 
   // License identifier/name
-  license "MIT"
+  license "LGPL-3.0"
 
   // Contributors / shared credits
   credits "TamKungZ_" "unascribed"

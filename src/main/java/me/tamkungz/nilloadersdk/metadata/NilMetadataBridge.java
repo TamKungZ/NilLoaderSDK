@@ -4,6 +4,7 @@ import me.tamkungz.nilloadersdk.util.kdl.KdlDocument;
 import me.tamkungz.nilloadersdk.util.kdl.KdlNode;
 import me.tamkungz.nilloadersdk.util.kdl.KdlParser;
 import me.tamkungz.nilloadersdk.util.kdl.KdlValue;
+import nilloader.api.NilLogger;
 import nilloader.api.NilMetadata;
 import nilloader.api.lib.qdcss.QDCSS;
 
@@ -11,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import java.util.zip.ZipFile;
 public final class NilMetadataBridge {
 
     private static final Charset UTF_8 = Charset.forName("UTF-8");
+    private static final NilLogger LOG = NilLogger.get("ModBootstrapper/MetadataBridge");
 
     private NilMetadataBridge() {}
 
@@ -115,6 +118,7 @@ public final class NilMetadataBridge {
         try {
             document = new KdlParser(text).parse();
         } catch (Throwable t) {
+            LOG.warn("Failed to parse .nilsdkmod.kdl content (length={})", text.length(), t);
             return KdlDoc.empty();
         }
 
@@ -282,7 +286,68 @@ public final class NilMetadataBridge {
         byte[] buf = new byte[4096];
         int r;
         while ((r = in.read(buf)) >= 0) baos.write(buf, 0, r);
-        return new String(baos.toByteArray(), UTF_8);
+        return decodeText(baos.toByteArray());
+    }
+
+    private static String decodeText(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) return "";
+
+        // UTF-8 BOM
+        if (bytes.length >= 3
+                && (bytes[0] & 0xFF) == 0xEF
+                && (bytes[1] & 0xFF) == 0xBB
+                && (bytes[2] & 0xFF) == 0xBF) {
+            return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
+        }
+
+        // UTF-16 LE BOM
+        if (bytes.length >= 2
+                && (bytes[0] & 0xFF) == 0xFF
+                && (bytes[1] & 0xFF) == 0xFE) {
+            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
+        }
+
+        // UTF-16 BE BOM
+        if (bytes.length >= 2
+                && (bytes[0] & 0xFF) == 0xFE
+                && (bytes[1] & 0xFF) == 0xFF) {
+            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
+        }
+
+        // UTF-16 LE (heuristic, no BOM)
+        if (looksLikeUtf16Le(bytes)) {
+            return new String(bytes, StandardCharsets.UTF_16LE);
+        }
+
+        // UTF-16 BE (heuristic, no BOM)
+        if (looksLikeUtf16Be(bytes)) {
+            return new String(bytes, StandardCharsets.UTF_16BE);
+        }
+
+        // Fallback: UTF-8
+        return new String(bytes, UTF_8);
+    }
+
+    private static boolean looksLikeUtf16Le(byte[] bytes) {
+        int sample = Math.min(bytes.length, 64);
+        int zerosOnOdd = 0;
+        int checked = 0;
+        for (int i = 1; i < sample; i += 2) {
+            checked++;
+            if (bytes[i] == 0) zerosOnOdd++;
+        }
+        return checked >= 4 && zerosOnOdd >= checked - 1;
+    }
+
+    private static boolean looksLikeUtf16Be(byte[] bytes) {
+        int sample = Math.min(bytes.length, 64);
+        int zerosOnEven = 0;
+        int checked = 0;
+        for (int i = 0; i < sample; i += 2) {
+            checked++;
+            if (bytes[i] == 0) zerosOnEven++;
+        }
+        return checked >= 4 && zerosOnEven >= checked - 1;
     }
 
     private static String firstNonBlank(String a, String b, String fallback) {

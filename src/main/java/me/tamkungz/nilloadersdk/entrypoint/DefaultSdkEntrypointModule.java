@@ -1,6 +1,7 @@
 package me.tamkungz.nilloadersdk.entrypoint;
 
 import me.tamkungz.nilloadersdk.log.Loggers;
+import me.tamkungz.nilloadersdk.metadata.KdlOnlyModBootstrapper;
 import me.tamkungz.nilloadersdk.metadata.NilMetadataPatchInstaller;
 import me.tamkungz.nilloadersdk.metadata.SdkDependencyEnforcer;
 import me.tamkungz.nilloadersdk.network.MinecraftAutoNetworkBridge;
@@ -29,6 +30,7 @@ public final class DefaultSdkEntrypointModule implements NilLoaderSDKEntrypointM
     public void onPremain() {
         LOG.info("Default module onPremain");
         NilMetadataPatchInstaller.install();
+        KdlOnlyModBootstrapper.bootstrapFromDefaultFolders();
         SdkDependencyEnforcer.enforceLoadedMods();
     }
 

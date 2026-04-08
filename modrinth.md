@@ -1,89 +1,101 @@
 # NilLoaderSDK
 
-**NilLoaderSDK** is a utility SDK for NilLoader-based Minecraft mods. It bundles reflection helpers, remapping tools, entrypoint dispatching, a Java NIO networking layer, and standardized logging.
+NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods (legacy versions such as 1.4.7).
+
+It provides:
+- metadata helpers for NilLoader + KDL
+- runtime bootstrap for KDL-only mods
+- reflection/remapping helpers
+- event bus and lifecycle events
+- NIO networking utilities
 
 ---
 
-## Features
+## Why NilLoaderSDK?
 
-- **Standardized Logging** — root & class-scoped loggers under `NilLoaderSDK` namespace
-- **Entrypoint Dispatching** — supports `premain` and `hijack` phases via ServiceLoader, JVM properties, or properties file
-- **Reflection & Remap Helpers** — `ReflectHelper`, `SimpleRemap`, and more
-- **Java NIO Networking** — full NIO server/client stack with packet codec & registry
-- **Auto Network Bridge** — auto-connect client via JVM properties
+NilLoaderSDK is not only metadata tooling. It is a practical utility layer for legacy NilLoader mod development, with reusable APIs that reduce boilerplate and speed up feature development.
+
+Use it when you want a single toolkit for lifecycle dispatching, reflection/remapping, networking, event handling, and modernized metadata support.
 
 ---
 
-## Adding to Your Project
+## Key Features
 
-Add the Maven repository and dependency:
+- **Lifecycle + Entrypoint system**
+  - `premain` / `hijack` dispatching via ServiceLoader, JVM properties, and properties file
+  - Default SDK modules for centralized startup flow
+- **Event bus for mod architecture**
+  - Lightweight event system with cancellable events and priority ordering
+  - Lifecycle events for pre/post entrypoint dispatch hooks
+- **Networking stack (Java NIO)**
+  - Client/server implementations with packet registry and codec
+  - Optional auto-network bridge for fast integration
+- **Reflection + remapping helpers**
+  - Utilities for interacting with obfuscated legacy internals safely and repeatedly
+- **Metadata bridge (CSS + KDL)**
+  - Supports `.nilmod.css` and `.nilsdkmod.kdl`
+  - KDL-only runtime bootstrap for SDK-aware mods when root CSS is absent
+  - Dependency policy support (`requires`, `safeload`, load order hints)
+- **Diagnostics for pack/mod developers**
+  - Verbose bootstrap pipeline logs
+  - Loaded-mod table output:
+    - `ID | Name | Version | Authors | License`
+
+---
+
+## Metadata Example (`.nilsdkmod.kdl`)
+
+```kdl
+nilmod {
+  name "My Mod"
+  description "Example mod"
+  authors "Author"
+  version "1.0.0"
+}
+
+entrypoints {
+  premain "com.example.MyPremain"
+  hijack "com.example.MyHijack"
+}
+
+nilloadersdk {
+  requires "nilloader" "nilloadersdk"
+  load_after "nilloadersdk"
+  icon "assets/mymod/icon.png"
+  modurl "https://modrinth.com/mod/my-mod"
+  sourceurl "https://github.com/example/my-mod"
+  license "MIT"
+  credits "Author"
+}
+```
+
+---
+
+## Dependency (Gradle)
 
 ```gradle
 repositories {
-  maven {
-    url "https://repo.tamkungz.me"
-  }
+  maven { url "https://repo.tamkungz.me" }
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:1.0.0"
+  implementation "me.tamkungz.nilloadersdk:nilloadersdk:2.0.1"
 }
 ```
 
-> Browse packages: [repo.tamkungz.me](https://repo.tamkungz.me)
+Repository: [https://repo.tamkungz.me](https://repo.tamkungz.me)
 
 ---
 
-## Quick Start
+## Keywords (for search)
 
-### Logging
-
-```java
-private static final NilLogger LOG = Loggers.sdk();
-private static final NilLogger CLASS_LOG = Loggers.forClass(MyClass.class);
-
-LOG.info("SDK initialized");
-CLASS_LOG.info("Action executed");
-```
-
-### Auto Network Bridge (JVM Properties)
-
-```text
--Dnilloadersdk.network.autoclient.enabled=true
--Dnilloadersdk.network.autoclient.host=127.0.0.1
--Dnilloadersdk.network.autoclient.port=25566
-```
-
-Optional tuning:
-```text
--Dnilloadersdk.network.autoclient.pollMs=1000
--Dnilloadersdk.network.autoclient.maxFrame=1048576
-```
+NilLoader, NilLoaderSDK, Minecraft 1.4.7, legacy Minecraft modding, Java 8 modding, entrypoint framework, event bus, NIO networking, reflection helper, remapping tools, KDL metadata, nilmod SDK.
 
 ---
 
-## Entrypoint Routing
+## License
 
-Entrypoints are resolved in this priority order:
-
-1. JVM property: `-Dnilloadersdk.entrypoint.<phase>=...`
-2. Properties file: `nilloadersdk.entrypoints.properties`
-3. ServiceLoader modules (`NilLoaderSDKEntrypointModule`)
-
-Never point `premain` or `hijack` to SDK self-entrypoint classes — it will cause infinite recursion.
-
----
-
-## Build
-
-```bat
-gradlew.bat compileJava
-```
-
-To publish to local Maven cache:
-```bat
-gradlew.bat publishToMavenLocal
-```
+Licensed under **LGPL-3.0-or-later**.
 
 ---
 
@@ -91,10 +103,3 @@ gradlew.bat publishToMavenLocal
 
 - [NilLoader (official)](https://git.sleeping.town/Nil/NilLoader)
 - [NilLoader (mirror)](https://github.com/exaskye/NilLoader)
-
----
-
-## License
-
-Licensed under **LGPL-3.0-or-later**.
-See the full license text at [gnu.org/licenses/lgpl-3.0.txt](https://www.gnu.org/licenses/lgpl-3.0.txt).

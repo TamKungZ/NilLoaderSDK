@@ -46,13 +46,17 @@ public class KdlParser {
 
         // Parse arguments and properties until we hit a newline, semicolon, '{', or EOF
         while (pos < length) {
-            skipWhitespaceAndComments();
+            skipInlineWhitespaceAndComments();
             if (pos >= length) break;
 
             char ch = peek();
             if (ch == '\n' || ch == '\r' || ch == ';') {
                 // End of node (no children block)
-                consumeExpected(ch);
+                consumeNodeTerminator(ch);
+                break;
+            }
+            if (ch == '}') {
+                // End of this node; parent block will consume '}'
                 break;
             }
             if (ch == '{') {
@@ -90,6 +94,68 @@ public class KdlParser {
             node.addArgument(arg);
         }
         return node;
+    }
+
+    private void skipInlineWhitespaceAndComments() {
+        while (pos < length) {
+            char c = peek();
+
+            // Inline whitespace only (newline terminates node)
+            if (c == ' ' || c == '\t' || c == '\uFEFF') {
+                advance();
+                continue;
+            }
+
+            // Comments
+            if (c == '/' && pos + 1 < length) {
+                char next = input.charAt(pos + 1);
+
+                if (next == '/') {
+                    // Line comment ends this node line; do not consume newline
+                    while (pos < length && peek() != '\n' && peek() != '\r') {
+                        advance();
+                    }
+                    break;
+                }
+
+                if (next == '-') {
+                    // slashdash comment ends this node line; do not consume newline
+                    advance(); // '/'
+                    advance(); // '-'
+                    while (pos < length && peek() != '\n' && peek() != '\r') {
+                        advance();
+                    }
+                    break;
+                }
+
+                if (next == '*') {
+                    // Block comment may span lines
+                    advance(); // '/'
+                    advance(); // '*'
+                    while (pos < length && !(peek() == '*' && pos + 1 < length && input.charAt(pos + 1) == '/')) {
+                        advance();
+                    }
+                    if (pos < length) {
+                        advance(); // '*'
+                        advance(); // '/'
+                    }
+                    continue;
+                }
+            }
+
+            break;
+        }
+    }
+
+    private void consumeNodeTerminator(char ch) {
+        if (ch == '\r') {
+            consumeExpected('\r');
+            if (pos < length && peek() == '\n') {
+                consumeExpected('\n');
+            }
+            return;
+        }
+        consumeExpected(ch);
     }
 
     private void parseChildren(KdlNode parent) {
@@ -300,7 +366,7 @@ public class KdlParser {
     private void skipWhitespace() {
         while (pos < length) {
             char c = peek();
-            if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+            if (isWhitespaceLike(c)) {
                 advance();
             } else {
                 break;
@@ -311,7 +377,7 @@ public class KdlParser {
     private void skipWhitespaceAndComments() {
         while (pos < length) {
             char c = peek();
-            if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+            if (isWhitespaceLike(c)) {
                 advance();
                 continue;
             }
@@ -352,6 +418,11 @@ public class KdlParser {
             }
             break;
         }
+    }
+
+    private boolean isWhitespaceLike(char c) {
+        // include UTF-8 BOM (\uFEFF) to support KDL files saved with BOM
+        return c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\uFEFF';
     }
 
     private char peek() {
