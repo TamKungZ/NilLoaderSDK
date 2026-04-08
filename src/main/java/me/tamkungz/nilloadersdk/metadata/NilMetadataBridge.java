@@ -1,5 +1,9 @@
 package me.tamkungz.nilloadersdk.metadata;
 
+import me.tamkungz.nilloadersdk.util.kdl.KdlDocument;
+import me.tamkungz.nilloadersdk.util.kdl.KdlNode;
+import me.tamkungz.nilloadersdk.util.kdl.KdlParser;
+import me.tamkungz.nilloadersdk.util.kdl.KdlValue;
 import nilloader.api.NilMetadata;
 import nilloader.api.lib.qdcss.QDCSS;
 
@@ -7,9 +11,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -105,91 +111,146 @@ public final class NilMetadataBridge {
 
     private static KdlDoc parseKdl(String text) {
         if (text == null || text.trim().isEmpty()) return KdlDoc.empty();
-        Map<String, String> nilmod = parseMapSection(text, "nilmod");
-        Map<String, String> entrypoints = parseMapSection(text, "entrypoints");
+        KdlDocument document;
+        try {
+            document = new KdlParser(text).parse();
+        } catch (Throwable t) {
+            return KdlDoc.empty();
+        }
+
+        Map<String, String> nilmod = parseNilmod(document);
+        Map<String, String> entrypoints = parseEntrypoints(document);
         return new KdlDoc(nilmod, entrypoints);
     }
 
-    private static Map<String, String> parseMapSection(String text, String sectionName) {
-        String body = extractSectionBody(text, sectionName);
+    private static Map<String, String> parseNilmod(KdlDocument document) {
         Map<String, String> out = new LinkedHashMap<String, String>();
-        if (body == null) return out;
 
-        String[] lines = body.split("\\r?\\n");
-        for (String raw : lines) {
-            String line = stripLineComment(raw).trim();
-            if (line.isEmpty()) continue;
-            int sp = firstWhitespace(line);
-            if (sp <= 0) continue;
-            String key = line.substring(0, sp).trim();
-            String rest = line.substring(sp + 1).trim();
-            String val = firstQuoted(rest);
-            if (!isBlank(key) && !isBlank(val) && !out.containsKey(key)) out.put(key, val);
+        List<KdlNode> sections = findSectionNodes(document, "nilmod");
+        for (KdlNode section : sections) {
+            readChildrenAsMap(out, section.getChildren());
+            readPropertiesAsMap(out, section.getProperties());
+            // Allow compact form: nilmod "Name"
+            String compactName = firstArgumentString(section);
+            if (!isBlank(compactName) && !out.containsKey("name")) {
+                out.put("name", compactName);
+            }
+        }
+
+        // Fallback: top-level nilmod keys
+        for (KdlNode node : document.getNodes()) {
+            String key = normalizeKey(node.getName());
+            if (!isNilmodKey(key)) continue;
+            String value = firstNodeValue(node);
+            if (!isBlank(value) && !out.containsKey(key)) {
+                out.put(key, value);
+            }
+        }
+
+        return out;
+    }
+
+    private static Map<String, String> parseEntrypoints(KdlDocument document) {
+        Map<String, String> out = new LinkedHashMap<String, String>();
+
+        List<KdlNode> sections = findSectionNodes(document, "entrypoints");
+        for (KdlNode section : sections) {
+            readChildrenAsMap(out, section.getChildren());
+            readPropertiesAsMap(out, section.getProperties());
+        }
+
+        // Fallback: top-level entrypoints.<phase> "class"
+        for (KdlNode node : document.getNodes()) {
+            String nodeName = node.getName();
+            if (nodeName == null) continue;
+
+            String lower = nodeName.toLowerCase();
+            if (lower.startsWith("entrypoints.")) {
+                String phase = nodeName.substring("entrypoints.".length()).trim();
+                String value = firstNodeValue(node);
+                if (!isBlank(phase) && !isBlank(value) && !out.containsKey(phase)) {
+                    out.put(phase, value);
+                }
+            }
+        }
+
+        return out;
+    }
+
+    private static List<KdlNode> findSectionNodes(KdlDocument document, String sectionName) {
+        List<KdlNode> out = new ArrayList<KdlNode>();
+        if (document == null || sectionName == null) return out;
+
+        for (KdlNode node : document.getNodes()) {
+            if (node == null || node.getName() == null) continue;
+            if (sectionName.equalsIgnoreCase(node.getName().trim())) {
+                out.add(node);
+            }
         }
         return out;
     }
 
-    private static String extractSectionBody(String text, String sectionName) {
-        String lower = text.toLowerCase();
-        String target = sectionName.toLowerCase();
-        int idx = lower.indexOf(target);
-        if (idx < 0) return null;
-        int open = text.indexOf('{', idx + target.length());
-        if (open < 0) return null;
-
-        int depth = 0;
-        boolean inString = false;
-        for (int i = open; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (c == '"' && (i == 0 || text.charAt(i - 1) != '\\')) inString = !inString;
-            if (inString) continue;
-            if (c == '{') depth++;
-            if (c == '}') {
-                depth--;
-                if (depth == 0) return text.substring(open + 1, i);
+    private static void readChildrenAsMap(Map<String, String> out, List<KdlNode> children) {
+        if (children == null || children.isEmpty()) return;
+        for (KdlNode child : children) {
+            if (child == null || child.getName() == null) continue;
+            String key = normalizeKey(child.getName());
+            String value = firstNodeValue(child);
+            if (!isBlank(key) && !isBlank(value) && !out.containsKey(key)) {
+                out.put(key, value);
             }
+        }
+    }
+
+    private static void readPropertiesAsMap(Map<String, String> out, Map<String, KdlValue> properties) {
+        if (properties == null || properties.isEmpty()) return;
+        for (Map.Entry<String, KdlValue> en : properties.entrySet()) {
+            String key = normalizeKey(en.getKey());
+            String value = valueToString(en.getValue());
+            if (!isBlank(key) && !isBlank(value) && !out.containsKey(key)) {
+                out.put(key, value.trim());
+            }
+        }
+    }
+
+    private static String firstNodeValue(KdlNode node) {
+        if (node == null) return null;
+
+        String fromArg = firstArgumentString(node);
+        if (!isBlank(fromArg)) return fromArg;
+
+        for (KdlValue value : node.getProperties().values()) {
+            String v = valueToString(value);
+            if (!isBlank(v)) return v.trim();
         }
         return null;
     }
 
-    private static String stripLineComment(String line) {
-        if (line == null || line.isEmpty()) return "";
-        boolean inString = false;
-        for (int i = 0; i < line.length() - 1; i++) {
-            char c = line.charAt(i);
-            if (c == '"' && (i == 0 || line.charAt(i - 1) != '\\')) inString = !inString;
-            if (!inString && c == '/' && line.charAt(i + 1) == '/') return line.substring(0, i);
+    private static String firstArgumentString(KdlNode node) {
+        if (node == null) return null;
+        for (KdlValue value : node.getArguments()) {
+            String v = valueToString(value);
+            if (!isBlank(v)) return v.trim();
         }
-        return line;
+        return null;
     }
 
-    private static int firstWhitespace(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (Character.isWhitespace(s.charAt(i))) return i;
-        }
-        return -1;
+    private static String valueToString(KdlValue value) {
+        if (value == null) return null;
+        if (value.isNull()) return "null";
+        Object raw = value.getValue();
+        return raw == null ? null : String.valueOf(raw);
     }
 
-    private static String firstQuoted(String s) {
-        if (s == null) return null;
-        int start = s.indexOf('"');
-        if (start < 0) return null;
-        StringBuilder sb = new StringBuilder();
-        boolean esc = false;
-        for (int i = start + 1; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (esc) {
-                sb.append(c);
-                esc = false;
-            } else if (c == '\\') {
-                esc = true;
-            } else if (c == '"') {
-                return sb.toString();
-            } else {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
+    private static boolean isNilmodKey(String key) {
+        return "name".equals(key)
+                || "description".equals(key)
+                || "authors".equals(key)
+                || "version".equals(key);
+    }
+
+    private static String normalizeKey(String key) {
+        return key == null ? null : key.trim().toLowerCase();
     }
 
     private static String readZipEntry(ZipFile zip, String name) {

@@ -1,5 +1,11 @@
 package me.tamkungz.nilloadersdk.metadata;
 
+import me.tamkungz.nilloadersdk.util.kdl.KdlDocument;
+import me.tamkungz.nilloadersdk.util.kdl.KdlNode;
+import me.tamkungz.nilloadersdk.util.kdl.KdlParser;
+import me.tamkungz.nilloadersdk.util.kdl.KdlValue;
+import me.tamkungz.nilloadersdk.util.kdl.KdlWriter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,29 +29,20 @@ public final class SdkMetadataKdl {
     public static SdkModMetadata parse(String kdlText) {
         if (kdlText == null || kdlText.trim().isEmpty()) return SdkModMetadata.empty();
 
-        String body = extractRootBody(kdlText, "nilloadersdk");
-        if (body == null) body = kdlText;
-
         List<String> requires = new ArrayList<String>();
         List<String> before = new ArrayList<String>();
         List<String> after = new ArrayList<String>();
         String icon = null;
+        String modUrl = null;
+        String sourceUrl = null;
+        String license = null;
+        List<String> credits = new ArrayList<String>();
         boolean safeLoad = true;
 
-        String[] lines = body.split("\\r?\\n");
-        for (String raw : lines) {
-            String line = stripComments(raw).trim();
-            if (line.isEmpty() || line.equals("{") || line.equals("}")) continue;
-
-            if (line.endsWith("{") || line.endsWith("}")) {
-                line = line.substring(0, line.length() - 1).trim();
-            }
-            if (line.isEmpty()) continue;
-
-            int sp = findFirstWhitespace(line);
-            String nodeName = sp < 0 ? line : line.substring(0, sp);
-            String args = sp < 0 ? "" : line.substring(sp + 1).trim();
-            List<String> values = extractValues(args);
+        List<KdlNode> nodes = selectMetadataNodes(new KdlParser(kdlText).parse());
+        for (KdlNode node : nodes) {
+            String nodeName = node.getName();
+            List<String> values = extractValues(node);
 
             if (equalsAny(nodeName, "requires", "require", "depends", "dependency")) {
                 appendUnique(requires, values);
@@ -55,6 +52,14 @@ public final class SdkMetadataKdl {
                 appendUnique(after, values);
             } else if (equalsAny(nodeName, "icon", "icon_path", "iconpath")) {
                 if (!values.isEmpty()) icon = values.get(0);
+            } else if (equalsAny(nodeName, "modurl", "mod_url", "homepage")) {
+                if (!values.isEmpty()) modUrl = values.get(0);
+            } else if (equalsAny(nodeName, "sourceurl", "source_url", "source")) {
+                if (!values.isEmpty()) sourceUrl = values.get(0);
+            } else if (equalsAny(nodeName, "license", "licence", "spdx")) {
+                if (!values.isEmpty()) license = values.get(0);
+            } else if (equalsAny(nodeName, "credits", "credit", "contributors", "contributor")) {
+                appendUnique(credits, values);
             } else if (equalsAny(nodeName, "safeload", "safe_load", "safe")) {
                 if (!values.isEmpty()) {
                     safeLoad = !"false".equalsIgnoreCase(values.get(0));
@@ -62,45 +67,81 @@ public final class SdkMetadataKdl {
             }
         }
 
-        return new SdkModMetadata(requires, before, after, icon, safeLoad);
+        return new SdkModMetadata(requires, before, after, icon, modUrl, sourceUrl, license, credits, safeLoad);
     }
 
     public static String write(SdkModMetadata metadata) {
         SdkModMetadata m = metadata == null ? SdkModMetadata.empty() : metadata;
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("nilloadersdk {\n");
+        KdlDocument document = new KdlDocument();
+        KdlNode root = new KdlNode("nilloadersdk");
 
         if (!m.getRequiredMods().isEmpty()) {
-            sb.append("  requires");
-            appendQuotedList(sb, m.getRequiredMods());
-            sb.append('\n');
+            KdlNode node = new KdlNode("requires");
+            addStringArgs(node, m.getRequiredMods());
+            root.addChild(node);
         }
         if (!m.getLoadBefore().isEmpty()) {
-            sb.append("  load_before");
-            appendQuotedList(sb, m.getLoadBefore());
-            sb.append('\n');
+            KdlNode node = new KdlNode("load_before");
+            addStringArgs(node, m.getLoadBefore());
+            root.addChild(node);
         }
         if (!m.getLoadAfter().isEmpty()) {
-            sb.append("  load_after");
-            appendQuotedList(sb, m.getLoadAfter());
-            sb.append('\n');
+            KdlNode node = new KdlNode("load_after");
+            addStringArgs(node, m.getLoadAfter());
+            root.addChild(node);
         }
         if (m.getIcon() != null) {
-            sb.append("  icon \"").append(escape(m.getIcon())).append("\"\n");
+            KdlNode node = new KdlNode("icon");
+            node.addArgument(new KdlValue.KdlString(m.getIcon()));
+            root.addChild(node);
+        }
+        if (m.getModUrl() != null) {
+            KdlNode node = new KdlNode("modurl");
+            node.addArgument(new KdlValue.KdlString(m.getModUrl()));
+            root.addChild(node);
+        }
+        if (m.getSourceUrl() != null) {
+            KdlNode node = new KdlNode("sourceurl");
+            node.addArgument(new KdlValue.KdlString(m.getSourceUrl()));
+            root.addChild(node);
+        }
+        if (m.getLicense() != null) {
+            KdlNode node = new KdlNode("license");
+            node.addArgument(new KdlValue.KdlString(m.getLicense()));
+            root.addChild(node);
+        }
+        if (!m.getCredits().isEmpty()) {
+            KdlNode node = new KdlNode("credits");
+            addStringArgs(node, m.getCredits());
+            root.addChild(node);
         }
         if (!m.isSafeLoad()) {
-            sb.append("  safeload false\n");
+            KdlNode node = new KdlNode("safeload");
+            node.addArgument(new KdlValue.KdlBoolean(false));
+            root.addChild(node);
         }
 
-        sb.append("}\n");
-        return sb.toString();
+        document.addNode(root);
+        return new KdlWriter().write(document);
     }
 
-    private static void appendQuotedList(StringBuilder sb, List<String> values) {
+    private static void addStringArgs(KdlNode node, List<String> values) {
         for (String value : values) {
-            sb.append(' ').append('"').append(escape(value)).append('"');
+            node.addArgument(new KdlValue.KdlString(value));
         }
+    }
+
+    private static List<KdlNode> selectMetadataNodes(KdlDocument document) {
+        List<KdlNode> out = new ArrayList<KdlNode>();
+        for (KdlNode node : document.getNodes()) {
+            if ("nilloadersdk".equalsIgnoreCase(node.getName())) {
+                out.addAll(node.getChildren());
+                return out;
+            }
+        }
+        out.addAll(document.getNodes());
+        return out;
     }
 
     private static void appendUnique(List<String> target, List<String> values) {
@@ -111,6 +152,24 @@ public final class SdkMetadataKdl {
         }
     }
 
+    private static List<String> extractValues(KdlNode node) {
+        List<String> out = new ArrayList<String>();
+        for (KdlValue value : node.getArguments()) {
+            String v = valueToString(value);
+            if (v != null && !v.trim().isEmpty()) {
+                out.add(v.trim());
+            }
+        }
+        return out;
+    }
+
+    private static String valueToString(KdlValue value) {
+        if (value == null) return null;
+        if (value.isNull()) return "null";
+        Object raw = value.getValue();
+        return raw == null ? null : String.valueOf(raw);
+    }
+
     private static boolean equalsAny(String value, String a, String b, String c) {
         if (value == null) return false;
         return value.equalsIgnoreCase(a) || value.equalsIgnoreCase(b) || value.equalsIgnoreCase(c);
@@ -119,98 +178,6 @@ public final class SdkMetadataKdl {
     private static boolean equalsAny(String value, String a, String b, String c, String d) {
         if (value == null) return false;
         return value.equalsIgnoreCase(a) || value.equalsIgnoreCase(b) || value.equalsIgnoreCase(c) || value.equalsIgnoreCase(d);
-    }
-
-    private static int findFirstWhitespace(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (Character.isWhitespace(s.charAt(i))) return i;
-        }
-        return -1;
-    }
-
-    private static String stripComments(String in) {
-        if (in == null || in.isEmpty()) return "";
-
-        boolean inString = false;
-        for (int i = 0; i < in.length() - 1; i++) {
-            char c = in.charAt(i);
-            if (c == '"' && (i == 0 || in.charAt(i - 1) != '\\')) inString = !inString;
-            if (!inString && c == '/' && in.charAt(i + 1) == '/') {
-                return in.substring(0, i);
-            }
-        }
-        return in;
-    }
-
-    private static List<String> extractValues(String args) {
-        List<String> out = new ArrayList<String>();
-        if (args == null || args.isEmpty()) return out;
-
-        int i = 0;
-        while (i < args.length()) {
-            while (i < args.length() && Character.isWhitespace(args.charAt(i))) i++;
-            if (i >= args.length()) break;
-
-            char c = args.charAt(i);
-            if (c == '"') {
-                i++;
-                StringBuilder sb = new StringBuilder();
-                boolean escaping = false;
-                while (i < args.length()) {
-                    char cc = args.charAt(i++);
-                    if (escaping) {
-                        sb.append(cc);
-                        escaping = false;
-                    } else if (cc == '\\') {
-                        escaping = true;
-                    } else if (cc == '"') {
-                        break;
-                    } else {
-                        sb.append(cc);
-                    }
-                }
-                String v = sb.toString().trim();
-                if (!v.isEmpty()) out.add(v);
-            } else {
-                int start = i;
-                while (i < args.length() && !Character.isWhitespace(args.charAt(i))) i++;
-                String v = args.substring(start, i).trim();
-                if (!v.isEmpty()) out.add(v);
-            }
-        }
-
-        return out;
-    }
-
-    private static String extractRootBody(String text, String rootName) {
-        String lower = text.toLowerCase();
-        String needle = rootName.toLowerCase();
-        int idx = lower.indexOf(needle);
-        if (idx < 0) return null;
-
-        int braceOpen = text.indexOf('{', idx + needle.length());
-        if (braceOpen < 0) return null;
-
-        int depth = 0;
-        boolean inString = false;
-        for (int i = braceOpen; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (c == '"' && (i == 0 || text.charAt(i - 1) != '\\')) inString = !inString;
-            if (inString) continue;
-
-            if (c == '{') depth++;
-            if (c == '}') {
-                depth--;
-                if (depth == 0) {
-                    return text.substring(braceOpen + 1, i);
-                }
-            }
-        }
-        return null;
-    }
-
-    private static String escape(String s) {
-        return s.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 }
 

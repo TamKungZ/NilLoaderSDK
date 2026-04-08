@@ -47,13 +47,57 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 - `src/main/java/me/tamkungz/nilloadersdk/helper/ProxyHelper.java`
 - `src/main/java/me/tamkungz/nilloadersdk/helper/NilLoaderHelper.java`
   - Convenience APIs for loaded mod lookup (`isModLoaded`, `getAllLoadedMods`)
+  - Group checks and fallback lookup (`isAllModsLoaded`, `getFirstLoadedMod`)
   - Metadata extraction (`getLoadedModIds`, `getLoadedModNames`, `describeMod`)
-  - Entrypoint metadata utilities (`getEntrypointNames`, `getEntrypointClass`)
+  - Entrypoint metadata utilities (`getEntrypointNames`, `getEntrypointClass`, `getEntrypoints`, `hasEntrypoint`, `getModsWithEntrypoint`)
   - SDK-only metadata utilities (`getSdkMetadata`, `getMissingRequiredMods`, `getLoadBefore`, `getLoadAfter`, `getIconPath`)
+  - Dependency diagnostics (`hasMissingRequiredMods`, `getMissingRequiredModsForLoadedMods`, `getModsRequiring`)
 - `src/main/java/me/tamkungz/nilloadersdk/helper/TransformerHelper.java`
   - Register class patchers without Mixin using NilLoader transformers
   - Supports raw bytecode patch callback and ASM `ClassNode` patch callback
   - Useful for Java-agent style class overwrite/edit during `premain` / `hijack`
+
+### Event System (Forge/Fabric-like)
+- `src/main/java/me/tamkungz/nilloadersdk/NilLoaderSDK.java`
+  - Global access for event registration and dispatch
+- `src/main/java/me/tamkungz/nilloadersdk/event/EventBus.java`
+  - Annotation listener registration (`@SubscribeEvent`)
+  - Typed listener callback registration
+  - Priority ordering (`HIGHEST -> LOWEST`)
+  - Cancellation-aware dispatch
+- `src/main/java/me/tamkungz/nilloadersdk/event/Event.java`
+- `src/main/java/me/tamkungz/nilloadersdk/event/CancellableEvent.java`
+- `src/main/java/me/tamkungz/nilloadersdk/event/SubscribeEvent.java`
+- `src/main/java/me/tamkungz/nilloadersdk/event/EventPriority.java`
+- Lifecycle hook events:
+  - `PreEntrypointDispatchEvent` (cancellable)
+  - `PhaseEvent`
+  - `PostEntrypointDispatchEvent`
+
+Quick usage:
+
+```java
+public final class MyModEvents {
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onPhase(PhaseEvent e) {
+        // receives premain/hijack phase notifications
+    }
+}
+
+// register annotation listeners
+NilLoaderSDK.registerEvents(new MyModEvents());
+
+// register typed callback listeners
+NilLoaderSDK.listen(PhaseEvent.class, e -> {
+    // handle phase event
+});
+```
+
+Inside `NilModBase`, convenience methods are available:
+- `registerEvents()` / `registerEvents(Object)`
+- `listen(Class<T>, EventListener<T>)`
+- `post(Event)`
 
 ### SDK-only Metadata (.nilsdkmod.kdl)
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkModMetadata.java`
@@ -63,14 +107,35 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/NilMetadataPatchInstaller.java`
 - `src/main/resources/nilloadersdk.nilsdkmod.kdl`
 
-This metadata is **SDK-only** and kept separate from NilLoader base metadata to preserve compatibility:
+### General-purpose KDL Toolkit (SDK-wide)
+- `src/main/java/me/tamkungz/nilloadersdk/util/kdl/KdlParser.java`
+- `src/main/java/me/tamkungz/nilloadersdk/util/kdl/KdlWriter.java`
+- `src/main/java/me/tamkungz/nilloadersdk/util/kdl/KdlDocument.java`
+- `src/main/java/me/tamkungz/nilloadersdk/util/kdl/KdlNode.java`
+- `src/main/java/me/tamkungz/nilloadersdk/util/kdl/KdlValue.java`
+- `src/main/java/me/tamkungz/nilloadersdk/util/kdl/KdlParseException.java`
+
+These classes are reusable KDL utilities for any SDK module, not only metadata.
+
+This metadata is **SDK-only** and kept separate from NilLoader base metadata to preserve compatibility.
+
+Version note:
+- SDK KDL metadata support is introduced as part of `2.0.0` (before that, metadata was CSS-only in `*.nilmod.css`).
+
+Compatibility/runtime behavior:
 - NilLoader (without this SDK) ignores it.
 - SDK patches NilLoader metadata creation at runtime (`premain`) so users do not need custom Gradle metadata-generation steps.
 - Merge policy when both files exist: CSS is primary, missing fields are filled from KDL.
+- KDL parsing in the runtime bridge now uses the shared in-project parser (`KdlParser`) instead of manual string parsing.
+- Metadata extraction supports both section blocks (`nilmod {}`, `entrypoints {}`) and top-level fallback keys (`name`, `description`, `authors`, `version`, `entrypoints.<phase>`).
 - SDK-aware mods can declare:
   - Required mod IDs
   - Advisory load ordering (`load_before`, `load_after`)
   - Icon path
+  - Mod URL (`modurl`)
+  - Source URL (`sourceurl`)
+  - License (`license`)
+  - Shared credits (`credits`)
   - `safeload` (`true` default; when `false`, missing required mods cause hard error)
 
 Runtime dependency policy (SDK built-in):
@@ -82,8 +147,18 @@ Easy APIs for UI/modmenu usage:
 - `NilLoaderHelper.getLoadedModIcons()`
 - `NilLoaderHelper.getRequiredMods(id)`
 - `NilLoaderHelper.isSafeLoad(id)`
+- `NilLoaderHelper.getModUrl(id)`
+- `NilLoaderHelper.getSourceUrl(id)`
+- `NilLoaderHelper.getLicense(id)`
+- `NilLoaderHelper.getCredits(id)`
 
-Example KDL/KDS:
+Convenience dependency/introspection APIs:
+- `NilLoaderHelper.isAllModsLoaded("a", "b")`
+- `NilLoaderHelper.getFirstLoadedMod("fabricproxy", "legacyproxy")`
+- `NilLoaderHelper.getModsWithEntrypoint("hijack")`
+- `NilLoaderHelper.getMissingRequiredModsForLoadedMods()`
+
+Example KDL:
 
 ```kdl
 nilloadersdk {
@@ -91,6 +166,10 @@ nilloadersdk {
   load_before "optional_patch_mod"
   load_after "library_mod"
   icon "assets/example/icon.png"
+  modurl "https://example.com/mod"
+  sourceurl "https://github.com/example/mod"
+  license "MIT"
+  credits "Alice" "Bob"
 }
 ```
 

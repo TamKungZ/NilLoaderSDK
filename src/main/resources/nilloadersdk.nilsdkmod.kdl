@@ -2,7 +2,7 @@ nilmod {
   name "NilLoaderSDK"
   description "Utilities and helper SDK for NilLoader mod development."
   authors "TamKungZ_"
-  version "1.0.3"
+  version "2.0.0"
 }
 
 entrypoints {
@@ -20,6 +20,18 @@ nilloadersdk {
 
   // Icon path inside the mod jar/resources
   icon "assets/nilloadersdk/icon.png"
+
+  // Public mod page URL
+  modurl "https://modrinth.com/mod/nilloadersdk"
+
+  // Source repository URL
+  sourceurl "https://github.com/TamKungZ/NilLoaderSDK"
+
+  // License identifier/name
+  license "MIT"
+
+  // Contributors / shared credits
+  credits "TamKungZ_" "unascribed"
 
   // Optional: when false, missing required mods will stop startup
   // safeload false

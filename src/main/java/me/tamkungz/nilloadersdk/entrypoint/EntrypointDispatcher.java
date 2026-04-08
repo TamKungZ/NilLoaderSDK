@@ -1,5 +1,9 @@
 package me.tamkungz.nilloadersdk.entrypoint;
 
+import me.tamkungz.nilloadersdk.NilLoaderSDK;
+import me.tamkungz.nilloadersdk.event.lifecycle.PhaseEvent;
+import me.tamkungz.nilloadersdk.event.lifecycle.PostEntrypointDispatchEvent;
+import me.tamkungz.nilloadersdk.event.lifecycle.PreEntrypointDispatchEvent;
 import me.tamkungz.nilloadersdk.log.Loggers;
 import nilloader.api.NilLogger;
 
@@ -49,6 +53,13 @@ final class EntrypointDispatcher {
             return;
         }
 
+        if (!NilLoaderSDK.post(new PreEntrypointDispatchEvent(phase))) {
+            LOG.warn("Entrypoint dispatch cancelled by event listener for phase=" + phase);
+            return;
+        }
+
+        NilLoaderSDK.post(new PhaseEvent(phase));
+
         active.add(phase);
         int executed = 0;
 
@@ -65,6 +76,8 @@ final class EntrypointDispatcher {
             if (executed == 0) {
                 LOG.warn("No entrypoints executed for phase=" + phase);
             }
+
+            NilLoaderSDK.post(new PostEntrypointDispatchEvent(phase, executed));
         } finally {
             active.remove(phase);
             if (active.isEmpty()) {

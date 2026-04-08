@@ -16,18 +16,38 @@ public final class SdkModMetadata {
     private final List<String> loadBefore;
     private final List<String> loadAfter;
     private final String icon;
+    private final String modUrl;
+    private final String sourceUrl;
+    private final String license;
+    private final List<String> credits;
     private final boolean safeLoad;
 
-    public SdkModMetadata(List<String> requiredMods, List<String> loadBefore, List<String> loadAfter, String icon, boolean safeLoad) {
+    public SdkModMetadata(List<String> requiredMods, List<String> loadBefore, List<String> loadAfter,
+                          String icon, String modUrl, String sourceUrl, String license,
+                          List<String> credits, boolean safeLoad) {
         this.requiredMods = immutableCopy(requiredMods);
         this.loadBefore = immutableCopy(loadBefore);
         this.loadAfter = immutableCopy(loadAfter);
         this.icon = normalize(icon);
+        this.modUrl = normalize(modUrl);
+        this.sourceUrl = normalize(sourceUrl);
+        this.license = normalize(license);
+        this.credits = immutableCopy(credits);
         this.safeLoad = safeLoad;
     }
 
     public static SdkModMetadata empty() {
-        return new SdkModMetadata(Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), null, true);
+        return new SdkModMetadata(
+                Collections.<String>emptyList(),
+                Collections.<String>emptyList(),
+                Collections.<String>emptyList(),
+                null,
+                null,
+                null,
+                null,
+                Collections.<String>emptyList(),
+                true
+        );
     }
 
     public List<String> getRequiredMods() {
@@ -46,12 +66,36 @@ public final class SdkModMetadata {
         return icon;
     }
 
+    public String getModUrl() {
+        return modUrl;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public List<String> getCredits() {
+        return credits;
+    }
+
     public boolean isSafeLoad() {
         return safeLoad;
     }
 
     public boolean isEmpty() {
-        return requiredMods.isEmpty() && loadBefore.isEmpty() && loadAfter.isEmpty() && icon == null && safeLoad;
+        return requiredMods.isEmpty()
+                && loadBefore.isEmpty()
+                && loadAfter.isEmpty()
+                && icon == null
+                && modUrl == null
+                && sourceUrl == null
+                && license == null
+                && credits.isEmpty()
+                && safeLoad;
     }
 
     private static List<String> immutableCopy(List<String> in) {

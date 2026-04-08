@@ -2,7 +2,56 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [2.0.0] - 2026-04-08
+
+### Added
+- Introduced KDL support as a first-class metadata layer in `2.0.0`.
+  - Prior to `2.0.0`, mods relied on NilLoader CSS metadata only (`*.nilmod.css`).
+  - `2.0.0` adds SDK KDL metadata (`*.nilsdkmod.kdl`) and runtime bridge integration.
+- Introduced a general-purpose KDL toolkit for broad SDK usage (not metadata-only):
+  - `KdlParser`, `KdlWriter`
+  - `KdlDocument`, `KdlNode`, `KdlValue`, `KdlParseException`
+  - Can be used by any system/module that needs KDL parsing/serialization.
+- `NilLoaderHelper` convenience APIs for easier multi-mod integration and diagnostics:
+  - `isAllModsLoaded(String...)`
+  - `getFirstLoadedMod(String...)`
+  - `getEntrypoints(String)`
+  - `hasEntrypoint(String, String)`
+  - `getModsWithEntrypoint(String)`
+  - `hasMissingRequiredMods(String)`
+  - `getMissingRequiredModsForLoadedMods()`
+  - `getModsRequiring(String)`
+- Forge/Fabric-like event architecture for easier mod development:
+  - Global SDK access point: `NilLoaderSDK`
+  - Event primitives: `Event`, `CancellableEvent`, `EventPriority`, `SubscribeEvent`
+  - Central `EventBus` with:
+    - annotation listener registration (`@SubscribeEvent`)
+    - typed callback registration (`listen` style)
+    - cancellation-aware dispatch flow
+  - Lifecycle events:
+    - `PreEntrypointDispatchEvent` (cancellable)
+    - `PhaseEvent`
+    - `PostEntrypointDispatchEvent`
+  - Entrypoint dispatcher now emits lifecycle events around phase execution.
+  - `NilModBase` now includes convenience methods to register/post/listen events.
+- SDK KDL metadata schema expanded with richer mod info fields:
+  - `modurl`
+  - `sourceurl`
+  - `license`
+  - `credits` (multi-value)
+
+### Changed
+- Bumped SDK version to `2.0.0` in build and metadata resources.
+- `NilMetadataBridge` now parses `.nilsdkmod.kdl` via shared KDL parser (`KdlParser`) instead of manual string parsing for better compatibility.
+- KDL metadata merge now supports both section blocks (`nilmod {}`, `entrypoints {}`) and top-level fallback keys (`name`, `description`, `authors`, `version`, `entrypoints.<phase>`).
+
+### Fixed
+- Removed inconsistent changelog carry-over for `1.0.4` under `2.0.0`.
+
+### Notes
+- New helper methods are Java 8 compatible and return immutable collections where applicable.
+- Focus of this update is DX (developer experience): reduce repetitive NilLoader metadata and dependency-check boilerplate in mods.
+- Backward compatibility remains intact: CSS metadata stays primary, and KDL is additive for SDK-aware features.
 
 ## [1.0.3] - 2026-03-26
 

@@ -46,6 +46,17 @@ public final class NilLoaderHelper {
     }
 
     /**
+     * Returns true if all provided mod ids are loaded.
+     */
+    public static boolean isAllModsLoaded(String... ids) {
+        if (ids == null || ids.length == 0) return false;
+        for (String id : ids) {
+            if (!isModLoaded(id)) return false;
+        }
+        return true;
+    }
+
+    /**
      * Returns metadata for a mod id.
      */
     public static Optional<NilMetadata> getModMetadata(String id) {
@@ -59,6 +70,18 @@ public final class NilLoaderHelper {
     public static NilMetadata getModMetadataOrNull(String id) {
         Optional<NilMetadata> found = getModMetadata(id);
         return found.orElse(null);
+    }
+
+    /**
+     * Returns the first loaded mod from the provided candidate ids.
+     */
+    public static Optional<NilMetadata> getFirstLoadedMod(String... candidateIds) {
+        if (candidateIds == null || candidateIds.length == 0) return Optional.empty();
+        for (String id : candidateIds) {
+            Optional<NilMetadata> mod = getModMetadata(id);
+            if (mod.isPresent()) return mod;
+        }
+        return Optional.empty();
     }
 
     /**
@@ -136,6 +159,24 @@ public final class NilLoaderHelper {
     }
 
     /**
+     * Returns all entrypoint phase->class mappings for the given mod id.
+     */
+    public static Map<String, String> getEntrypoints(String id) {
+        NilMetadata mod = getModMetadataOrNull(id);
+        if (mod == null || mod.entrypoints == null || mod.entrypoints.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return Collections.unmodifiableMap(new LinkedHashMap<String, String>(mod.entrypoints));
+    }
+
+    /**
+     * Returns true if a mod declares an entrypoint for a given phase.
+     */
+    public static boolean hasEntrypoint(String id, String phase) {
+        return getEntrypointClass(id, phase) != null;
+    }
+
+    /**
      * Returns a compact single-line description suitable for logs.
      */
     public static String describeMod(String id) {
@@ -184,6 +225,13 @@ public final class NilLoaderHelper {
     }
 
     /**
+     * Returns true if this mod is currently missing any required dependencies.
+     */
+    public static boolean hasMissingRequiredMods(String id) {
+        return !getMissingRequiredMods(id).isEmpty();
+    }
+
+    /**
      * True when all required SDK metadata dependencies are currently loaded.
      */
     public static boolean areRequiredModsLoaded(String id) {
@@ -215,6 +263,38 @@ public final class NilLoaderHelper {
     }
 
     /**
+     * Returns mod page URL from SDK metadata, or null if not declared.
+     */
+    public static String getModUrl(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getModUrl() : null;
+    }
+
+    /**
+     * Returns source repository URL from SDK metadata, or null if not declared.
+     */
+    public static String getSourceUrl(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getSourceUrl() : null;
+    }
+
+    /**
+     * Returns license string from SDK metadata, or null if not declared.
+     */
+    public static String getLicense(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getLicense() : null;
+    }
+
+    /**
+     * Returns credits/contributors from SDK metadata.
+     */
+    public static List<String> getCredits(String id) {
+        Optional<SdkModMetadata> metadata = getSdkMetadata(id);
+        return metadata.isPresent() ? metadata.get().getCredits() : Collections.<String>emptyList();
+    }
+
+    /**
      * Returns required mod ids declared in SDK metadata.
      */
     public static List<String> getRequiredMods(String id) {
@@ -241,5 +321,49 @@ public final class NilLoaderHelper {
             if (icon != null) out.put(mod.id, icon);
         }
         return Collections.unmodifiableMap(out);
+    }
+
+    /**
+     * Returns loaded mod ids that have declared an entrypoint for the given phase.
+     */
+    public static List<String> getModsWithEntrypoint(String phase) {
+        if (phase == null || phase.trim().isEmpty()) return Collections.emptyList();
+        List<String> out = new ArrayList<String>();
+        for (NilMetadata mod : getAllLoadedMods()) {
+            if (mod == null || mod.id == null) continue;
+            if (hasEntrypoint(mod.id, phase)) out.add(mod.id);
+        }
+        return Collections.unmodifiableList(out);
+    }
+
+    /**
+     * Returns dependency report of loaded mods currently missing required dependencies.
+     *
+     * <p>Map key is loaded mod id, map value is list of missing required ids.</p>
+     */
+    public static Map<String, List<String>> getMissingRequiredModsForLoadedMods() {
+        Map<String, List<String>> out = new LinkedHashMap<String, List<String>>();
+        for (NilMetadata mod : getAllLoadedMods()) {
+            if (mod == null || mod.id == null) continue;
+            List<String> missing = getMissingRequiredMods(mod.id);
+            if (!missing.isEmpty()) out.put(mod.id, missing);
+        }
+        return Collections.unmodifiableMap(out);
+    }
+
+    /**
+     * Returns loaded mod ids that declare the given mod id as a required dependency.
+     */
+    public static List<String> getModsRequiring(String requiredModId) {
+        if (requiredModId == null || requiredModId.trim().isEmpty()) return Collections.emptyList();
+        String target = requiredModId.trim();
+
+        List<String> out = new ArrayList<String>();
+        for (NilMetadata mod : getAllLoadedMods()) {
+            if (mod == null || mod.id == null) continue;
+            List<String> deps = getRequiredMods(mod.id);
+            if (deps.contains(target)) out.add(mod.id);
+        }
+        return Collections.unmodifiableList(out);
     }
 }
