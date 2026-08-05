@@ -42,7 +42,9 @@ public final class PacketHelper {
 
         // Fallback: no-arg constructor + set fields
         try {
-            Object pkt = pkt250.newInstance();
+            java.lang.reflect.Constructor<?> ctor = pkt250.getDeclaredConstructor();
+            if (!ctor.isAccessible()) ctor.setAccessible(true);
+            Object pkt = ctor.newInstance();
             String chField   = remap.field("Packet250CustomPayload", "channel");
             String dataField = remap.field("Packet250CustomPayload", "data");
             String lenField  = remap.field("Packet250CustomPayload", "length");

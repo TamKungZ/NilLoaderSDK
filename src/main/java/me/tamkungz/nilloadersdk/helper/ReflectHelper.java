@@ -187,6 +187,7 @@ public final class ReflectHelper {
      * Finds a field value whose type matches any of the given class name hints.
      */
     public static Object findFieldByClassHint(Object target, String... hints) {
+        if (target == null || hints == null || hints.length == 0) return null;
         Class<?> c = target.getClass();
         while (c != null) {
             for (Field f : c.getDeclaredFields()) {
@@ -212,6 +213,7 @@ public final class ReflectHelper {
     public static java.util.List<Object> collectFieldValuesByType(
             Object target, Class<?> assignableFrom, boolean skipStatic) {
         java.util.List<Object> results = new java.util.ArrayList<>();
+        if (target == null || assignableFrom == null) return results;
         Class<?> c = target.getClass();
         while (c != null) {
             for (Field f : c.getDeclaredFields()) {
@@ -262,7 +264,9 @@ public final class ReflectHelper {
             Object arg = args[i];
             Class<?> pt = pts[i];
             if (arg == null) {
-                if (pt.isPrimitive()) return false;
+                // invoke() intentionally supplies the Java default for primitive parameters
+                // when callers pass null, so null is compatible with both reference and
+                // primitive parameters here.
                 continue;
             }
             Class<?> boxed = boxType(pt);
