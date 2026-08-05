@@ -2,7 +2,7 @@ nilmod {
   name "NilLoaderSDK"
   description "Utilities and helper SDK for NilLoader mod development."
   authors "TamKungZ_"
-  version "3.0.0"
+  version "3.0.1"
 }
 
 entrypoints {

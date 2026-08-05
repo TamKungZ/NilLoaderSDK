@@ -2,7 +2,7 @@
 """
 gen_srg_mappings.py
 -------------------
-Reads SRG files from .remapping/<version>/ folders and generates
+Reads SRG files from tools/MinecraftRemapping/<version>/ folders and generates
 GeneratedSrgMappings.java into the target source directory.
 
 Priority:
@@ -20,8 +20,9 @@ import time
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
-REMAPPING_DIR = Path(r"G:\Projects\Code\Java\Minecraft\NilLoaderSDK\.remapping")
-OUTPUT_DIR    = Path(r"G:\Projects\Code\Java\Minecraft\NilLoaderSDK\src\main\java\me\tamkungz\remapping")
+PROJECT_ROOT  = Path(__file__).resolve().parent
+REMAPPING_DIR = PROJECT_ROOT / "tools" / "MinecraftRemapping"
+OUTPUT_DIR    = PROJECT_ROOT / "build" / "generated" / "sources" / "remapping" / "main" / "me" / "tamkungz" / "remapping"
 PACKAGE       = "me.tamkungz.remapping"
 CLASS_NAME    = "GeneratedSrgMappings"
 
@@ -173,8 +174,8 @@ def generate():
     lines.append("// AUTO-GENERATED — do not edit by hand.")
     lines.append("// Run gen_srg_mappings.py to regenerate.")
     lines.append("//")
-    lines.append(f"// Source priority: .remapping/<version>/{PRIMARY_SRG}")
-    lines.append(f"// Fallback       : .remapping/<version>/{FALLBACK_SRG} (reversed)")
+    lines.append(f"// Source priority: tools/MinecraftRemapping/<version>/{PRIMARY_SRG}")
+    lines.append(f"// Fallback       : tools/MinecraftRemapping/<version>/{FALLBACK_SRG} (reversed)")
     lines.append("// Mapping Credit: https://github.com/agaricusb/MinecraftRemapping")
     lines.append("")
     lines.append(f"final class {CLASS_NAME} {{")

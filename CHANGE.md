@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2026-08-05
+
+### Compatibility
+
+- Removed the SDK's hard bytecode link to `net.minecraft.client.Minecraft`; `McHelper` now resolves the mapped Minecraft class lazily through reflection only when Minecraft-specific helpers are called.
+- Removed the compile-time `game` / `jarmod` Minecraft 1.4.7 dependencies from the SDK build. The core artifact no longer needs a Minecraft JAR to compile.
+- Removed unused external ASM 9.5 runtime dependencies; transformer helpers already use NilLoader's shaded ASM API, avoiding unnecessary ASM classpath conflicts in `-all.jar`.
+- `MinecraftAutoNetworkBridge` no longer assumes Minecraft 1.4.7. When explicitly enabled it reads `-Dnilloadersdk.minecraft.version=<version>` and disables itself safely if the version or mappings are unavailable.
+- Added regression coverage that rejects hard `net.minecraft.*` type references in the Minecraft-facing SDK classes.
+
+### Mapping workflow
+
+- Removed the `.remapping` staging workflow. `tools/MinecraftRemapping` is now the single source path for mapping data.
+- Gradle mapping generation reads `tools/MinecraftRemapping/<version>/mcp2obf.srg` directly from the pinned submodule.
+- Fixed `SimpleRemap` so release JARs actually consume the generated mapping subset; 3.0.0 generated `GeneratedSrgMappings` but never called it.
+- Replaced `prepareRemapping` / `import-submodule` with direct `inspectMinecraftRemapping`, `inspect-submodule`, and `submodule-path` workflows.
+- Updated `gen_srg_mappings.py` to use project-relative paths instead of a machine-specific absolute Windows path.
+
+### Build fixes
+
+- Removed duplicate declarations accidentally left in `build.gradle` 3.0.0 mapping-generation code.
+
 ## [3.0.0] - 2026-08-05
 
 ### Added
@@ -18,7 +40,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Bumped the SDK and metadata version to `3.0.0`.
 - Java compilation now targets Java 8 with `--release 8` while Gradle itself runs on a supported modern launcher JDK; a dedicated local JDK 8 installation is no longer required for normal builds.
-- Complete mapping collections are no longer shipped in the project ZIP/release tree. `.remapping/` remains gitignored and is treated as developer-supplied local build input.
+- Complete mapping collections are not duplicated into the project ZIP/release tree. Mapping-aware builds read directly from the pinned `tools/MinecraftRemapping` submodule.
 - GitHub release responsibilities were separated from normal commit CI: `build.yml` only validates commits/PRs, while `release.yml` owns tagged releases.
 
 ### Fixed
@@ -181,17 +203,17 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - `SimpleRemap.forVersion("1.4.7")` preserves manual mappings from `build147()` as higher priority.
-- External SRG (`.remapping/1.4.7/mcp2obf.srg`) is used only to fill missing entries, not overwrite existing `build147()` mappings.
-- `SimpleRemap.forVersion(version)` can load remap for versions that provide local `.remapping/<version>/mcp2obf.srg`.
+- External SRG (`tools/MinecraftRemapping/1.4.7/mcp2obf.srg`) is used only to fill missing entries, not overwrite existing `build147()` mappings.
+- `SimpleRemap.forVersion(version)` can load remap for versions that provide `tools/MinecraftRemapping/<version>/mcp2obf.srg`.
 
 ### Packaging
 - SRG files are not bundled into the built JAR.
-- Build now auto-generates `GeneratedSrgMappings` from local `.remapping/*/mcp2obf.srg` and embeds only the extracted mappings used by SDK remap calls.
+- Build now auto-generates `GeneratedSrgMappings` from `tools/MinecraftRemapping/*/mcp2obf.srg` and embeds only the extracted mappings used by SDK remap calls.
 - Runtime loads generated mappings first via `SimpleRemap`, then keeps fallback behavior for local development.
 
 ### Notes
-- `.remapping` is not bundled in the repository contents.
-- If you want to build and use remapping locally, prepare/provide your own `.remapping` directory.
+- Mapping files are not duplicated into the main repository; the pinned `tools/MinecraftRemapping` submodule is the only source path.
+- Initialize the submodule before mapping-aware builds: `git submodule update --init --recursive`.
 
 ### Docs
 - README helper section now includes `NilLoaderHelper` and summarizes key API groups.

@@ -29,6 +29,8 @@ replay_pid*
 # nilplugin-verbose.txt
 # nilagent.txt
 
+# Legacy local mapping staging (3.0.0 and older); no longer read by the SDK
 .remapping/
+
 # Generated project-local Maven publication
 /maven/

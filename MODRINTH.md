@@ -1,6 +1,6 @@
 # NilLoaderSDK
 
-NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods (legacy versions such as 1.4.7).
+NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 3.0.1 removes the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
 
 It provides:
 - metadata helpers for NilLoader + KDL
@@ -29,11 +29,11 @@ Use it when you want a single toolkit for lifecycle dispatching, reflection/rema
   - Lifecycle events for pre/post entrypoint dispatch hooks
 - **Networking stack (Java NIO)**
   - Client/server implementations with packet registry and codec
-  - Optional auto-network bridge for fast integration
+  - Optional auto-network bridge for fast integration; version-aware and fail-closed when mappings are unavailable
 - **Reflection + remapping helpers**
   - Utilities for interacting with obfuscated legacy internals safely and repeatedly
   - Descriptor-aware SRG/CSRG inspect, reverse, chain, and lookup tooling
-  - Optional external MinecraftRemapping Git submodule for local mapping research; complete mapping sets are not bundled in releases
+  - Pinned MinecraftRemapping Git submodule used directly as build input; complete mapping files are not copied into releases
 - **Metadata bridge (CSS + KDL)**
   - Supports `.nilmod.css` and `.nilsdkmod.kdl`
   - KDL-only runtime bootstrap for SDK-aware mods when root CSS is absent
@@ -75,7 +75,7 @@ nilloadersdk {
 
 ## Dependency (Gradle)
 
-For `3.0.0`, publish the SDK into its project-local `./maven` repository first:
+For `3.0.1`, publish the SDK into its project-local `./maven` repository first:
 
 ```bash
 ./gradlew publishProjectLocal
@@ -89,7 +89,7 @@ repositories {
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:3.0.0"
+  implementation "me.tamkungz.nilloadersdk:nilloadersdk:3.0.1"
 }
 ```
 

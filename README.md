@@ -4,6 +4,23 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 
 ---
 
+## Minecraft compatibility
+
+NilLoaderSDK `3.0.1` no longer has a hard bytecode dependency on a specific Minecraft JAR. Core systems such as events, KDL, metadata helpers, networking, logging, reflection, and mapping tooling can load independently of Minecraft 1.4.7.
+
+Minecraft-facing helpers are lazy and reflection-based. They only attempt to resolve Minecraft classes when explicitly called, and they require mappings/structure compatible with the running game version. Minecraft 1.4.7 still has built-in fallback mappings; additional mapping subsets are generated at build time from the pinned `tools/MinecraftRemapping` submodule.
+
+The optional auto-network bridge is disabled by default. If enabled, also provide the target version, for example:
+
+```text
+-Dnilloadersdk.network.autoclient.enabled=true
+-Dnilloadersdk.minecraft.version=1.4.7
+```
+
+If the version or mapping is unavailable, the bridge disables itself instead of failing game startup.
+
+---
+
 ## Project Layout (File-by-File)
 
 ### Root
@@ -124,7 +141,8 @@ Version note:
 - SDK KDL metadata support is introduced as part of `2.0.0` (before that, metadata was CSS-only in `*.nilmod.css`).
 - `2.0.1` adds SDK-side runtime bootstrap for KDL-only mods (mods that ship `.nilsdkmod.kdl` without root `*.nilmod.css`).
 - `2.1.0` focuses on reliability: KDL 2 syntax coverage/round-tripping, safer event dispatch, atomic cooldowns, stricter targeting, and hardened NIO reconnect/disconnect handling.
-- `3.0.0` adds descriptor-aware SRG tooling, external mapping-submodule workflows, cross-platform Gradle JVM discovery, and separated commit/release CI.
+- `3.0.0` adds descriptor-aware SRG tooling, the external mapping submodule, cross-platform Gradle JVM discovery, and separated commit/release CI.
+- `3.0.1` removes the hard Minecraft 1.4.7 class link, makes Minecraft access lazy/reflection-only, and reads mapping input directly from `tools/MinecraftRemapping`.
 
 Compatibility/runtime behavior:
 - NilLoader (without this SDK) ignores it.
@@ -240,7 +258,7 @@ Important: register patches in SDK entrypoint phases (`premain` / `hijack`) befo
 - `tools/MinecraftRemapping` — external `agaricusb/MinecraftRemapping` Git submodule.
 - `MAPPINGS.md` — mapping-source and redistribution policy.
 
-NilLoaderSDK does not bundle complete mapping collections. Local mapping input lives under the gitignored `.remapping/` directory.
+NilLoaderSDK does not vendor a second mapping copy. Mapping input is read directly from the pinned `tools/MinecraftRemapping` submodule.
 
 Examples:
 
@@ -248,14 +266,14 @@ Examples:
 ./gradlew mappingTool --args="inspect tools/MinecraftRemapping/1.4.7/mcp2obf.srg"
 ./gradlew mappingTool --args="reverse input.srg output.srg"
 ./gradlew mappingTool --args="chain first.srg second.srg output.srg"
-./gradlew prepareRemapping -PmcVersion=1.4.7
+./gradlew inspectMinecraftRemapping -PmcVersion=1.4.7
 ./gradlew mappingToolJar
 ```
 
-The standalone JAR is emitted as `build/libs/nilloadersdk-3.0.0-mapping-tool.jar` and contains only the mapping utility code, never mapping data. It can be used without launching Minecraft:
+The standalone JAR is emitted as `build/libs/nilloadersdk-3.0.1-mapping-tool.jar` and contains only the mapping utility code, never mapping data. It can be used without launching Minecraft:
 
 ```bash
-java -jar build/libs/nilloadersdk-3.0.0-mapping-tool.jar inspect input.srg
+java -jar build/libs/nilloadersdk-3.0.1-mapping-tool.jar inspect input.srg
 ```
 
 See [`MAPPINGS.md`](MAPPINGS.md) for submodule setup and licensing notes.
@@ -319,9 +337,12 @@ Important: never point `premain` or `hijack` to SDK self-entrypoint classes, or 
 Enable:
 ```text
 -Dnilloadersdk.network.autoclient.enabled=true
+-Dnilloadersdk.minecraft.version=1.4.7
 -Dnilloadersdk.network.autoclient.host=127.0.0.1
 -Dnilloadersdk.network.autoclient.port=25566
 ```
+
+The bridge fails closed: if the requested Minecraft version has no available mapping subset, it logs a warning and disables itself instead of aborting startup.
 
 Optional:
 ```text
@@ -399,7 +420,7 @@ This project is licensed under the GNU Lesser General Public License v3.0 or lat
 
 ## Maven Publishing (Project-local + GPG signed)
 
-Version `3.0.0` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
+Version `3.0.1` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
 
 GPG must be installed and available on `PATH`. The build uses Gradle's `useGpgCmd()`, so your normal GnuPG configuration and `gpg-agent` are used; private keys are never stored in this repository. The default GPG key is used unless you configure another key.
 
@@ -418,7 +439,7 @@ gradlew.bat publishProjectLocal
 Artifacts are written under:
 
 ```text
-maven/me/tamkungz/nilloadersdk/nilloadersdk/3.0.0/
+maven/me/tamkungz/nilloadersdk/nilloadersdk/3.0.1/
 ```
 
 To select a specific GPG key, put the setting in your user Gradle configuration (recommended: `~/.gradle/gradle.properties`) rather than committing secrets to this project:
@@ -439,7 +460,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:3.0.0'
+    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:3.0.1'
 }
 ```
 

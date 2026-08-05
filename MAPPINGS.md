@@ -8,7 +8,7 @@ Official Mojang/Microsoft mappings are licensed for development use, but their l
 
 The historical `agaricusb/MinecraftRemapping` repository is attached as an external Git submodule for research and local tooling. Its repository does not currently expose a license file in the GitHub root, so NilLoaderSDK does not copy, vendor, or relicense its mapping collection.
 
-`.remapping/` remains gitignored. A developer can intentionally import a mapping file into that local directory and use it for a local build.
+`tools/MinecraftRemapping` is the single mapping source path. It is a Git submodule and is consumed directly; NilLoaderSDK does not create or require a `.remapping` staging directory. `.remapping/` remains ignored only so stale local folders from 3.0.0 cannot be committed accidentally.
 
 ## Submodule
 
@@ -45,15 +45,16 @@ The SDK now contains an SRG/CSRG-oriented mapping utility:
 ./gradlew mappingTool --args="reverse input.srg output.srg"
 ./gradlew mappingTool --args="chain first.srg second.srg output.srg"
 ./gradlew mappingTool --args="lookup input.srg class net/minecraft/client/Minecraft"
-./gradlew mappingTool --args="import-submodule 1.4.7 mcp2obf.srg"
+./gradlew mappingTool --args="inspect-submodule 1.4.7 mcp2obf.srg"
+./gradlew mappingTool --args="submodule-path 1.4.7 mcp2obf.srg"
 ./gradlew mappingTool --args="list-submodule 1.4.7"
 ./gradlew mappingToolJar
 ```
 
 `mappingToolJar` builds a standalone Java 8-compatible CLI JAR containing only NilLoaderSDK mapping utility code. No mapping dataset is embedded in that JAR.
 
-`import-submodule` preserves the selected filename under `.remapping/<version>/<mappingFile>`. The build automatically consumes `mcp2obf.srg`; other imported mapping files stay explicit CLI inputs. Everything under `.remapping/` is deliberately ignored by Git.
+`inspect-submodule` and `submodule-path` operate directly on `tools/MinecraftRemapping/<version>/<mappingFile>`. No mapping files are copied into the main project tree.
 
 ## Build behavior
 
-A normal CI/release build does **not** import mapping data from the submodule. If `.remapping/<version>/mcp2obf.srg` exists locally, the existing Gradle generation step may extract only names referenced by SDK code into generated Java source for that local build. Do not publish a mapping-derived artifact unless you have verified the license of the mapping source you supplied.
+CI/release builds check out the pinned submodule and the Gradle generation step reads `tools/MinecraftRemapping/<version>/mcp2obf.srg` directly. Only names referenced by SDK code are emitted into generated Java source; no complete mapping file is copied into the release tree.

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'me.tamkungz.nilloadersdk'
-version = '3.0.0'
+version = '3.0.1'
 
 java {
     // Gradle itself runs on an automatically selected JDK 21/17, while all SDK
@@ -51,14 +51,12 @@ repositories {
 dependencies {
     cfr 'org.benf:cfr:0.152'
 
-    game nil.minecraft('1.4.7', 'client')
-    jarmod nil.minecraft('1.4.7', 'server')
+    // No Minecraft game JAR is required to compile the SDK core. Minecraft-facing
+    // helpers use reflection so the published JAR has no hard version link.
 
     compileOnly 'com.unascribed:nilloader:1.3.6'
     deps 'com.unascribed:nilloader:1.3.6'
 
-    implementation 'org.ow2.asm:asm:9.5'
-    implementation 'org.ow2.asm:asm-tree:9.5'
 
     testImplementation 'junit:junit:4.13.2'
 
@@ -122,7 +120,7 @@ public final class ModBuildInfo {
 }
 
 task generateSimpleRemapMappings {
-    inputs.dir('.remapping').optional()
+    inputs.dir('tools/MinecraftRemapping').optional()
     inputs.files fileTree('src/main/java') { include '**/*.java' }
     outputs.file "$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java"
 
@@ -145,10 +143,15 @@ task generateSimpleRemapMappings {
         }
 
         def versionData = new LinkedHashMap<String, Map<String, Map<String, String>>>()
-        def root = file('.remapping')
+        def root = file('tools/MinecraftRemapping')
         if (root.exists()) {
             root.listFiles()?.findAll { it.isDirectory() }?.sort { a, b -> a.name <=> b.name }?.each { vd ->
                 def srg = new File(vd, 'mcp2obf.srg')
+                boolean reverse = false
+                if (!srg.exists()) {
+                    srg = new File(vd, 'obf2mcp.srg')
+                    reverse = true
+                }
                 if (!srg.exists()) return
 
                 def classes = new LinkedHashMap<String, String>()
@@ -162,11 +165,11 @@ task generateSimpleRemapMappings {
                     if (line.startsWith('CL: ')) {
                         String[] p = line.substring(4).trim().split(/\s+/)
                         if (p.length >= 2) {
-                            String friendly = p[0]
+                            String friendly = reverse ? p[1] : p[0]
                             int idx = friendly.lastIndexOf('/')
                             friendly = idx >= 0 ? friendly.substring(idx + 1) : friendly
                             if (classNeed.contains(friendly) && !classes.containsKey(friendly)) {
-                                String obf = p[1]
+                                String obf = reverse ? p[0] : p[1]
                                 if (obf.indexOf('/') >= 0) obf = obf.replace('/', '.')
                                 classes.put(friendly, obf)
                             }
@@ -174,36 +177,40 @@ task generateSimpleRemapMappings {
                     } else if (line.startsWith('FD: ')) {
                         String[] p = line.substring(4).trim().split(/\s+/)
                         if (p.length >= 2) {
-                            int i1 = p[0].lastIndexOf('/')
-                            int i2 = p[1].lastIndexOf('/')
-                            if (i1 > 0 && i2 > 0 && i1 < p[0].length() - 1 && i2 < p[1].length() - 1) {
-                                String leftOwner = p[0].substring(0, i1)
-                                String leftName = p[0].substring(i1 + 1)
-                                String rightName = p[1].substring(i2 + 1)
+                            String friendlyToken = reverse ? p[1] : p[0]
+                            String obfToken = reverse ? p[0] : p[1]
+                            int fi = friendlyToken.lastIndexOf('/')
+                            int oi = obfToken.lastIndexOf('/')
+                            if (fi > 0 && oi > 0 && fi < friendlyToken.length() - 1 && oi < obfToken.length() - 1) {
+                                String friendlyOwner = friendlyToken.substring(0, fi)
+                                String friendlyName = friendlyToken.substring(fi + 1)
+                                String obfName = obfToken.substring(oi + 1)
 
-                                int cidx = leftOwner.lastIndexOf('/')
-                                String simpleOwner = cidx >= 0 ? leftOwner.substring(cidx + 1) : leftOwner
-                                String key = simpleOwner + '.' + leftName
+                                int cidx = friendlyOwner.lastIndexOf('/')
+                                String simpleOwner = cidx >= 0 ? friendlyOwner.substring(cidx + 1) : friendlyOwner
+                                String key = simpleOwner + '.' + friendlyName
                                 if (fieldNeed.contains(key) && !fields.containsKey(key)) {
-                                    fields.put(key, rightName)
+                                    fields.put(key, obfName)
                                 }
                             }
                         }
                     } else if (line.startsWith('MD: ')) {
                         String[] p = line.substring(4).trim().split(/\s+/)
                         if (p.length >= 4) {
-                            int i1 = p[0].lastIndexOf('/')
-                            int i2 = p[2].lastIndexOf('/')
-                            if (i1 > 0 && i2 > 0 && i1 < p[0].length() - 1 && i2 < p[2].length() - 1) {
-                                String leftOwner = p[0].substring(0, i1)
-                                String leftName = p[0].substring(i1 + 1)
-                                String rightName = p[2].substring(i2 + 1)
+                            String friendlyToken = reverse ? p[2] : p[0]
+                            String obfToken = reverse ? p[0] : p[2]
+                            int fi = friendlyToken.lastIndexOf('/')
+                            int oi = obfToken.lastIndexOf('/')
+                            if (fi > 0 && oi > 0 && fi < friendlyToken.length() - 1 && oi < obfToken.length() - 1) {
+                                String friendlyOwner = friendlyToken.substring(0, fi)
+                                String friendlyName = friendlyToken.substring(fi + 1)
+                                String obfName = obfToken.substring(oi + 1)
 
-                                int cidx = leftOwner.lastIndexOf('/')
-                                String simpleOwner = cidx >= 0 ? leftOwner.substring(cidx + 1) : leftOwner
-                                String key = simpleOwner + '.' + leftName
+                                int cidx = friendlyOwner.lastIndexOf('/')
+                                String simpleOwner = cidx >= 0 ? friendlyOwner.substring(cidx + 1) : friendlyOwner
+                                String key = simpleOwner + '.' + friendlyName
                                 if (methodNeed.contains(key) && !methods.containsKey(key)) {
-                                    methods.put(key, rightName)
+                                    methods.put(key, obfName)
                                 }
                             }
                         }
@@ -392,9 +399,9 @@ tasks.named('assemble') {
     dependsOn 'mappingToolJar'
 }
 
-tasks.register('prepareRemapping') {
+tasks.register('inspectMinecraftRemapping') {
     group = 'mapping'
-    description = 'Imports one mapping file from tools/MinecraftRemapping into the gitignored .remapping directory.'
+    description = 'Inspects a mapping file directly from tools/MinecraftRemapping; nothing is copied into the project.'
     dependsOn 'compileMappingToolJava'
     doLast {
         String mcVersion = providers.gradleProperty('mcVersion').orNull
@@ -405,7 +412,7 @@ tasks.register('prepareRemapping') {
         javaexec {
             classpath = files(mappingToolClassesDir)
             mainClass = 'me.tamkungz.nilloadersdk.mapping.MappingToolMain'
-            args 'import-submodule', mcVersion, mappingFile
+            args 'inspect-submodule', mcVersion, mappingFile
         }
     }
 }
