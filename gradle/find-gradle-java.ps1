@@ -1,18 +1,25 @@
 $ErrorActionPreference = "SilentlyContinue"
 
-function Get-JavaMajor([string]$Home) {
-    if ([string]::IsNullOrWhiteSpace($Home)) { return $null }
+function Get-JavaMajor([string]$JavaHome) {
+    if ([string]::IsNullOrWhiteSpace($JavaHome)) {
+        return $null
+    }
 
-    $Java = Join-Path $Home "bin\java.exe"
-    if (-not (Test-Path $Java)) { return $null }
+    $Java = Join-Path $JavaHome "bin\java.exe"
+
+    if (-not (Test-Path $Java)) {
+        return $null
+    }
 
     $Text = (& $Java -XshowSettings:properties -version 2>&1 | Out-String)
 
     if ($Text -match 'java\.specification\.version\s*=\s*([0-9.]+)') {
         $v = $Matches[1]
-    } elseif ($Text -match 'version\s+"([0-9.]+)') {
+    }
+    elseif ($Text -match 'version\s+"([0-9.]+)') {
         $v = $Matches[1]
-    } else {
+    }
+    else {
         return $null
     }
 
@@ -23,48 +30,50 @@ function Get-JavaMajor([string]$Home) {
     return [int](($v -split '\.')[0])
 }
 
-function Test-SupportedJava([string]$Home) {
-    $Major = Get-JavaMajor $Home
+function Test-SupportedJava([string]$JavaHome) {
+    $Major = Get-JavaMajor $JavaHome
     return $Major -in @(17, 18, 19, 20, 21, 22)
 }
 
 # Explicit override
 if (-not [string]::IsNullOrWhiteSpace($env:NILSDK_GRADLE_JAVA_HOME)) {
-    $Home = $env:NILSDK_GRADLE_JAVA_HOME.Trim('"')
+    $JavaHome = $env:NILSDK_GRADLE_JAVA_HOME.Trim('"')
 
-    if (Test-SupportedJava $Home) {
-        Write-Output $Home
+    if (Test-SupportedJava $JavaHome) {
+        Write-Output $JavaHome
         exit 0
     }
 
     [Console]::Error.WriteLine(
-        "NilLoaderSDK: NILSDK_GRADLE_JAVA_HOME is not a supported JDK (17-22): $Home"
+        "NilLoaderSDK: NILSDK_GRADLE_JAVA_HOME is not a supported JDK (17-22): $JavaHome"
     )
     exit 1
 }
 
-# JAVA_HOME, including the value set by actions/setup-java
+# JAVA_HOME — GitHub actions/setup-java sets this
 if (-not [string]::IsNullOrWhiteSpace($env:JAVA_HOME)) {
-    $Home = $env:JAVA_HOME.Trim('"')
+    $JavaHome = $env:JAVA_HOME.Trim('"')
 
-    if (Test-SupportedJava $Home) {
-        Write-Output $Home
+    if (Test-SupportedJava $JavaHome) {
+        Write-Output $JavaHome
         exit 0
     }
 }
 
 $Candidates = New-Object System.Collections.Generic.List[string]
 
-function Add-Candidate([string]$Home) {
-    if ([string]::IsNullOrWhiteSpace($Home)) { return }
+function Add-Candidate([string]$JavaHome) {
+    if ([string]::IsNullOrWhiteSpace($JavaHome)) {
+        return
+    }
 
-    $Home = $Home.Trim('"')
+    $JavaHome = $JavaHome.Trim('"')
 
     if (
-        (Test-Path (Join-Path $Home 'bin\java.exe')) -and
-        -not $Candidates.Contains($Home)
+        (Test-Path (Join-Path $JavaHome 'bin\java.exe')) -and
+        -not $Candidates.Contains($JavaHome)
     ) {
-        $Candidates.Add($Home)
+        $Candidates.Add($JavaHome)
     }
 }
 
@@ -99,22 +108,16 @@ foreach ($Root in $Roots) {
 }
 
 foreach ($Preferred in @(21, 17, 22, 20, 19, 18)) {
-    foreach ($Home in $Candidates) {
-        if ((Get-JavaMajor $Home) -eq $Preferred) {
-            Write-Output $Home
+    foreach ($JavaHome in $Candidates) {
+        if ((Get-JavaMajor $JavaHome) -eq $Preferred) {
+            Write-Output $JavaHome
             exit 0
         }
     }
 }
 
-[Console]::Error.WriteLine(
-    'NilLoaderSDK: no compatible Gradle JVM found.'
-)
-[Console]::Error.WriteLine(
-    'Install JDK 21 or 17, or set NILSDK_GRADLE_JAVA_HOME to its home directory.'
-)
-[Console]::Error.WriteLine(
-    'Gradle 8.8 cannot run on Java 25 (class-file major 69).'
-)
+[Console]::Error.WriteLine('NilLoaderSDK: no compatible Gradle JVM found.')
+[Console]::Error.WriteLine('Install JDK 21 or 17, or set NILSDK_GRADLE_JAVA_HOME.')
+[Console]::Error.WriteLine('Gradle 8.8 cannot run on Java 25.')
 
 exit 1
