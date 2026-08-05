@@ -34,6 +34,10 @@ public final class NilLoaderSDK {
         EVENT_BUS.register(eventType, listener, priority, receiveCancelled);
     }
 
+    public static <T extends Event> void unlisten(Class<T> eventType, EventBus.EventListener<T> listener) {
+        EVENT_BUS.unregister(eventType, listener);
+    }
+
     public static boolean post(Event event) {
         return EVENT_BUS.post(event);
     }

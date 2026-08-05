@@ -71,6 +71,13 @@ public abstract class NilModBase implements Runnable {
     }
 
     /**
+     * Removes a typed listener callback previously registered with listen().
+     */
+    protected final <T extends Event> void unlisten(Class<T> eventType, EventBus.EventListener<T> listener) {
+        NilLoaderSDK.unlisten(eventType, listener);
+    }
+
+    /**
      * Posts an event to the global SDK EventBus.
      */
     protected final boolean post(Event event) {
