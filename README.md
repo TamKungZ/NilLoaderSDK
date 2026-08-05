@@ -6,7 +6,7 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 
 ## Minecraft compatibility
 
-NilLoaderSDK `3.0.1` no longer has a hard bytecode dependency on a specific Minecraft JAR. Core systems such as events, KDL, metadata helpers, networking, logging, reflection, and mapping tooling can load independently of Minecraft 1.4.7.
+NilLoaderSDK `3.0.2` no longer has a hard bytecode dependency on a specific Minecraft JAR. Core systems such as events, KDL, metadata helpers, networking, logging, reflection, and mapping tooling can load independently of Minecraft 1.4.7.
 
 Minecraft-facing helpers are lazy and reflection-based. They only attempt to resolve Minecraft classes when explicitly called, and they require mappings/structure compatible with the running game version. Minecraft 1.4.7 still has built-in fallback mappings; additional mapping subsets are generated at build time from the pinned `tools/MinecraftRemapping` submodule.
 
@@ -116,6 +116,40 @@ Inside `NilModBase`, convenience methods are available:
 - `listen(Class<T>, EventListener<T>)` / `unlisten(Class<T>, EventListener<T>)`
 - `post(Event)`
 
+### Developer Toolbox (`-all.jar`)
+
+`NilLoaderSDK-3.0.2-all.jar` keeps the normal SDK API and additionally bundles optional developer libraries **without relocation** so downstream mods can import their upstream packages directly. The normal Maven artifact does not publish these libraries as transitive runtime dependencies.
+
+Bundled runtime tooling:
+- Byte Buddy `1.17.6` + Byte Buddy Agent `1.17.6` — runtime code generation/instrumentation
+- GEB core `0.5.4` — optional generated event bus
+- ClassGraph `4.8.184` — classpath/annotation discovery
+- SnakeYAML `2.6` — YAML parsing/emitting
+
+Convenience facades live under `me.tamkungz.nilloadersdk.tooling`:
+
+```java
+Map<String, Boolean> available = DeveloperToolbox.availability();
+Map<String, Object> yaml = YamlHelper.loadMap("enabled: true\n");
+List<String> listeners = ClassGraphHelper.classesWithAnnotation(
+        "com.example.AutoRegister", "com.example"
+);
+Class<? extends MyBase> generated = ByteBuddyHelper.makeSubclass(MyBase.class);
+GEB bus = GebHelper.createBus();
+```
+
+Byte Buddy self-attachment is never performed during SDK startup; `ByteBuddyHelper.installInstrumentation()` is explicit and may still be unavailable on JVMs/platforms that restrict attach (or when upstream agent self-attachment cannot operate from a repackaged JAR). Prefer instrumentation already supplied by the loader/agent when possible. YAML loading uses SnakeYAML's safe constructor and rejects duplicate keys.
+
+The helper classes themselves are present in the normal SDK for a stable API surface, but helpers that expose Byte Buddy/GEB/ClassGraph/SnakeYAML types require either the `-all.jar` or the matching upstream dependency on the consuming project's classpath. `DeveloperToolbox` itself has no hard optional-library dependency and is safe to use with the normal JAR.
+
+GEB's annotation processor is build-time only and is deliberately **not** put into the shadow JAR. A downstream project that authors GEB `@Listen` handlers should add:
+
+```gradle
+annotationProcessor 'foo.zaaarf.geb:processor:0.4.9'
+```
+
+Use the normal JAR if you do not need this toolbox; use `-all.jar` when you want these APIs available without maintaining the additional runtime dependency list.
+
 ### SDK-only Metadata (.nilsdkmod.kdl)
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkModMetadata.java`
 - `src/main/java/me/tamkungz/nilloadersdk/metadata/SdkMetadataKdl.java`
@@ -143,6 +177,7 @@ Version note:
 - `2.1.0` focuses on reliability: KDL 2 syntax coverage/round-tripping, safer event dispatch, atomic cooldowns, stricter targeting, and hardened NIO reconnect/disconnect handling.
 - `3.0.0` adds descriptor-aware SRG tooling, the external mapping submodule, cross-platform Gradle JVM discovery, and separated commit/release CI.
 - `3.0.1` removes the hard Minecraft 1.4.7 class link, makes Minecraft access lazy/reflection-only, and reads mapping input directly from `tools/MinecraftRemapping`.
+- `3.0.2` adds the optional developer-toolbox shadow JAR, safe helper facades for Byte Buddy/ClassGraph/SnakeYAML/GEB, corrected third-party licensing, and restored cross-platform CI/release automation.
 
 Compatibility/runtime behavior:
 - NilLoader (without this SDK) ignores it.
@@ -270,10 +305,10 @@ Examples:
 ./gradlew mappingToolJar
 ```
 
-The standalone JAR is emitted as `build/libs/nilloadersdk-3.0.1-mapping-tool.jar` and contains only the mapping utility code, never mapping data. It can be used without launching Minecraft:
+The standalone JAR is emitted as `build/libs/nilloadersdk-3.0.2-mapping-tool.jar` and contains only the mapping utility code, never mapping data. It can be used without launching Minecraft:
 
 ```bash
-java -jar build/libs/nilloadersdk-3.0.1-mapping-tool.jar inspect input.srg
+java -jar build/libs/nilloadersdk-3.0.2-mapping-tool.jar inspect input.srg
 ```
 
 See [`MAPPINGS.md`](MAPPINGS.md) for submodule setup and licensing notes.
@@ -420,7 +455,7 @@ This project is licensed under the GNU Lesser General Public License v3.0 or lat
 
 ## Maven Publishing (Project-local + GPG signed)
 
-Version `3.0.1` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
+Version `3.0.2` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, `-all` developer-toolbox JAR, standalone `-mapping-tool` JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
 
 GPG must be installed and available on `PATH`. The build uses Gradle's `useGpgCmd()`, so your normal GnuPG configuration and `gpg-agent` are used; private keys are never stored in this repository. The default GPG key is used unless you configure another key.
 
@@ -439,7 +474,14 @@ gradlew.bat publishProjectLocal
 Artifacts are written under:
 
 ```text
-maven/me/tamkungz/nilloadersdk/nilloadersdk/3.0.1/
+maven/me/tamkungz/nilloadersdk/nilloadersdk/3.0.2/
+```
+
+The classified artifacts are:
+
+```text
+nilloadersdk-3.0.2-all.jar          # SDK + optional developer toolbox
+nilloadersdk-3.0.2-mapping-tool.jar # standalone SRG/CSRG CLI, no mappings bundled
 ```
 
 To select a specific GPG key, put the setting in your user Gradle configuration (recommended: `~/.gradle/gradle.properties`) rather than committing secrets to this project:
@@ -460,7 +502,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:3.0.1'
+    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:3.0.2'
 }
 ```
 

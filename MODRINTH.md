@@ -6,7 +6,7 @@
   NilLoaderSDK
 </h1>
 
-NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 3.0.1 removes the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
+NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 3.0.2 keeps the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
 
 It provides:
 - metadata helpers for NilLoader + KDL
@@ -44,6 +44,9 @@ Use it when you want a single toolkit for lifecycle dispatching, reflection/rema
   - Supports `.nilmod.css` and `.nilsdkmod.kdl`
   - KDL-only runtime bootstrap for SDK-aware mods when root CSS is absent
   - Dependency policy support (`requires`, `safeload`, load order hints)
+- **Developer toolbox shadow JAR**
+  - Optional Byte Buddy, GEB, ClassGraph, and SnakeYAML APIs in `-all.jar` without package relocation
+  - Helper facades for instrumentation, scanning, YAML, and GEB bootstrap
 - **Diagnostics for pack/mod developers**
   - Verbose bootstrap pipeline logs
   - Loaded-mod table output:
@@ -81,7 +84,7 @@ nilloadersdk {
 
 ## Dependency (Gradle)
 
-For `3.0.1`, publish the SDK into its project-local `./maven` repository first:
+For `3.0.2`, publish the SDK into its project-local `./maven` repository first:
 
 ```bash
 ./gradlew publishProjectLocal
@@ -95,7 +98,7 @@ repositories {
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:3.0.1"
+  implementation "me.tamkungz.nilloadersdk:nilloadersdk:3.0.2"
 }
 ```
 

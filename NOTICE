@@ -1,7 +1,7 @@
-NilLoaderSDK 3.0.1
+NilLoaderSDK 3.0.2
 
-Complete third-party mapping files are not bundled with NilLoaderSDK.
-The build can read agaricusb/MinecraftRemapping from the pinned Git submodule at
-tools/MinecraftRemapping and emit only the lookup names referenced by SDK code
-into generated source. The external repository remains under its own copyright
-and terms; NilLoaderSDK does not relicense its contents.
+NilLoaderSDK is licensed under LGPL-3.0-or-later.
+
+The optional `-all.jar` includes developer-tooling libraries under their own permissive licenses. See THIRD_PARTY_LICENSES.md and META-INF/nilloadersdk/licenses/ in the distribution.
+
+Complete third-party Minecraft mapping files are not bundled with NilLoaderSDK. The build reads mapping input directly from the pinned tools/MinecraftRemapping Git submodule; that external repository remains under its own copyright and terms.

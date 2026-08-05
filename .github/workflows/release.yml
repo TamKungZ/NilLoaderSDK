@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 permissions:
   contents: write
@@ -11,54 +11,44 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout with submodules
-        uses: actions/checkout@v7
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
           submodules: recursive
+          fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.13"
-
-      - name: Verify pinned MinecraftRemapping submodule
-        run: python .github/scripts/check-submodule.py
-
-      - name: Set up Java 21
+      - name: Set up Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: "21"
-          cache: gradle
+          java-version: '21'
 
-      - name: Make wrapper executable
-        run: chmod +x ./gradlew ./gradle/find-gradle-java.sh
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
 
-      - name: Verify tag matches project version
-        run: python .github/scripts/check-release-version.py "${GITHUB_REF_NAME}"
+      - name: Verify release tag
+        run: python scripts/verify_release_tag.py "${GITHUB_REF_NAME}"
 
       - name: Build and test
         run: ./gradlew --no-daemon clean build test
 
-      - name: Extract release notes from CHANGE.md
-        run: python .github/scripts/extract-changelog.py "${GITHUB_REF_NAME}" build/release-notes.md
+      - name: Extract CHANGE.md section
+        run: python scripts/extract_changelog.py "${GITHUB_REF_NAME#v}" > RELEASE_NOTES.md
 
-      - name: Generate SHA-256 checksums
+      - name: Create checksums
         shell: bash
         run: |
-          set -euo pipefail
           cd build/libs
-          sha256sum *.jar > SHA256SUMS.txt
+          sha256sum *.jar > ../../SHA256SUMS.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          name: NilLoaderSDK ${{ github.ref_name }}
-          body_path: build/release-notes.md
+          body_path: RELEASE_NOTES.md
           files: |
             build/libs/*.jar
-            build/libs/SHA256SUMS.txt
+            SHA256SUMS.txt
           fail_on_unmatched_files: true

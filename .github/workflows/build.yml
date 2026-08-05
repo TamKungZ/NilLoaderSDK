@@ -2,8 +2,6 @@ name: Build
 
 on:
   push:
-    branches:
-      - "**"
   pull_request:
   workflow_dispatch:
 
@@ -11,39 +9,41 @@ permissions:
   contents: read
 
 jobs:
-  build-test:
-    name: ${{ matrix.os }} / JDK ${{ matrix.java }}
-    runs-on: ${{ matrix.os }}
+  build:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         java: [17, 21]
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout with submodules
-        uses: actions/checkout@v7
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.13"
-
-      - name: Verify pinned MinecraftRemapping submodule
-        run: python .github/scripts/check-submodule.py
+      - name: Verify MinecraftRemapping submodule
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git ls-files --stage tools/MinecraftRemapping | grep '^160000 ' >/dev/null || {
+            echo 'tools/MinecraftRemapping is not committed as a Git submodule (mode 160000).' >&2
+            echo 'Run scripts/setup-minecraft-remapping-submodule.sh once, then commit the gitlink.' >&2
+            exit 1
+          }
 
       - name: Set up Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
-          cache: gradle
 
-      - name: Make wrapper executable
-        if: runner.os != 'Windows'
-        run: chmod +x ./gradlew ./gradle/find-gradle-java.sh
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
 
       - name: Build and test (Linux)
         if: runner.os != 'Windows'
@@ -53,3 +53,11 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: .\gradlew.bat --no-daemon clean build test
+
+      - name: Upload JARs
+        if: matrix.os == 'ubuntu-latest' && matrix.java == 21
+        uses: actions/upload-artifact@v4
+        with:
+          name: NilLoaderSDK-jars
+          path: build/libs/*.jar
+          if-no-files-found: error

@@ -16,39 +16,16 @@ if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%
 
-@rem NilLoaderSDK bootstrap: Gradle 8.8 cannot run on Java 25. Find a compatible
-@rem installed launcher JDK (21/17 preferred) before starting Gradle.
+@rem NilLoaderSDK bootstrap: Gradle 8.8 cannot run on Java 25. Ask the
+@rem PowerShell finder to validate the current JAVA_HOME first (important for
+@rem actions/setup-java matrix jobs), then scan installed JDKs if necessary.
 set "NILSDK_SELECTED_JAVA_HOME="
 
-@rem Explicit override
-if defined NILSDK_GRADLE_JAVA_HOME (
-    if exist "%NILSDK_GRADLE_JAVA_HOME%\bin\java.exe" (
-        set "NILSDK_SELECTED_JAVA_HOME=%NILSDK_GRADLE_JAVA_HOME%"
-    )
-)
-
-@rem GitHub Actions / setup-java exposes version-specific JAVA_HOME variables.
-if not defined NILSDK_SELECTED_JAVA_HOME (
-    if defined JAVA_HOME_21_X64 (
-        if exist "%JAVA_HOME_21_X64%\bin\java.exe" (
-            set "NILSDK_SELECTED_JAVA_HOME=%JAVA_HOME_21_X64%"
-        )
-    )
-)
-
-if not defined NILSDK_SELECTED_JAVA_HOME (
-    if defined JAVA_HOME_17_X64 (
-        if exist "%JAVA_HOME_17_X64%\bin\java.exe" (
-            set "NILSDK_SELECTED_JAVA_HOME=%JAVA_HOME_17_X64%"
-        )
-    )
-)
-
-@rem Fall back to the PowerShell finder for normal Windows installations.
-if not defined NILSDK_SELECTED_JAVA_HOME (
-    for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do (
-        set "NILSDK_SELECTED_JAVA_HOME=%%J"
-    )
+@rem Explicit override is handled and validated by the finder as well. Keeping
+@rem all selection logic in one place avoids accidentally running a Java 17 CI
+@rem matrix job on a separately preinstalled Java 21.
+for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do (
+    set "NILSDK_SELECTED_JAVA_HOME=%%J"
 )
 
 if not defined NILSDK_SELECTED_JAVA_HOME goto noCompatibleJava
@@ -58,7 +35,7 @@ if exist "%JAVA_EXE%" goto init
 
 :noCompatibleJava
 echo.
-echo ERROR: NilLoaderSDK could not locate JDK 21 or 17 for Gradle 8.8.
+echo ERROR: NilLoaderSDK could not locate a supported JDK (17-22) for Gradle 8.8.
 echo Install JDK 21/17 or set NILSDK_GRADLE_JAVA_HOME.
 goto fail
 

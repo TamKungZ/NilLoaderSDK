@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.2] - 2026-08-06
+
+### Developer toolbox
+
+- Added the optional `NilLoaderSDK-3.0.2-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
+- Added `DeveloperToolbox` capability checks plus `ByteBuddyHelper`, `ClassGraphHelper`, `YamlHelper`, and `GebHelper` convenience APIs.
+- Byte Buddy self-attachment remains explicit; SDK startup never calls `ByteBuddyAgent.install()` automatically.
+- YAML helpers use `SafeConstructor`, reject duplicate mapping keys, and cap aliases for safer configuration loading.
+- Moved GEB's `processor` to the Gradle `annotationProcessor` configuration. It is build-time tooling and is not bundled in the runtime shadow JAR.
+- Optional toolbox dependencies are available to SDK compilation/tests but are not published as transitive dependencies of the normal Maven artifact.
+
+### Build and publishing
+
+- Ensured `assemble`/`build` creates the `-all.jar` and standalone `-mapping-tool.jar` alongside the normal JAR.
+- Attached both classified JARs to the Maven publication so project-local GPG publishing signs them together with sources/Javadocs.
+- Moved signing configuration after classified artifact attachment and added project license/implementation metadata to the standalone mapping-tool JAR.
+- Simplified the Windows Gradle launcher to respect the active `JAVA_HOME` selected by `actions/setup-java` before scanning other installed JDKs, while still rejecting unsupported Java 25 for Gradle 8.8.
+- Preserved service-provider metadata in the shadow JAR and added third-party notices/license files to the distribution.
+- Restored GitHub Actions `build.yml` for Ubuntu/Windows on JDK 17/21 and `release.yml` for `v*` tags, including tag/version validation, changelog extraction, SHA-256 checksums, and GitHub Release creation.
+- Restored release helper scripts and a submodule guard that detects a missing `160000` Git link for `tools/MinecraftRemapping`.
+
+### Fixed and documented
+
+- Replaced the accidental Gradle snippet previously stored in `THIRD_PARTY_LICENSES.md` with an actual third-party license inventory.
+- Updated stale `3.0.1` metadata and documentation references to the in-development `3.0.2` release.
+- Kept complete mapping data outside release artifacts; mapping input continues to come directly from `tools/MinecraftRemapping`.
+
 ## [3.0.1] - 2026-08-05
 
 ### Compatibility
