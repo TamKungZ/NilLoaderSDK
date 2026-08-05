@@ -19,7 +19,38 @@ set APP_HOME=%DIRNAME%
 @rem NilLoaderSDK bootstrap: Gradle 8.8 cannot run on Java 25. Find a compatible
 @rem installed launcher JDK (21/17 preferred) before starting Gradle.
 set "NILSDK_SELECTED_JAVA_HOME="
-for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do set "NILSDK_SELECTED_JAVA_HOME=%%J"
+
+@rem Explicit override
+if defined NILSDK_GRADLE_JAVA_HOME (
+    if exist "%NILSDK_GRADLE_JAVA_HOME%\bin\java.exe" (
+        set "NILSDK_SELECTED_JAVA_HOME=%NILSDK_GRADLE_JAVA_HOME%"
+    )
+)
+
+@rem GitHub Actions / setup-java exposes version-specific JAVA_HOME variables.
+if not defined NILSDK_SELECTED_JAVA_HOME (
+    if defined JAVA_HOME_21_X64 (
+        if exist "%JAVA_HOME_21_X64%\bin\java.exe" (
+            set "NILSDK_SELECTED_JAVA_HOME=%JAVA_HOME_21_X64%"
+        )
+    )
+)
+
+if not defined NILSDK_SELECTED_JAVA_HOME (
+    if defined JAVA_HOME_17_X64 (
+        if exist "%JAVA_HOME_17_X64%\bin\java.exe" (
+            set "NILSDK_SELECTED_JAVA_HOME=%JAVA_HOME_17_X64%"
+        )
+    )
+)
+
+@rem Fall back to the PowerShell finder for normal Windows installations.
+if not defined NILSDK_SELECTED_JAVA_HOME (
+    for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do (
+        set "NILSDK_SELECTED_JAVA_HOME=%%J"
+    )
+)
+
 if not defined NILSDK_SELECTED_JAVA_HOME goto noCompatibleJava
 set "JAVA_HOME=%NILSDK_SELECTED_JAVA_HOME%"
 set "JAVA_EXE=%JAVA_HOME%\bin\java.exe"
