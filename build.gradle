@@ -314,6 +314,7 @@ publishing {
                     developer {
                         id = 'TamKungZ_'
                         name = 'TamKungZ_'
+                        email = 'dev@tamkungz.me'
                     }
                 }
 
