@@ -23,6 +23,12 @@ public final class PacketCodec {
     }
 
     public static ByteBuffer encode(PacketRegistry registry, Packet packet) throws IOException {
+        if (registry == null) {
+            throw new IllegalArgumentException("registry must not be null");
+        }
+        if (packet == null) {
+            throw new IllegalArgumentException("packet must not be null");
+        }
         int packetId = registry.resolvePacketId(packet);
         byte[] payload = serializePayload(packet);
         int payloadSize = payload.length;
@@ -37,6 +43,15 @@ public final class PacketCodec {
     }
 
     public static DecodedPacket tryDecode(PacketRegistry registry, ByteBuffer readBuffer, int maxFrameSize) throws IOException {
+        if (registry == null) {
+            throw new IllegalArgumentException("registry must not be null");
+        }
+        if (readBuffer == null) {
+            throw new IllegalArgumentException("readBuffer must not be null");
+        }
+        if (maxFrameSize < PACKET_ID_SIZE) {
+            throw new IllegalArgumentException("maxFrameSize must be >= " + PACKET_ID_SIZE);
+        }
         if (readBuffer.remaining() < HEADER_SIZE) {
             return null;
         }
