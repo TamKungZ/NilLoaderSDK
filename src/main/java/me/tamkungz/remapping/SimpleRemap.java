@@ -3,7 +3,6 @@ package me.tamkungz.remapping;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -53,6 +52,7 @@ public final class SimpleRemap {
      * Built-in mappings are applied last so manual fixes win.
      */
     public static SimpleRemap forVersion(String version) {
+        requireVersion(version);
 		SimpleRemap r = empty(version);
 
 		boolean hasGenerated = applyGenerated(version, r, true);
@@ -70,6 +70,7 @@ public final class SimpleRemap {
 
     /** Creates a remap using built-in manual mappings only. */
 	public static SimpleRemap builtinOnly(String version) {
+        requireVersion(version);
 		SimpleRemap r = empty(version);
 		if (!applyBuiltin(version, r, true)) {
 			throw new IllegalArgumentException("No built-in mappings for version: " + version);
@@ -79,6 +80,7 @@ public final class SimpleRemap {
 
     /** Creates a remap using local/bundled SRG mappings only. */
 	public static SimpleRemap generatedOnly(String version) {
+        requireVersion(version);
 		SimpleRemap r = empty(version);
 		if (!applyGenerated(version, r, true)) {
 			throw new IllegalArgumentException(
@@ -95,6 +97,7 @@ public final class SimpleRemap {
 	}
 
     public static boolean applyBuiltin(String version, SimpleRemap remap, boolean overwriteExisting) {
+        if (version == null || remap == null) return false;
 		switch (version) {
 			case "1.4.7":
 				applyBuiltin147(remap, overwriteExisting);
@@ -105,6 +108,7 @@ public final class SimpleRemap {
 	}
 
     public static boolean applyGenerated(String version, SimpleRemap remap, boolean overwriteExisting) {
+        if (version == null || remap == null) return false;
 		// 1) Bundled resources inside JAR
 		if (loadBundledSrgIfPresent(remap, version, overwriteExisting)) {
 			return true;
@@ -116,6 +120,13 @@ public final class SimpleRemap {
 
     public boolean isEmpty() {
         return fields.isEmpty() && methods.isEmpty() && classes.isEmpty();
+    }
+
+
+    private static void requireVersion(String version) {
+        if (version == null || version.trim().isEmpty()) {
+            throw new IllegalArgumentException("version must not be blank");
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -178,7 +189,8 @@ public final class SimpleRemap {
     private static boolean loadLocalSrgIfPresent(SimpleRemap r, String version, boolean overwriteExisting) {
         File primary = new File(".remapping/" + version + "/" + PRIMARY_SRG);
         if (primary.exists() && primary.isFile()) {
-            try (BufferedReader br = new BufferedReader(new FileReader(primary))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(primary), StandardCharsets.UTF_8))) {
                 parseSrg(br, r, overwriteExisting, false);
                 return true;
             } catch (Exception ignored) {
