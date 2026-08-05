@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-	id 'com.unascribed.nilgradle' version '1.4.4'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'maven-publish'
     id 'signing'
@@ -30,11 +29,6 @@ tasks.withType(Javadoc).configureEach {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
     failOnError = false
-}
-
-nil {
-    id 'nilloadersdk'
-    standalone true
 }
 
 configurations {
