@@ -78,7 +78,7 @@ public class KdlWriter {
                 }
             }
         }
-        if (needsQuote || "true".equals(id) || "false".equals(id) || "null".equals(id)) {
+        if (needsQuote || "true".equals(id) || "false".equals(id) || "null".equals(id) || "inf".equals(id) || "-inf".equals(id) || "nan".equals(id)) {
             return "\"" + escapeString(id) + "\"";
         }
         return id;

@@ -52,8 +52,11 @@ public abstract class KdlValue {
         @Override public KdlNumber asNumber() { return this; }
 
         @Override public String toString() {
-            if (value instanceof BigDecimal || value instanceof BigInteger || value instanceof Double || value instanceof Float) {
-                return value.toString();
+            if (value instanceof Double || value instanceof Float) {
+                double d = value.doubleValue();
+                if (Double.isNaN(d)) return "#nan";
+                if (d == Double.POSITIVE_INFINITY) return "#inf";
+                if (d == Double.NEGATIVE_INFINITY) return "#-inf";
             }
             return value.toString();
         }
@@ -71,7 +74,7 @@ public abstract class KdlValue {
         @Override public boolean isNull() { return false; }
         @Override public KdlBoolean asBoolean() { return this; }
 
-        @Override public String toString() { return String.valueOf(value); }
+        @Override public String toString() { return value ? "#true" : "#false"; }
     }
 
     public static class KdlNull extends KdlValue {
@@ -82,7 +85,7 @@ public abstract class KdlValue {
         @Override public boolean isNull() { return true; }
         @Override public KdlNull asNull() { return this; }
 
-        @Override public String toString() { return "null"; }
+        @Override public String toString() { return "#null"; }
     }
 
     @Override
