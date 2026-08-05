@@ -1,10 +1,10 @@
 package me.tamkungz.nilloadersdk.util.kdl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-
-import java.math.BigInteger;
-
-import static org.junit.Assert.*;
 
 public class KdlParserTest {
 
@@ -16,10 +16,10 @@ public class KdlParserTest {
         assertEquals(Boolean.TRUE, node.getArguments().get(0).getValue());
         assertEquals(Boolean.FALSE, node.getArguments().get(1).getValue());
         assertNull(node.getArguments().get(2).getValue());
-        assertEquals(new BigInteger("255"), node.getArguments().get(3).getValue());
-        assertEquals(new BigInteger("15"), node.getArguments().get(4).getValue());
-        assertEquals(new BigInteger("10"), node.getArguments().get(5).getValue());
-        assertEquals(new BigInteger("1000"), node.getArguments().get(6).getValue());
+        assertEquals(Integer.valueOf(255), node.getArguments().get(3).getValue());
+        assertEquals(Integer.valueOf(15), node.getArguments().get(4).getValue());
+        assertEquals(Integer.valueOf(10), node.getArguments().get(5).getValue());
+        assertEquals(Integer.valueOf(1000), node.getArguments().get(6).getValue());
         assertEquals(Double.POSITIVE_INFINITY, node.getArguments().get(7).getValue());
         assertEquals(Double.NEGATIVE_INFINITY, node.getArguments().get(8).getValue());
         assertTrue(Double.isNaN(((Number) node.getArguments().get(9).getValue()).doubleValue()));
@@ -48,7 +48,7 @@ public class KdlParserTest {
         KdlNode shown = document.getNodes().get(0);
         assertEquals("shown", shown.getName());
         assertEquals(1, shown.getArguments().size());
-        assertEquals(new BigInteger("20"), shown.getArguments().get(0).getValue());
+        assertEquals(Integer.valueOf(20), shown.getArguments().get(0).getValue());
         assertEquals(Boolean.TRUE, shown.getProperties().get("kept").getValue());
         assertFalse(shown.getProperties().containsKey("removed"));
     }
