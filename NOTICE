@@ -1,0 +1,6 @@
+NilLoaderSDK 3.0.0
+
+Third-party mapping data is not bundled with NilLoaderSDK.
+The project can reference agaricusb/MinecraftRemapping as a Git submodule for
+local development and research. That external repository remains under its
+own copyright and terms; NilLoaderSDK does not relicense its contents.

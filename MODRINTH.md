@@ -32,6 +32,8 @@ Use it when you want a single toolkit for lifecycle dispatching, reflection/rema
   - Optional auto-network bridge for fast integration
 - **Reflection + remapping helpers**
   - Utilities for interacting with obfuscated legacy internals safely and repeatedly
+  - Descriptor-aware SRG/CSRG inspect, reverse, chain, and lookup tooling
+  - Optional external MinecraftRemapping Git submodule for local mapping research; complete mapping sets are not bundled in releases
 - **Metadata bridge (CSS + KDL)**
   - Supports `.nilmod.css` and `.nilsdkmod.kdl`
   - KDL-only runtime bootstrap for SDK-aware mods when root CSS is absent
@@ -73,7 +75,7 @@ nilloadersdk {
 
 ## Dependency (Gradle)
 
-For the `2.1.0` development release, publish the SDK into its project-local `./maven` repository first:
+For `3.0.0`, publish the SDK into its project-local `./maven` repository first:
 
 ```bash
 ./gradlew publishProjectLocal
@@ -87,7 +89,7 @@ repositories {
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:2.1.0"
+  implementation "me.tamkungz.nilloadersdk:nilloadersdk:3.0.0"
 }
 ```
 

@@ -11,7 +11,7 @@ NilLoaderSDK is a utility SDK for NilLoader-based Minecraft mods. It bundles ref
 - `settings.gradle` — Gradle settings
 - `CHANGE.md` — project change history
 - `nilloader.nilmod.css` — NilLoader metadata
-- `nilplugin.txt`, `nilplugin-verbose.txt`, `nilagent.txt` — runtime logs
+- `nilplugin.txt`, `nilplugin-verbose.txt`, `nilagent.txt` — checked-in decompiler/reference dumps used during SDK development
 
 ### Core SDK
 - `src/main/java/me/tamkungz/nilloadersdk/NilModBase.java` — mod base class
@@ -124,6 +124,7 @@ Version note:
 - SDK KDL metadata support is introduced as part of `2.0.0` (before that, metadata was CSS-only in `*.nilmod.css`).
 - `2.0.1` adds SDK-side runtime bootstrap for KDL-only mods (mods that ship `.nilsdkmod.kdl` without root `*.nilmod.css`).
 - `2.1.0` focuses on reliability: KDL 2 syntax coverage/round-tripping, safer event dispatch, atomic cooldowns, stricter targeting, and hardened NIO reconnect/disconnect handling.
+- `3.0.0` adds descriptor-aware SRG tooling, external mapping-submodule workflows, cross-platform Gradle JVM discovery, and separated commit/release CI.
 
 Compatibility/runtime behavior:
 - NilLoader (without this SDK) ignores it.
@@ -231,8 +232,33 @@ Important: register patches in SDK entrypoint phases (`premain` / `hijack`) befo
 - `src/main/java/me/tamkungz/nilloadersdk/util/TargetFinder.java`
 - `src/main/java/me/tamkungz/nilloadersdk/util/CooldownTracker.java`
 
-### Remapping
-- `src/main/java/me/tamkungz/remapping/SimpleRemap.java`
+### Remapping and Mapping Tooling
+- `src/main/java/me/tamkungz/remapping/SimpleRemap.java` — compatibility-oriented runtime lookup API.
+- `src/main/java/me/tamkungz/nilloadersdk/mapping/SrgMappingSet.java` — descriptor-aware SRG mapping model.
+- `src/main/java/me/tamkungz/nilloadersdk/mapping/SrgMappings.java` — read/write/reverse/chain utilities for SRG/CSRG files.
+- `src/main/java/me/tamkungz/nilloadersdk/mapping/MappingToolMain.java` — local CLI used by the Gradle `mappingTool` task and standalone mapping-tool JAR.
+- `tools/MinecraftRemapping` — external `agaricusb/MinecraftRemapping` Git submodule.
+- `MAPPINGS.md` — mapping-source and redistribution policy.
+
+NilLoaderSDK does not bundle complete mapping collections. Local mapping input lives under the gitignored `.remapping/` directory.
+
+Examples:
+
+```bash
+./gradlew mappingTool --args="inspect tools/MinecraftRemapping/1.4.7/mcp2obf.srg"
+./gradlew mappingTool --args="reverse input.srg output.srg"
+./gradlew mappingTool --args="chain first.srg second.srg output.srg"
+./gradlew prepareRemapping -PmcVersion=1.4.7
+./gradlew mappingToolJar
+```
+
+The standalone JAR is emitted as `build/libs/nilloadersdk-3.0.0-mapping-tool.jar` and contains only the mapping utility code, never mapping data. It can be used without launching Minecraft:
+
+```bash
+java -jar build/libs/nilloadersdk-3.0.0-mapping-tool.jar inspect input.srg
+```
+
+See [`MAPPINGS.md`](MAPPINGS.md) for submodule setup and licensing notes.
 
 ### Networking (Java NIO)
 - `src/main/java/me/tamkungz/nilloadersdk/network/Connection.java`
@@ -246,11 +272,9 @@ Important: register patches in SDK entrypoint phases (`premain` / `hijack`) befo
 - `src/main/java/me/tamkungz/nilloadersdk/network/packet/PacketFactory.java`
 - `src/main/java/me/tamkungz/nilloadersdk/network/packet/PacketRegistry.java`
 
-### Example Mods
-- `src/main/java/me/tamkungz/nilloadersdk/NilLoaderSDKMod_SDK_Example.java`
-- `src/main/java/me/tamkungz/nilloadersdk/LetYourFriendEatingMod_SDK_Example.java`
+### SDK Metadata Resources
 - `src/main/resources/nilloadersdk.nilmod.css`
-- `src/main/resources/letyourfriendeating.nilmod.css`
+- `src/main/resources/nilloadersdk.nilsdkmod.kdl`
 
 ---
 
@@ -311,6 +335,23 @@ Optional:
 
 Normal builds no longer decompile NilLoader as a side effect. Decompilation remains available as an explicit developer task.
 
+The wrapper now chooses a Gradle-compatible installed JDK automatically. JDK **21** is preferred, then **17**; this prevents an ambient Java 25 installation from starting Gradle 8.8 and failing with class-file major version 69. Compilation itself still targets Java 8 via `--release 8`.
+
+Override the launcher JDK when needed:
+
+```bash
+NILSDK_GRADLE_JAVA_HOME=/path/to/jdk-21 ./gradlew clean build
+```
+
+PowerShell:
+
+```powershell
+$env:NILSDK_GRADLE_JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-21"
+.\gradlew.bat clean build
+```
+
+Normal build:
+
 ```bash
 ./gradlew clean build
 ```
@@ -327,11 +368,16 @@ Optional NilLoader decompile:
 ./gradlew decompileNilloader
 ```
 
+### GitHub Actions
+
+- `.github/workflows/build.yml` runs build/tests for every pushed commit and pull request on Ubuntu + Windows using JDK 17 and 21.
+- `.github/workflows/release.yml` runs only for tags matching `v*`. It verifies the tag matches `build.gradle`, builds/tests, extracts that version's section from `CHANGE.md`, and creates the GitHub Release with JARs and SHA-256 checksums.
+
 ---
 
 ## Notes
 
-This document is intentionally updated to match the current, real project state after major logging and entrypoint stability changes.
+This document tracks the current 3.x project layout and build/runtime behavior.
 
 ---
 
@@ -353,7 +399,7 @@ This project is licensed under the GNU Lesser General Public License v3.0 or lat
 
 ## Maven Publishing (Project-local + GPG signed)
 
-Version `2.1.0` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
+Version `3.0.0` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
 
 GPG must be installed and available on `PATH`. The build uses Gradle's `useGpgCmd()`, so your normal GnuPG configuration and `gpg-agent` are used; private keys are never stored in this repository. The default GPG key is used unless you configure another key.
 
@@ -372,7 +418,7 @@ gradlew.bat publishProjectLocal
 Artifacts are written under:
 
 ```text
-maven/me/tamkungz/nilloadersdk/nilloadersdk/2.1.0/
+maven/me/tamkungz/nilloadersdk/nilloadersdk/3.0.0/
 ```
 
 To select a specific GPG key, put the setting in your user Gradle configuration (recommended: `~/.gradle/gradle.properties`) rather than committing secrets to this project:
@@ -393,7 +439,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:2.1.0'
+    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:3.0.0'
 }
 ```
 

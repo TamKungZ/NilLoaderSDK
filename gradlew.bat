@@ -16,33 +16,19 @@ if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%
 
-@rem Find java.exe
-if defined JAVA_HOME goto findJavaFromJavaHome
-
-set JAVA_EXE=java.exe
-%JAVA_EXE% -version >NUL 2>&1
-if "%ERRORLEVEL%" == "0" goto init
-
-echo.
-echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
-echo.
-echo Please set the JAVA_HOME variable in your environment to match the
-echo location of your Java installation.
-
-goto fail
-
-:findJavaFromJavaHome
-set JAVA_HOME=%JAVA_HOME:"=%
-set JAVA_EXE=%JAVA_HOME%/bin/java.exe
-
+@rem NilLoaderSDK bootstrap: Gradle 8.8 cannot run on Java 25. Find a compatible
+@rem installed launcher JDK (21/17 preferred) before starting Gradle.
+set "NILSDK_SELECTED_JAVA_HOME="
+for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do set "NILSDK_SELECTED_JAVA_HOME=%%J"
+if not defined NILSDK_SELECTED_JAVA_HOME goto noCompatibleJava
+set "JAVA_HOME=%NILSDK_SELECTED_JAVA_HOME%"
+set "JAVA_EXE=%JAVA_HOME%\bin\java.exe"
 if exist "%JAVA_EXE%" goto init
 
+:noCompatibleJava
 echo.
-echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
-echo.
-echo Please set the JAVA_HOME variable in your environment to match the
-echo location of your Java installation.
-
+echo ERROR: NilLoaderSDK could not locate JDK 21 or 17 for Gradle 8.8.
+echo Install JDK 21/17 or set NILSDK_GRADLE_JAVA_HOME.
 goto fail
 
 :init

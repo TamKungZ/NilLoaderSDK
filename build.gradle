@@ -7,14 +7,20 @@ plugins {
 }
 
 group = 'me.tamkungz.nilloadersdk'
-version = '2.1.0'
+version = '3.0.0'
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
+    // Gradle itself runs on an automatically selected JDK 21/17, while all SDK
+    // bytecode stays Java 8 compatible. This avoids requiring a second JDK 8.
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
     withJavadocJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release.set(8)
 }
 
 tasks.withType(Javadoc).configureEach {
@@ -116,7 +122,7 @@ public final class ModBuildInfo {
 }
 
 task generateSimpleRemapMappings {
-    inputs.dir '.remapping'
+    inputs.dir('.remapping').optional()
     inputs.files fileTree('src/main/java') { include '**/*.java' }
     outputs.file "$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java"
 
@@ -308,7 +314,6 @@ publishing {
                     developer {
                         id = 'TamKungZ_'
                         name = 'TamKungZ_'
-                        email = 'dev@tamkungz.me'
                     }
                 }
 
@@ -343,6 +348,65 @@ tasks.register('publishProjectLocal') {
     group = 'publishing'
     description = 'Publishes the signed Maven artifacts into ./maven.'
     dependsOn 'publishMavenJavaPublicationToProjectLocalRepository'
+}
+
+
+def mappingToolSources = files(
+    'src/main/java/me/tamkungz/nilloadersdk/mapping/SrgMappingSet.java',
+    'src/main/java/me/tamkungz/nilloadersdk/mapping/SrgMappings.java',
+    'src/main/java/me/tamkungz/nilloadersdk/mapping/MappingToolMain.java'
+)
+def mappingToolClassesDir = layout.buildDirectory.dir('mapping-tool/classes')
+
+tasks.register('compileMappingToolJava', JavaCompile) {
+    group = 'mapping'
+    description = 'Compiles only the standalone mapping utility (no Minecraft/NilLoader classpath required).'
+    source = mappingToolSources
+    classpath = files()
+    destinationDirectory.set(mappingToolClassesDir)
+    options.encoding = 'UTF-8'
+    options.release.set(8)
+}
+
+tasks.register('mappingTool', JavaExec) {
+    group = 'mapping'
+    description = 'Runs the local SRG/CSRG mapping utility. Example: ./gradlew mappingTool --args="inspect file.srg"'
+    dependsOn 'compileMappingToolJava'
+    classpath = files(mappingToolClassesDir)
+    mainClass = 'me.tamkungz.nilloadersdk.mapping.MappingToolMain'
+}
+
+tasks.register('mappingToolJar', Jar) {
+    group = 'mapping'
+    description = 'Builds a standalone mapping utility JAR. It contains code only, never mapping data.'
+    dependsOn 'compileMappingToolJava'
+    archiveClassifier.set('mapping-tool')
+    from mappingToolClassesDir
+    manifest {
+        attributes('Main-Class': 'me.tamkungz.nilloadersdk.mapping.MappingToolMain')
+    }
+}
+
+tasks.named('assemble') {
+    dependsOn 'mappingToolJar'
+}
+
+tasks.register('prepareRemapping') {
+    group = 'mapping'
+    description = 'Imports one mapping file from tools/MinecraftRemapping into the gitignored .remapping directory.'
+    dependsOn 'compileMappingToolJava'
+    doLast {
+        String mcVersion = providers.gradleProperty('mcVersion').orNull
+        String mappingFile = providers.gradleProperty('mappingFile').getOrElse('mcp2obf.srg')
+        if (mcVersion == null || mcVersion.trim().isEmpty()) {
+            throw new GradleException('Missing -PmcVersion=<version>, for example -PmcVersion=1.4.7')
+        }
+        javaexec {
+            classpath = files(mappingToolClassesDir)
+            mainClass = 'me.tamkungz.nilloadersdk.mapping.MappingToolMain'
+            args 'import-submodule', mcVersion, mappingFile
+        }
+    }
 }
 
 tasks.register('cleanProjectLocalMaven', Delete) {

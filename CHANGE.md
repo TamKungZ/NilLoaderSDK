@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-08-05
+
+### Added
+- Added `agaricusb/MinecraftRemapping` as an external Git submodule configuration at `tools/MinecraftRemapping`, pinned by the bootstrap scripts to `8ca7ba25dfd67eae43b3c73d02603ff6c085a6d7`.
+- Added a Java 8-compatible SRG/CSRG mapping API: `SrgMappingSet` and `SrgMappings`.
+- Added `MappingToolMain` with `inspect`, `reverse`, `chain`, `lookup`, `list-submodule`, and `import-submodule` commands, plus a standalone `mapping-tool` JAR that contains no mapping data.
+- Added Gradle `mappingTool` and `prepareRemapping` tasks for local mapping workflows.
+- Added `MAPPINGS.md` documenting mapping-source policy and local-only import behavior.
+- Added cross-platform Gradle launcher JVM discovery for Linux/macOS and Windows. JDK 21 and 17 are preferred automatically so a system-wide Java 25 does not break Gradle 8.8.
+- Added GitHub Actions `build.yml` for push/pull-request builds and tests on Ubuntu/Windows with JDK 17/21.
+- Added GitHub Actions `release.yml` for `v*` tags. Releases are created only after build/tests succeed, include JARs plus SHA-256 checksums, and use the matching `CHANGE.md` section as the release body.
+- Added release helper scripts that verify tag/project version consistency and extract one changelog section.
+
+### Changed
+- Bumped the SDK and metadata version to `3.0.0`.
+- Java compilation now targets Java 8 with `--release 8` while Gradle itself runs on a supported modern launcher JDK; a dedicated local JDK 8 installation is no longer required for normal builds.
+- Complete mapping collections are no longer shipped in the project ZIP/release tree. `.remapping/` remains gitignored and is treated as developer-supplied local build input.
+- GitHub release responsibilities were separated from normal commit CI: `build.yml` only validates commits/PRs, while `release.yml` owns tagged releases.
+
+### Fixed
+- Fixed Gradle 8.8 startup failing under Java 25 with `Unsupported class file major version 69` by selecting a compatible installed launcher JDK before Gradle starts.
+- Fixed old mapping workflows relying on copied 100+ MB mapping trees by replacing them with explicit local import tooling and an external submodule reference.
+- Mapping parsing now reports conflicting entries instead of silently replacing them, mapping composition keeps method descriptors namespace-correct, and CSRG member resolution no longer depends on class-entry order.
+
 ## [2.1.0] - 2026-08-05
 
 ### Added

@@ -2,66 +2,54 @@ name: Build
 
 on:
   push:
-    tags:
-      - "v*"
-    branches: [ "**" ]
+    branches:
+      - "**"
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
+  build-test:
+    name: ${{ matrix.os }} / JDK ${{ matrix.java }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        java: [8, 17, 21]
-
-    name: JDK ${{ matrix.java }}
+        os: [ubuntu-latest, windows-latest]
+        java: [17, 21]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout with submodules
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Verify pinned MinecraftRemapping submodule
+        run: python .github/scripts/check-submodule.py
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
           cache: gradle
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+      - name: Make wrapper executable
+        if: runner.os != 'Windows'
+        run: chmod +x ./gradlew ./gradle/find-gradle-java.sh
 
-      - name: Ensure .remapping directory exists
-        run: mkdir -p .remapping
+      - name: Build and test (Linux)
+        if: runner.os != 'Windows'
+        run: ./gradlew --no-daemon clean build test
 
-      - name: Build
-        run: ./gradlew --no-daemon clean build
-
-      - name: Prepare release asset name
-        if: startsWith(github.ref, 'refs/tags/v')
-        shell: bash
-        run: |
-          set -euo pipefail
-          JAR=""
-          if ls build/libs/*-all.jar >/dev/null 2>&1; then
-            JAR=$(ls -1 build/libs/*-all.jar | head -n 1)
-          else
-            JAR=$(find build/libs -maxdepth 1 -type f -name "*.jar" ! -name "*-sources.jar" ! -name "*-javadoc.jar" | head -n 1)
-          fi
-
-          if [ -z "$JAR" ]; then
-            echo "No build jar found in build/libs"
-            exit 1
-          fi
-
-          ASSET="build/libs/${{ github.event.repository.name }}-${{ github.ref_name }}-jdk${{ matrix.java }}.jar"
-          cp "$JAR" "$ASSET"
-          echo "ASSET_PATH=$ASSET" >> "$GITHUB_ENV"
-
-      - name: Upload release asset
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ${{ env.ASSET_PATH }}
+      - name: Build and test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: .\gradlew.bat --no-daemon clean build test
