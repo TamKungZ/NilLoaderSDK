@@ -44,7 +44,16 @@ public final class MinecraftAutoNetworkBridge implements Runnable {
         final int pollMs = positiveIntProp("nilloadersdk.network.autoclient.pollMs", 1000);
         final int maxFrame = positiveIntProp("nilloadersdk.network.autoclient.maxFrame", 1024 * 1024);
 
-        final SimpleRemap remap = SimpleRemap.forVersion("1.4.7");
+        final SimpleRemap remap = resolveRemap();
+        if (remap == null) {
+            synchronized (MinecraftAutoNetworkBridge.class) {
+                worker = null;
+                running = false;
+                started = false;
+                lastInWorld = false;
+            }
+            return;
+        }
 
         while (running) {
             try {
@@ -165,6 +174,25 @@ public final class MinecraftAutoNetworkBridge implements Runnable {
 
     public static boolean isRunning() {
         return running;
+    }
+
+    private static SimpleRemap resolveRemap() {
+        String version = System.getProperty("nilloadersdk.minecraft.version");
+        if (version == null || version.trim().isEmpty()) {
+            version = System.getProperty("nilloadersdk.network.autoclient.minecraftVersion");
+        }
+        if (version == null || version.trim().isEmpty()) {
+            LOG.warn("Auto network bridge is enabled but no Minecraft version was provided. "
+                    + "Set -Dnilloadersdk.minecraft.version=<version>; bridge disabled safely.");
+            return null;
+        }
+
+        try {
+            return SimpleRemap.forVersion(version.trim());
+        } catch (Throwable t) {
+            LOG.warn("No usable mappings for Minecraft " + version + "; auto network bridge disabled safely", t);
+            return null;
+        }
     }
 
     private static int positiveIntProp(String key, int fallback) {

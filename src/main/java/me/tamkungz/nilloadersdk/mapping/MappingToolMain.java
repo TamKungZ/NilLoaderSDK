@@ -1,12 +1,10 @@
 package me.tamkungz.nilloadersdk.mapping;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +37,10 @@ public final class MappingToolMain {
             System.out.println("Wrote chained mapping: " + args[3] + " (" + chained.size() + " entries)");
         } else if ("lookup".equals(command)) {
             lookup(args);
-        } else if ("import-submodule".equals(command)) {
-            importSubmodule(args);
+        } else if ("inspect-submodule".equals(command)) {
+            inspectSubmodule(args);
+        } else if ("submodule-path".equals(command)) {
+            printSubmodulePath(args);
         } else if ("list-submodule".equals(command)) {
             listSubmodule(args);
         } else {
@@ -84,7 +84,7 @@ public final class MappingToolMain {
         throw new IllegalArgumentException("lookup type must be class, field, or method");
     }
 
-    private static void importSubmodule(String[] args) throws IOException {
+    private static Path submoduleFile(String[] args) throws IOException {
         requireArgs(args, 2);
         String version = args[1];
         String fileName = args.length >= 3 ? args[2] : "mcp2obf.srg";
@@ -96,14 +96,15 @@ public final class MappingToolMain {
             throw new IOException("Mapping file not found in submodule: " + source
                     + "\nRun git submodule update --init --recursive first.");
         }
-        Path output = Paths.get(".remapping", version, fileName);
-        Files.createDirectories(output.getParent());
-        Files.copy(source, output, StandardCopyOption.REPLACE_EXISTING);
+        return source;
+    }
 
-        Files.write(Paths.get(".remapping", version, "SOURCE.txt"), Collections.singletonList(
-                "Local build input copied from " + source.toString().replace('\\', '/')
-                        + ". Do not commit .remapping without verifying the source license."), StandardCharsets.UTF_8);
-        System.out.println("Imported local build mapping: " + output);
+    private static void inspectSubmodule(String[] args) throws IOException {
+        inspect(submoduleFile(args));
+    }
+
+    private static void printSubmodulePath(String[] args) throws IOException {
+        System.out.println(submoduleFile(args).toAbsolutePath());
     }
 
     private static void listSubmodule(String[] args) throws IOException {
@@ -157,6 +158,7 @@ public final class MappingToolMain {
         System.out.println("  lookup <file> field <owner> <name>");
         System.out.println("  lookup <file> method <owner> <name> <descriptor>");
         System.out.println("  list-submodule [version]");
-        System.out.println("  import-submodule <version> [mappingFile=mcp2obf.srg]");
+        System.out.println("  inspect-submodule <version> [mappingFile=mcp2obf.srg]");
+        System.out.println("  submodule-path <version> [mappingFile=mcp2obf.srg]");
     }
 }

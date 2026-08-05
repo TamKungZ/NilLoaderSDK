@@ -20,8 +20,9 @@ import java.util.Map;
  *   String methodName = remap.method("EntityPlayer", "getHeldItem");
  *
  * Sources:
- *   1) Bundled/local SRG files
- *   2) Built-in manual mappings
+ *   1) Generated mappings extracted at build time from tools/MinecraftRemapping
+ *   2) Direct SRG files in tools/MinecraftRemapping for developer runs
+ *   3) Built-in manual mappings
  *
  * Priority in forVersion():
  *   external SRG -> built-in manual overrides
@@ -61,7 +62,7 @@ public final class SimpleRemap {
 		if (!hasGenerated && !hasBuiltin) {
 			throw new IllegalArgumentException(
 					"No mappings found for version: " + version +
-					" (expected built-in mappings or local SRG files at .remapping/" + version + "/)"
+					" (expected built-in mappings or SRG files at tools/MinecraftRemapping/" + version + "/)"
 			);
 		}
 
@@ -78,7 +79,7 @@ public final class SimpleRemap {
 		return r;
 	}
 
-    /** Creates a remap using local/bundled SRG mappings only. */
+    /** Creates a remap using generated/submodule SRG mappings only. */
 	public static SimpleRemap generatedOnly(String version) {
         requireVersion(version);
 		SimpleRemap r = empty(version);
@@ -109,13 +110,20 @@ public final class SimpleRemap {
 
     public static boolean applyGenerated(String version, SimpleRemap remap, boolean overwriteExisting) {
         if (version == null || remap == null) return false;
-		// 1) Bundled resources inside JAR
+
+        // 1) Build-generated subset extracted from the pinned MinecraftRemapping submodule.
+        // This is what makes release JARs usable without shipping the submodule itself.
+        if (GeneratedSrgMappings.apply(version, remap, overwriteExisting)) {
+            return true;
+        }
+
+		// 2) Optional bundled resources retained for backwards compatibility.
 		if (loadBundledSrgIfPresent(remap, version, overwriteExisting)) {
 			return true;
 		}
 
-		// 2) Local development files
-		return loadLocalSrgIfPresent(remap, version, overwriteExisting);
+		// 3) Direct developer source from the pinned MinecraftRemapping submodule.
+		return loadSubmoduleSrgIfPresent(remap, version, overwriteExisting);
 	}
 
     public boolean isEmpty() {
@@ -186,8 +194,8 @@ public final class SimpleRemap {
         }
     }
 
-    private static boolean loadLocalSrgIfPresent(SimpleRemap r, String version, boolean overwriteExisting) {
-        File primary = new File(".remapping/" + version + "/" + PRIMARY_SRG);
+    private static boolean loadSubmoduleSrgIfPresent(SimpleRemap r, String version, boolean overwriteExisting) {
+        File primary = new File("tools/MinecraftRemapping/" + version + "/" + PRIMARY_SRG);
         if (primary.exists() && primary.isFile()) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(
                     new FileInputStream(primary), StandardCharsets.UTF_8))) {
@@ -198,7 +206,7 @@ public final class SimpleRemap {
             }
         }
 
-        File fallback = new File(".remapping/" + version + "/" + FALLBACK_SRG);
+        File fallback = new File("tools/MinecraftRemapping/" + version + "/" + FALLBACK_SRG);
         if (fallback.exists() && fallback.isFile()) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(
                     new FileInputStream(fallback), StandardCharsets.UTF_8))) {

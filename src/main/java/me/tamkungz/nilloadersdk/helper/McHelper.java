@@ -1,8 +1,6 @@
 package me.tamkungz.nilloadersdk.helper;
 
 import me.tamkungz.remapping.SimpleRemap;
-import net.minecraft.client.Minecraft;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -22,15 +20,43 @@ public final class McHelper {
     // MINECRAFT INSTANCE
     // ─────────────────────────────────────────────
 
-    /** Returns the Minecraft instance. */
+    /**
+     * Returns the Minecraft instance without linking NilLoaderSDK to a specific
+     * Minecraft class at class-load time. The target class is resolved only when
+     * this helper is explicitly called.
+     */
     public static Object getMinecraft(SimpleRemap remap) throws Exception {
-        return Minecraft.class.getMethod(remap.method("Minecraft", "getInstance")).invoke(null);
+        if (remap == null) throw new IllegalArgumentException("remap must not be null");
+
+        Class<?> minecraftClass = loadClass(remap.cls("Minecraft"));
+        String getter = remap.method("Minecraft", "getInstance");
+
+        try {
+            java.lang.reflect.Method method = minecraftClass.getMethod(getter);
+            if (!method.isAccessible()) method.setAccessible(true);
+            return method.invoke(null);
+        } catch (NoSuchMethodException ignored) {
+            java.lang.reflect.Method method = minecraftClass.getDeclaredMethod(getter);
+            if (!method.isAccessible()) method.setAccessible(true);
+            return method.invoke(null);
+        }
     }
 
     /** Safe version of getMinecraft (returns null on failure). */
     public static Object getMinecraftSafe(SimpleRemap remap) {
         try { return getMinecraft(remap); }
         catch (Throwable ignored) { return null; }
+    }
+
+    /** Returns true when the mapped Minecraft client class can be resolved. */
+    public static boolean isMinecraftPresent(SimpleRemap remap) {
+        if (remap == null) return false;
+        try {
+            loadClass(remap.cls("Minecraft"));
+            return true;
+        } catch (Throwable ignored) {
+            return false;
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -305,6 +331,28 @@ public final class McHelper {
     // ─────────────────────────────────────────────
     // INTERNAL
     // ─────────────────────────────────────────────
+
+    private static Class<?> loadClass(String name) throws ClassNotFoundException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new ClassNotFoundException("Minecraft class mapping is blank");
+        }
+
+        String binaryName = name.replace('/', '.');
+        ClassLoader context = Thread.currentThread().getContextClassLoader();
+        if (context != null) {
+            try {
+                return Class.forName(binaryName, false, context);
+            } catch (ClassNotFoundException ignored) {
+                // Fall through to the SDK's own loader.
+            }
+        }
+
+        ClassLoader own = McHelper.class.getClassLoader();
+        if (own != null) {
+            return Class.forName(binaryName, false, own);
+        }
+        return Class.forName(binaryName);
+    }
 
     private static double tryDouble(Object target, String... names) {
         for (String n : names) {
