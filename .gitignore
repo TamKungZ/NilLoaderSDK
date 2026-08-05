@@ -6,6 +6,10 @@ out/
 # Java
 *.class
 
+# Python helper caches
+__pycache__/
+*.py[cod]
+
 # IDE (IntelliJ / VSCode)
 .idea/
 *.iml

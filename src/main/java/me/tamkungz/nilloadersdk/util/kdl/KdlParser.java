@@ -404,7 +404,7 @@ public class KdlParser {
                 }
                 BigInteger value = new BigInteger(digits.toString(), radix);
                 if (negative) value = value.negate();
-                return new KdlValue.KdlNumber(value);
+                return new KdlValue.KdlNumber(narrowInteger(value));
             }
         }
 
@@ -433,7 +433,7 @@ public class KdlParser {
             if (decimal) {
                 return new KdlValue.KdlNumber(new BigDecimal(raw));
             }
-            return new KdlValue.KdlNumber(new BigInteger(raw));
+            return new KdlValue.KdlNumber(narrowInteger(new BigInteger(raw)));
         } catch (NumberFormatException e) {
             throw new KdlParseException("Invalid number format: " + raw + " at " + positionInfo(), e);
         }

@@ -1,0 +1,3 @@
+[submodule "tools/MinecraftRemapping"]
+	path = tools/MinecraftRemapping
+	url = https://github.com/agaricusb/MinecraftRemapping.git
