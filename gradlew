@@ -69,7 +69,7 @@ CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
 # NilLoaderSDK bootstrap: Gradle 8.8 cannot run on Java 25. Find a compatible
 # installed launcher JDK (21/17 preferred) before starting Gradle.
-FOUND_JAVA_HOME=`"$APP_HOME/gradle/find-gradle-java.sh"` || die "Unable to locate a Gradle-compatible JDK."
+FOUND_JAVA_HOME=`sh "$APP_HOME/gradle/find-gradle-java.sh"` || die "Unable to locate a Gradle-compatible JDK."
 JAVA_HOME="$FOUND_JAVA_HOME"
 export JAVA_HOME
 JAVACMD="$JAVA_HOME/bin/java"

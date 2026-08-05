@@ -33,7 +33,7 @@ jobs:
         run: python scripts/verify_release_tag.py "${GITHUB_REF_NAME}"
 
       - name: Make Gradle wrapper executable
-        run: chmod +x gradlew
+        run: chmod +x gradle/find-gradle-java.sh
 
       - name: Build and test
         run: ./gradlew --no-daemon clean build test
