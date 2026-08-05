@@ -21,11 +21,35 @@ set APP_HOME=%DIRNAME%
 @rem actions/setup-java matrix jobs), then scan installed JDKs if necessary.
 set "NILSDK_SELECTED_JAVA_HOME="
 
-@rem Explicit override is handled and validated by the finder as well. Keeping
-@rem all selection logic in one place avoids accidentally running a Java 17 CI
-@rem matrix job on a separately preinstalled Java 21.
-for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do (
-    set "NILSDK_SELECTED_JAVA_HOME=%%J"
+@rem Explicit override
+if defined NILSDK_GRADLE_JAVA_HOME (
+    if exist "%NILSDK_GRADLE_JAVA_HOME%\bin\java.exe" (
+        set "NILSDK_SELECTED_JAVA_HOME=%NILSDK_GRADLE_JAVA_HOME%"
+    )
+)
+
+@rem GitHub Actions setup-java exposes these.
+if not defined NILSDK_SELECTED_JAVA_HOME (
+    if defined JAVA_HOME_21_X64 (
+        if exist "%JAVA_HOME_21_X64%\bin\java.exe" (
+            set "NILSDK_SELECTED_JAVA_HOME=%JAVA_HOME_21_X64%"
+        )
+    )
+)
+
+if not defined NILSDK_SELECTED_JAVA_HOME (
+    if defined JAVA_HOME_17_X64 (
+        if exist "%JAVA_HOME_17_X64%\bin\java.exe" (
+            set "NILSDK_SELECTED_JAVA_HOME=%JAVA_HOME_17_X64%"
+        )
+    )
+)
+
+@rem Normal Windows installation fallback
+if not defined NILSDK_SELECTED_JAVA_HOME (
+    for /f "usebackq delims=" %%J in (`powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%APP_HOME%gradle\find-gradle-java.ps1"`) do (
+        set "NILSDK_SELECTED_JAVA_HOME=%%J"
+    )
 )
 
 if not defined NILSDK_SELECTED_JAVA_HOME goto noCompatibleJava

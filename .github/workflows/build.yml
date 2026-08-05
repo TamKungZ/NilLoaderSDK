@@ -45,6 +45,10 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Make Gradle wrapper executable
+        if: runner.os != 'Windows'
+        run: chmod +x gradlew
+
       - name: Build and test (Linux)
         if: runner.os != 'Windows'
         run: ./gradlew --no-daemon clean build test
