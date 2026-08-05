@@ -428,7 +428,9 @@ public final class KdlOnlyModBootstrapper {
                 activeModField.set(null, meta.id);
 
                 Class<?> clazz = Class.forName(premainClass);
-                Object o = clazz.newInstance();
+                Constructor<?> premainCtor = clazz.getDeclaredConstructor();
+                if (!premainCtor.isAccessible()) premainCtor.setAccessible(true);
+                Object o = premainCtor.newInstance();
                 if (o instanceof Runnable) {
                     ((Runnable) o).run();
                 } else {
