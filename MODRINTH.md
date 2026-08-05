@@ -1,4 +1,10 @@
-# NilLoaderSDK
+<h1>
+  <img src="https://raw.githubusercontent.com/TamKungZ/NilLoaderSDK/refs/heads/main/src/main/resources/assets/nilloadersdk/icon.svg"
+       width="30"
+       alt=""
+       aria-hidden="true">
+  NilLoaderSDK
+</h1>
 
 NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 3.0.1 removes the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
 
@@ -85,7 +91,7 @@ Then point the consuming project at that directory:
 
 ```gradle
 repositories {
-  maven { url = uri("/absolute/path/to/NilLoaderSDK/maven") }
+  maven { url = uri("https://repo.tamkungz.me") }
 }
 
 dependencies {
