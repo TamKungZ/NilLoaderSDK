@@ -430,10 +430,6 @@ publishing {
             from components.java
             artifactId = 'nilloadersdk'
 
-            // Classified developer artifacts are published and signed beside the normal
-            // library without making their bundled dependencies transitive in the POM.
-            artifact tasks.named('shadowJar')
-
             pom {
                 name = 'NilLoaderSDK'
                 description = 'SDK for NilLoader-based Minecraft mods'
