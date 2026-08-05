@@ -41,8 +41,8 @@ public final class MinecraftAutoNetworkBridge implements Runnable {
     public void run() {
         final String host = System.getProperty("nilloadersdk.network.autoclient.host", "127.0.0.1");
         final int port = intProp("nilloadersdk.network.autoclient.port", 25566);
-        final int pollMs = intProp("nilloadersdk.network.autoclient.pollMs", 1000);
-        final int maxFrame = intProp("nilloadersdk.network.autoclient.maxFrame", 1024 * 1024);
+        final int pollMs = positiveIntProp("nilloadersdk.network.autoclient.pollMs", 1000);
+        final int maxFrame = positiveIntProp("nilloadersdk.network.autoclient.maxFrame", 1024 * 1024);
 
         final SimpleRemap remap = SimpleRemap.forVersion("1.4.7");
 
@@ -57,9 +57,14 @@ public final class MinecraftAutoNetworkBridge implements Runnable {
                     inWorld = player != null && world != null;
                 }
 
-                if (inWorld && !lastInWorld) {
-                    startClient(host, port, maxFrame);
-                } else if (!inWorld && lastInWorld) {
+                if (inWorld) {
+                    // Restart if the NIO client stopped after exhausting reconnect attempts.
+                    NioClient current = activeClient;
+                    if (!lastInWorld || current == null || !current.isRunning()) {
+                        stopClient();
+                        startClient(host, port, maxFrame);
+                    }
+                } else if (lastInWorld || activeClient != null) {
                     stopClient();
                 }
 
@@ -80,6 +85,12 @@ public final class MinecraftAutoNetworkBridge implements Runnable {
         }
 
         stopClient();
+        synchronized (MinecraftAutoNetworkBridge.class) {
+            worker = null;
+            running = false;
+            started = false;
+            lastInWorld = false;
+        }
     }
 
     private static synchronized void startClient(final String host, final int port, final int maxFrame) {
@@ -141,6 +152,24 @@ public final class MinecraftAutoNetworkBridge implements Runnable {
         activeClient = null;
         clientThread = null;
         LOG.info("Auto client stopped");
+    }
+
+    public static synchronized void stop() {
+        running = false;
+        Thread w = worker;
+        if (w != null) w.interrupt();
+        stopClient();
+        // started/worker are cleared by the worker's exit path. Keeping them until then
+        // prevents a stop+immediate-start race where the old worker clears the new state.
+    }
+
+    public static boolean isRunning() {
+        return running;
+    }
+
+    private static int positiveIntProp(String key, int fallback) {
+        int value = intProp(key, fallback);
+        return value > 0 ? value : fallback;
     }
 
     private static int intProp(String key, int fallback) {

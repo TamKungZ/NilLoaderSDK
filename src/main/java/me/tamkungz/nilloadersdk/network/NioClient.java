@@ -28,13 +28,34 @@ public final class NioClient implements Runnable {
     private volatile boolean running;
     private Selector selector;
     private SocketChannel channel;
-    private Connection connection;
+    private volatile Connection connection;
     private int reconnectAttempts;
     private long reconnectAtMillis = -1L;
 
     public NioClient(String host, int port, int maxFrameSize, int maxReconnectAttempts,
                      long baseReconnectDelayMillis, PacketRegistry registry, ClientListener listener) {
-        this.host = host;
+        if (host == null || host.trim().isEmpty()) {
+            throw new IllegalArgumentException("host must not be blank");
+        }
+        if (port < 1 || port > 65535) {
+            throw new IllegalArgumentException("port must be between 1 and 65535");
+        }
+        if (maxFrameSize < PacketCodec.PACKET_ID_SIZE) {
+            throw new IllegalArgumentException("maxFrameSize must be >= " + PacketCodec.PACKET_ID_SIZE);
+        }
+        if (maxReconnectAttempts < 0) {
+            throw new IllegalArgumentException("maxReconnectAttempts must be >= 0");
+        }
+        if (baseReconnectDelayMillis < 0L) {
+            throw new IllegalArgumentException("baseReconnectDelayMillis must be >= 0");
+        }
+        if (registry == null) {
+            throw new IllegalArgumentException("registry must not be null");
+        }
+        if (listener == null) {
+            throw new IllegalArgumentException("listener must not be null");
+        }
+        this.host = host.trim();
         this.port = port;
         this.maxFrameSize = maxFrameSize;
         this.maxReconnectAttempts = maxReconnectAttempts;
@@ -59,8 +80,14 @@ public final class NioClient implements Runnable {
         selector = Selector.open();
         reconnectAttempts = 0;
         reconnectAtMillis = -1L;
-        openNewChannelAndConnect();
         running = true;
+        try {
+            openNewChannelAndConnect();
+        } catch (IOException e) {
+            running = false;
+            shutdownNow();
+            throw e;
+        }
     }
 
     public synchronized void stop() {
@@ -74,22 +101,44 @@ public final class NioClient implements Runnable {
         }
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    public boolean isConnected() {
+        Connection current = connection;
+        return current != null && current.isOpen();
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public int getReconnectAttempts() {
+        return reconnectAttempts;
+    }
+
     public void send(final Packet packet) {
+        if (packet == null) {
+            throw new IllegalArgumentException("packet must not be null");
+        }
         enqueueTask(new Runnable() {
             @Override
             public void run() {
-                if (connection == null) {
+                Connection current = connection;
+                if (current == null || !current.isOpen()) {
                     return;
                 }
                 try {
-                    connection.enqueue(PacketCodec.encode(registry, packet));
-                    SelectionKey key = connection.getChannel().keyFor(selector);
+                    current.enqueue(PacketCodec.encode(registry, packet));
+                    SelectionKey key = current.getChannel().keyFor(selector);
                     if (key != null && key.isValid()) {
                         key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
                     }
                 } catch (Throwable t) {
-                    listener.onException(t);
-                    handleDisconnect(true);
+                    // Packet serialization/registration errors are application errors and must not
+                    // tear down an otherwise healthy network connection.
+                    notifyException(t);
                 }
             }
         });
@@ -109,8 +158,9 @@ public final class NioClient implements Runnable {
                 tryReconnectIfNeeded();
             }
         } catch (IOException ioException) {
-            listener.onException(ioException);
+            notifyException(ioException);
         } finally {
+            running = false;
             shutdownNow();
         }
     }
@@ -129,14 +179,14 @@ public final class NioClient implements Runnable {
                 if (key.isConnectable()) {
                     finishConnect(key);
                 }
-                if (key.isReadable()) {
+                if (key.isValid() && key.isReadable()) {
                     readPackets();
                 }
-                if (key.isWritable()) {
+                if (key.isValid() && key.isWritable()) {
                     writePackets(key);
                 }
             } catch (Throwable t) {
-                listener.onException(t);
+                notifyException(t);
                 handleDisconnect(true);
             }
         }
@@ -152,18 +202,19 @@ public final class NioClient implements Runnable {
         reconnectAtMillis = -1L;
         key.interestOps(SelectionKey.OP_READ);
         key.attach(connection);
-        listener.onConnected();
+        notifyConnected();
     }
 
     private void readPackets() throws IOException {
-        if (connection == null) {
+        Connection current = connection;
+        if (current == null) {
             return;
         }
 
-        ByteBuffer readBuffer = connection.getReadBuffer();
-        connection.ensureReadBufferWritable(1024);
+        ByteBuffer readBuffer = current.getReadBuffer();
+        current.ensureReadBufferWritable(1024);
 
-        int read = connection.getChannel().read(readBuffer);
+        int read = current.getChannel().read(readBuffer);
         if (read == -1) {
             handleDisconnect(true);
             return;
@@ -181,57 +232,86 @@ public final class NioClient implements Runnable {
 
             Packet packet = decoded.getPacket();
             if (packet != null) {
-                listener.onPacket(packet);
+                notifyPacket(packet);
+            } else {
+                notifyUnknownPacket(decoded.getPacketId());
             }
         }
 
         readBuffer.compact();
         if (!readBuffer.hasRemaining()) {
-            connection.ensureReadBufferWritable(1024);
+            current.ensureReadBufferWritable(1024);
         }
     }
 
     private void writePackets(SelectionKey key) throws IOException {
-        if (connection == null) {
+        Connection current = connection;
+        if (current == null) {
             return;
         }
 
-        connection.flushOutbound();
-        if (!connection.hasOutboundData()) {
+        current.flushOutbound();
+        if (!current.hasOutboundData() && key.isValid()) {
             key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
         }
     }
 
     private void handleDisconnect(boolean scheduleReconnect) {
         boolean wasConnected = connection != null;
-
-        try {
-            SelectionKey key = channel == null ? null : channel.keyFor(selector);
-            if (key != null) {
-                key.cancel();
-            }
-            if (channel != null) {
-                channel.close();
-            }
-        } catch (IOException ignored) {
-        }
+        SocketChannel oldChannel = channel;
 
         connection = null;
         channel = null;
 
-        if (wasConnected) {
-            listener.onDisconnected();
+        try {
+            SelectionKey key = oldChannel == null || selector == null ? null : oldChannel.keyFor(selector);
+            if (key != null) {
+                key.cancel();
+            }
+            if (oldChannel != null) {
+                oldChannel.close();
+            }
+        } catch (IOException ignored) {
         }
 
-        if (scheduleReconnect && running && reconnectAttempts < maxReconnectAttempts) {
-            reconnectAttempts++;
-            reconnectAtMillis = System.currentTimeMillis() + (reconnectAttempts * baseReconnectDelayMillis);
+        if (wasConnected) {
+            notifyDisconnected();
+        }
+
+        if (scheduleReconnect && running) {
+            scheduleReconnect();
         } else {
             reconnectAtMillis = -1L;
         }
     }
 
+    private void scheduleReconnect() {
+        if (reconnectAttempts >= maxReconnectAttempts) {
+            reconnectAtMillis = -1L;
+            running = false;
+            notifyReconnectExhausted(reconnectAttempts);
+            if (selector != null) {
+                selector.wakeup();
+            }
+            return;
+        }
+
+        reconnectAttempts++;
+        long multiplier = reconnectAttempts;
+        long delay;
+        if (baseReconnectDelayMillis != 0L && multiplier > Long.MAX_VALUE / baseReconnectDelayMillis) {
+            delay = Long.MAX_VALUE;
+        } else {
+            delay = multiplier * baseReconnectDelayMillis;
+        }
+        long now = System.currentTimeMillis();
+        reconnectAtMillis = delay >= Long.MAX_VALUE - now ? Long.MAX_VALUE : now + delay;
+    }
+
     private void enqueueTask(Runnable task) {
+        if (task == null) {
+            return;
+        }
         pendingTasks.add(task);
         if (selector != null) {
             selector.wakeup();
@@ -244,11 +324,15 @@ public final class NioClient implements Runnable {
             if (task == null) {
                 return;
             }
-            task.run();
+            try {
+                task.run();
+            } catch (Throwable t) {
+                notifyException(t);
+            }
         }
     }
 
-    private void tryReconnectIfNeeded() throws IOException {
+    private void tryReconnectIfNeeded() {
         if (!running || connection != null || reconnectAtMillis < 0L) {
             return;
         }
@@ -258,25 +342,123 @@ public final class NioClient implements Runnable {
         }
 
         reconnectAtMillis = -1L;
-        openNewChannelAndConnect();
+        try {
+            openNewChannelAndConnect();
+        } catch (Throwable t) {
+            notifyException(t);
+            closeChannelOnly();
+            scheduleReconnect();
+        }
     }
 
     private void openNewChannelAndConnect() throws IOException {
-        channel = SocketChannel.open();
-        channel.configureBlocking(false);
-        channel.connect(new InetSocketAddress(host, port));
-        channel.register(selector, SelectionKey.OP_CONNECT);
+        closeChannelOnly();
+        SocketChannel newChannel = SocketChannel.open();
+        boolean success = false;
+        try {
+            newChannel.configureBlocking(false);
+            boolean connectedImmediately = newChannel.connect(new InetSocketAddress(host, port));
+            channel = newChannel;
+            if (connectedImmediately) {
+                Connection immediate = new Connection(newChannel);
+                SelectionKey key = newChannel.register(selector, SelectionKey.OP_READ, immediate);
+                connection = immediate;
+                reconnectAttempts = 0;
+                reconnectAtMillis = -1L;
+                // Keep the registration referenced before notifying user code.
+                if (!key.isValid()) throw new IOException("Socket registration became invalid during connect");
+                notifyConnected();
+            } else {
+                newChannel.register(selector, SelectionKey.OP_CONNECT);
+            }
+            success = true;
+        } finally {
+            if (!success) {
+                connection = null;
+                channel = null;
+                try {
+                    newChannel.close();
+                } catch (IOException ignored) {
+                }
+            }
+        }
+    }
+
+    private void closeChannelOnly() {
+        SocketChannel old = channel;
+        channel = null;
+        if (old == null) {
+            return;
+        }
+        try {
+            SelectionKey key = selector == null ? null : old.keyFor(selector);
+            if (key != null) {
+                key.cancel();
+            }
+            old.close();
+        } catch (IOException ignored) {
+        }
     }
 
     private void shutdownNow() {
         handleDisconnect(false);
+        pendingTasks.clear();
 
         try {
             if (selector != null) {
                 selector.close();
             }
         } catch (IOException ignored) {
+        } finally {
+            selector = null;
+        }
+    }
+
+    private void notifyConnected() {
+        try {
+            listener.onConnected();
+        } catch (Throwable t) {
+            notifyException(t);
+        }
+    }
+
+    private void notifyDisconnected() {
+        try {
+            listener.onDisconnected();
+        } catch (Throwable t) {
+            notifyException(t);
+        }
+    }
+
+    private void notifyPacket(Packet packet) {
+        try {
+            listener.onPacket(packet);
+        } catch (Throwable t) {
+            notifyException(t);
+        }
+    }
+
+    private void notifyUnknownPacket(int packetId) {
+        try {
+            listener.onUnknownPacket(packetId);
+        } catch (Throwable t) {
+            notifyException(t);
+        }
+    }
+
+    private void notifyReconnectExhausted(int attempts) {
+        try {
+            listener.onReconnectExhausted(attempts);
+        } catch (Throwable t) {
+            notifyException(t);
+        }
+    }
+
+    private void notifyException(Throwable throwable) {
+        try {
+            listener.onException(throwable);
+        } catch (Throwable ignored) {
+            // A broken error callback must not terminate the selector loop.
         }
     }
 }
-
