@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -47,39 +48,48 @@ final class EntrypointDispatcher {
     private EntrypointDispatcher() {}
 
     static void dispatch(String phase) {
+        if (phase == null || phase.trim().isEmpty()) {
+            LOG.warn("Skipping entrypoint dispatch with blank phase");
+            return;
+        }
+
+        String normalizedPhase = phase.trim().toLowerCase(Locale.ROOT);
+        if (!"premain".equals(normalizedPhase) && !"hijack".equals(normalizedPhase)) {
+            LOG.warn("Skipping unknown entrypoint phase=" + phase);
+            return;
+        }
+
         Set<String> active = ACTIVE_PHASES.get();
-        if (active.contains(phase)) {
-            LOG.warn("Skipping re-entrant dispatch for phase=" + phase);
+        if (!active.add(normalizedPhase)) {
+            LOG.warn("Skipping re-entrant dispatch for phase=" + normalizedPhase);
             return;
         }
-
-        if (!NilLoaderSDK.post(new PreEntrypointDispatchEvent(phase))) {
-            LOG.warn("Entrypoint dispatch cancelled by event listener for phase=" + phase);
-            return;
-        }
-
-        NilLoaderSDK.post(new PhaseEvent(phase));
-
-        active.add(phase);
-        int executed = 0;
 
         try {
-            executed += dispatchModules(phase);
+            // The phase is marked active before events fire so an event listener cannot recurse
+            // back into the same phase before the guard is installed.
+            if (!NilLoaderSDK.post(new PreEntrypointDispatchEvent(normalizedPhase))) {
+                LOG.warn("Entrypoint dispatch cancelled by event listener for phase=" + normalizedPhase);
+                return;
+            }
 
-            List<String> targets = collectTargets(phase);
+            NilLoaderSDK.post(new PhaseEvent(normalizedPhase));
+
+            int executed = dispatchModules(normalizedPhase);
+            List<String> targets = collectTargets(normalizedPhase);
             for (String cn : targets) {
-                if (runTarget(cn, phase)) {
+                if (runTarget(cn, normalizedPhase)) {
                     executed++;
                 }
             }
 
             if (executed == 0) {
-                LOG.warn("No entrypoints executed for phase=" + phase);
+                LOG.warn("No entrypoints executed for phase=" + normalizedPhase);
             }
 
-            NilLoaderSDK.post(new PostEntrypointDispatchEvent(phase, executed));
+            NilLoaderSDK.post(new PostEntrypointDispatchEvent(normalizedPhase, executed));
         } finally {
-            active.remove(phase);
+            active.remove(normalizedPhase);
             if (active.isEmpty()) {
                 ACTIVE_PHASES.remove();
             }
@@ -159,7 +169,11 @@ final class EntrypointDispatcher {
 
         try {
             Class<?> c = Class.forName(className);
-            Object inst = c.newInstance();
+            java.lang.reflect.Constructor<?> ctor = c.getDeclaredConstructor();
+            if (!ctor.isAccessible()) {
+                ctor.setAccessible(true);
+            }
+            Object inst = ctor.newInstance();
 
             if (!(inst instanceof Runnable)) {
                 LOG.error("Target is not Runnable: " + className + " (phase=" + phase + ")");
