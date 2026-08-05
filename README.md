@@ -96,7 +96,7 @@ NilLoaderSDK.listen(PhaseEvent.class, e -> {
 
 Inside `NilModBase`, convenience methods are available:
 - `registerEvents()` / `registerEvents(Object)`
-- `listen(Class<T>, EventListener<T>)`
+- `listen(Class<T>, EventListener<T>)` / `unlisten(Class<T>, EventListener<T>)`
 - `post(Event)`
 
 ### SDK-only Metadata (.nilsdkmod.kdl)
@@ -123,6 +123,7 @@ This metadata is **SDK-only** and kept separate from NilLoader base metadata to 
 Version note:
 - SDK KDL metadata support is introduced as part of `2.0.0` (before that, metadata was CSS-only in `*.nilmod.css`).
 - `2.0.1` adds SDK-side runtime bootstrap for KDL-only mods (mods that ship `.nilsdkmod.kdl` without root `*.nilmod.css`).
+- `2.1.0` focuses on reliability: KDL 2 syntax coverage/round-tripping, safer event dispatch, atomic cooldowns, stricter targeting, and hardened NIO reconnect/disconnect handling.
 
 Compatibility/runtime behavior:
 - NilLoader (without this SDK) ignores it.
@@ -308,8 +309,22 @@ Optional:
 
 ## Build
 
+Normal builds no longer decompile NilLoader as a side effect. Decompilation remains available as an explicit developer task.
+
+```bash
+./gradlew clean build
+```
+
+Windows:
+
 ```bat
-gradlew.bat compileJava
+gradlew.bat clean build
+```
+
+Optional NilLoader decompile:
+
+```bash
+./gradlew decompileNilloader
 ```
 
 ---
@@ -336,59 +351,62 @@ This project is licensed under the GNU Lesser General Public License v3.0 or lat
 
 ---
 
-## Maven Publishing
+## Maven Publishing (Project-local + GPG signed)
 
-The Gradle build is configured with `maven-publish` in `build.gradle`.
+Version `2.1.0` publishes to a Maven repository **inside this project** at `./maven/`; it does not publish to `~/.m2` and no remote repository credentials are required. The publication includes the main JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP `.asc` signatures.
 
-### Publish to local Maven cache
+GPG must be installed and available on `PATH`. The build uses Gradle's `useGpgCmd()`, so your normal GnuPG configuration and `gpg-agent` are used; private keys are never stored in this repository. The default GPG key is used unless you configure another key.
 
-```bat
-gradlew.bat publishToMavenLocal
+Publish:
+
+```bash
+./gradlew publishProjectLocal
 ```
 
-### Public package pages
+Windows:
 
-- Package index (direct artifact path):
-  - `https://repo.tamkungz.me/me/tamkungz/nilloadersdk/nilloadersdk/1.0.0/`
-- Repository web UI (browse/search):
-  - `https://repo.tamkungz.me`
+```bat
+gradlew.bat publishProjectLocal
+```
 
-### Use in another project
+Artifacts are written under:
+
+```text
+maven/me/tamkungz/nilloadersdk/nilloadersdk/2.1.0/
+```
+
+To select a specific GPG key, put the setting in your user Gradle configuration (recommended: `~/.gradle/gradle.properties`) rather than committing secrets to this project:
+
+```properties
+signing.gnupg.keyName=YOUR_KEY_ID
+```
+
+If your GPG setup needs a passphrase, prefer letting `gpg-agent` prompt/cache it instead of committing a passphrase in `gradle.properties`.
+
+### Use the project-local repository from another Gradle project
+
+Point the consumer at this project's `maven` directory:
 
 ```gradle
 repositories {
-  maven {
-    url "https://repo.tamkungz.me"
-  }
+    maven { url = uri('/absolute/path/to/NilLoaderSDK/maven') }
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:1.0.0"
+    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:2.1.0'
 }
 ```
 
-### Publish to a remote Maven repository
+For a sibling checkout you can use a relative path, for example:
 
-You can configure publishing via Gradle properties or environment variables.
-
-#### Option A: Gradle properties
-
-```text
--PmavenRepoUrl=https://your.repo/repository/maven-releases/
--PmavenRepoUser=your-username
--PmavenRepoPassword=your-password
+```gradle
+repositories {
+    maven { url = uri('../NilLoaderSDK/maven') }
+}
 ```
 
-#### Option B: Environment variables
+Clean only the generated project-local Maven repository:
 
-```text
-MAVEN_REPO_URL
-MAVEN_REPO_USER
-MAVEN_REPO_PASSWORD
-```
-
-Then run:
-
-```bat
-gradlew.bat publish
+```bash
+./gradlew cleanProjectLocalMaven
 ```

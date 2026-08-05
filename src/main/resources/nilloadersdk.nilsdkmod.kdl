@@ -2,7 +2,7 @@ nilmod {
   name "NilLoaderSDK"
   description "Utilities and helper SDK for NilLoader mod development."
   authors "TamKungZ_"
-  version "2.0.1"
+  version "2.1.0"
 }
 
 entrypoints {
@@ -34,6 +34,6 @@ nilloadersdk {
   credits "TamKungZ_" "unascribed"
 
   // Optional: when false, missing required mods will stop startup
-  // safeload false
+  // safeload #false
 }
 

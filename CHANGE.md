@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-08-05
+
+### Added
+- Added project-local Maven publishing to `./maven` via `publishProjectLocal`; publications are OpenPGP-signed with the user's normal GnuPG / `gpg-agent` setup.
+- Added inherited event-listener discovery, typed-listener unregistration, and event-bus clearing APIs.
+- Added cooldown remaining-time queries and expired-player cleanup.
+- Added NIO client/server state inspection (`isRunning`, `isConnected`, connection snapshots/counts) and server bound-port lookup.
+- Added default listener hooks for unknown packet IDs and exhausted client reconnect attempts without breaking existing listener implementations.
+- Added packet-registry inspection helpers (`isRegistered`, `size`, `clear`).
+- Added lifecycle controls/state for the automatic Minecraft network bridge, including explicit `stop()` and automatic recovery after reconnect exhaustion.
+- Added regression tests for KDL, cooldown concurrency, and packet codec/registry behavior.
+
+### Changed
+- Normal `build` no longer forces NilLoader decompilation; `decompileNilloader` remains an explicit developer task.
+- KDL scalar output now uses KDL 2 forms (`#true`, `#false`, `#null`, `#inf`, `#-inf`, `#nan`).
+- KDL parsing now accepts common KDL 2 numeric forms, raw strings, quoted property keys, dotted identifiers, nested block comments, and slash-dash node/entry suppression while retaining legacy boolean/null compatibility.
+- Event registration is de-duplicated, scans inherited subscriber methods, and preserves deterministic registration order for equal-priority handlers.
+- Network listener callback failures are isolated from the selector loop; packet serialization failures no longer disconnect healthy peers.
+- Network constructor and packet-registry inputs are validated early with clearer errors.
+
+### Fixed
+- Fixed `TargetFinder` returning a nearby player that failed the requested `minDot` aim threshold and fixed target ranking to prefer alignment with distance as the tie-breaker.
+- Fixed `CooldownTracker.tryUseGlobal` / `tryUsePlayer` race conditions so a cooldown window cannot be consumed concurrently by multiple callers.
+- Fixed entrypoint phase re-entrancy during the pre-dispatch event by installing the active-phase guard before posting the event.
+- Fixed NIO server duplicate disconnect callbacks and stale connection entries.
+- Fixed NIO client reconnect attempts terminating permanently when opening a replacement channel throws immediately or when a non-blocking connect completes immediately.
+- Fixed KDL writer/parser round-trip failures for quoted property keys and KDL 2 scalar values.
+- Fixed zero/invalid look-vector and negative-range edge cases in `TargetFinder`.
+- Fixed `ReflectHelper.invoke` contradicting its documented null-to-primitive-default behavior.
+- Fixed automatic network bridge getting stuck with a dead client after reconnect exhaustion.
+- Fixed local SRG mapping reads using platform-default encoding and added clearer version validation.
+
 ## [2.0.1] - 2026-04-08
 
 ### Added

@@ -3,10 +3,11 @@ plugins {
 	id 'com.unascribed.nilgradle' version '1.4.4'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'maven-publish'
+    id 'signing'
 }
 
 group = 'me.tamkungz.nilloadersdk'
-version = '2.0.1'
+version = '2.1.0'
 
 java {
     toolchain {
@@ -52,7 +53,9 @@ dependencies {
 
     implementation 'org.ow2.asm:asm:9.5'
     implementation 'org.ow2.asm:asm-tree:9.5'
-    
+
+    testImplementation 'junit:junit:4.13.2'
+
     // shadow 'org.spongepowered:mixin:0.8.5'
 }
 
@@ -79,7 +82,7 @@ task decompileNilloader(type: JavaExec) {
     mainClass = 'org.benf.cfr.reader.Main'
 }
 
-build.dependsOn decompileNilloader
+// Keep decompilation opt-in. A normal build should not need to decompile NilLoader.
 
 def generatedRemapJavaDir = "$buildDir/generated/sources/remapping/main"
 def generatedBuildInfoJavaDir = "$buildDir/generated/sources/buildinfo/main"
@@ -301,25 +304,49 @@ publishing {
                     }
                 }
 
+                developers {
+                    developer {
+                        id = 'TamKungZ_'
+                        name = 'TamKungZ_'
+                        email = 'dev@tamkungz.me'
+                    }
+                }
+
                 scm {
-                    url = 'https://github.com/TamKungZ/NilLoaderSDK.git'
+                    connection = 'scm:git:https://github.com/TamKungZ/NilLoaderSDK.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/TamKungZ/NilLoaderSDK.git'
+                    url = 'https://github.com/TamKungZ/NilLoaderSDK'
                 }
             }
         }
     }
 
     repositories {
-        mavenLocal()
-
-        def repoUrl = findProperty('mavenRepoUrl') ?: System.getenv('MAVEN_REPO_URL')
-        if (repoUrl) {
-            maven {
-                url = uri(repoUrl)
-                credentials {
-                    username = findProperty('mavenRepoUser') ?: System.getenv('MAVEN_REPO_USER')
-                    password = findProperty('mavenRepoPassword') ?: System.getenv('MAVEN_REPO_PASSWORD')
-                }
-            }
+        // Project-local Maven repository. This intentionally does not publish to ~/.m2.
+        maven {
+            name = 'projectLocal'
+            url = layout.projectDirectory.dir('maven').asFile.toURI()
         }
     }
+}
+
+signing {
+    // Use the user's normal GnuPG setup / gpg-agent; no private keys are stored in the project.
+    // Publishing is intentionally never allowed to silently fall back to unsigned artifacts.
+    required = true
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}
+
+// Friendly alias for the generated publication task. Signed .asc files are emitted beside artifacts.
+tasks.register('publishProjectLocal') {
+    group = 'publishing'
+    description = 'Publishes the signed Maven artifacts into ./maven.'
+    dependsOn 'publishMavenJavaPublicationToProjectLocalRepository'
+}
+
+tasks.register('cleanProjectLocalMaven', Delete) {
+    group = 'publishing'
+    description = 'Deletes the project-local Maven repository directory.'
+    delete layout.projectDirectory.dir('maven')
 }

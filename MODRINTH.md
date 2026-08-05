@@ -73,17 +73,25 @@ nilloadersdk {
 
 ## Dependency (Gradle)
 
+For the `2.1.0` development release, publish the SDK into its project-local `./maven` repository first:
+
+```bash
+./gradlew publishProjectLocal
+```
+
+Then point the consuming project at that directory:
+
 ```gradle
 repositories {
-  maven { url "https://repo.tamkungz.me" }
+  maven { url = uri("/absolute/path/to/NilLoaderSDK/maven") }
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:2.0.1"
+  implementation "me.tamkungz.nilloadersdk:nilloadersdk:2.1.0"
 }
 ```
 
-Repository: [https://repo.tamkungz.me](https://repo.tamkungz.me)
+The project-local publication is GPG-signed.
 
 ---
 

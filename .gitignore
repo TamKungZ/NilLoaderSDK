@@ -26,3 +26,5 @@ replay_pid*
 # nilagent.txt
 
 .remapping/
+# Generated project-local Maven publication
+/maven/
