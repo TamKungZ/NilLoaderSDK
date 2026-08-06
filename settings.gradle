@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'NilLoaderSDK'
+rootProject.name = 'NilKit API'

@@ -33,7 +33,7 @@ try_exact_home() {
 # An explicit SDK override wins. A compatible JAVA_HOME comes next.
 if [ -n "${NILSDK_GRADLE_JAVA_HOME:-}" ]; then
   if try_exact_home "$NILSDK_GRADLE_JAVA_HOME"; then exit 0; fi
-  echo "NilLoaderSDK: NILSDK_GRADLE_JAVA_HOME is not a supported JDK (17-22): $NILSDK_GRADLE_JAVA_HOME" >&2
+  echo "NilKit: NILSDK_GRADLE_JAVA_HOME is not a supported JDK (17-22): $NILSDK_GRADLE_JAVA_HOME" >&2
   exit 1
 fi
 if [ -n "${JAVA_HOME:-}" ] && try_exact_home "$JAVA_HOME"; then
@@ -93,7 +93,7 @@ for preferred in 21 17 22 20 19 18; do
   IFS=$oldIFS
 done
 
-echo "NilLoaderSDK: no compatible Gradle JVM found." >&2
+echo "NilKit: no compatible Gradle JVM found." >&2
 echo "Install JDK 21 or 17, or set NILSDK_GRADLE_JAVA_HOME to its home directory." >&2
 echo "Gradle 8.8 cannot run on Java 25 (class-file major 69)." >&2
 exit 1

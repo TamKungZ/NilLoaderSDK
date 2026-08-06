@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [3.0.2] - 2026-08-06
+## [4.0.0] - 2026-08-06
 
 ### Developer toolbox
 
-- Added the optional `NilLoaderSDK-3.0.2-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
+- Added the optional `NilKit-4.0.0-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
 - Added `DeveloperToolbox` capability checks plus `ByteBuddyHelper`, `ClassGraphHelper`, `YamlHelper`, and `GebHelper` convenience APIs.
 - Byte Buddy self-attachment remains explicit; SDK startup never calls `ByteBuddyAgent.install()` automatically.
 - YAML helpers use `SafeConstructor`, reject duplicate mapping keys, and cap aliases for safer configuration loading.
@@ -26,32 +26,32 @@ All notable changes to this project will be documented in this file.
 ### Fixed and documented
 
 - Replaced the accidental Gradle snippet previously stored in `THIRD_PARTY_LICENSES.md` with an actual third-party license inventory.
-- Updated stale `3.0.1` metadata and documentation references to the in-development `3.0.2` release.
+- Updated stale `4.0.0` metadata and documentation references to the in-development `4.0.0` release.
 - Kept complete mapping data outside release artifacts; mapping input continues to come directly from `tools/MinecraftRemapping`.
 
-## [3.0.1] - 2026-08-05
+## [4.0.0] - 2026-08-05
 
 ### Compatibility
 
 - Removed the SDK's hard bytecode link to `net.minecraft.client.Minecraft`; `McHelper` now resolves the mapped Minecraft class lazily through reflection only when Minecraft-specific helpers are called.
 - Removed the compile-time `game` / `jarmod` Minecraft 1.4.7 dependencies from the SDK build. The core artifact no longer needs a Minecraft JAR to compile.
 - Removed unused external ASM 9.5 runtime dependencies; transformer helpers already use NilLoader's shaded ASM API, avoiding unnecessary ASM classpath conflicts in `-all.jar`.
-- `MinecraftAutoNetworkBridge` no longer assumes Minecraft 1.4.7. When explicitly enabled it reads `-Dnilloadersdk.minecraft.version=<version>` and disables itself safely if the version or mappings are unavailable.
+- `MinecraftAutoNetworkBridge` no longer assumes Minecraft 1.4.7. When explicitly enabled it reads `-Dnilkit.minecraft.version=<version>` and disables itself safely if the version or mappings are unavailable.
 - Added regression coverage that rejects hard `net.minecraft.*` type references in the Minecraft-facing SDK classes.
 
 ### Mapping workflow
 
 - Removed the `.remapping` staging workflow. `tools/MinecraftRemapping` is now the single source path for mapping data.
 - Gradle mapping generation reads `tools/MinecraftRemapping/<version>/mcp2obf.srg` directly from the pinned submodule.
-- Fixed `SimpleRemap` so release JARs actually consume the generated mapping subset; 3.0.0 generated `GeneratedSrgMappings` but never called it.
+- Fixed `SimpleRemap` so release JARs actually consume the generated mapping subset; 4.0.0 generated `GeneratedSrgMappings` but never called it.
 - Replaced `prepareRemapping` / `import-submodule` with direct `inspectMinecraftRemapping`, `inspect-submodule`, and `submodule-path` workflows.
 - Updated `gen_srg_mappings.py` to use project-relative paths instead of a machine-specific absolute Windows path.
 
 ### Build fixes
 
-- Removed duplicate declarations accidentally left in `build.gradle` 3.0.0 mapping-generation code.
+- Removed duplicate declarations accidentally left in `build.gradle` 4.0.0 mapping-generation code.
 
-## [3.0.0] - 2026-08-05
+## [4.0.0] - 2026-08-05
 
 ### Added
 - Added `agaricusb/MinecraftRemapping` as an external Git submodule configuration at `tools/MinecraftRemapping`, pinned by the bootstrap scripts to `8ca7ba25dfd67eae43b3c73d02603ff6c085a6d7`.
@@ -65,7 +65,7 @@ All notable changes to this project will be documented in this file.
 - Added release helper scripts that verify tag/project version consistency and extract one changelog section.
 
 ### Changed
-- Bumped the SDK and metadata version to `3.0.0`.
+- Bumped the SDK and metadata version to `4.0.0`.
 - Java compilation now targets Java 8 with `--release 8` while Gradle itself runs on a supported modern launcher JDK; a dedicated local JDK 8 installation is no longer required for normal builds.
 - Complete mapping collections are not duplicated into the project ZIP/release tree. Mapping-aware builds read directly from the pinned `tools/MinecraftRemapping` submodule.
 - GitHub release responsibilities were separated from normal commit CI: `build.yml` only validates commits/PRs, while `release.yml` owns tagged releases.
@@ -145,7 +145,7 @@ All notable changes to this project will be documented in this file.
   - `getMissingRequiredModsForLoadedMods()`
   - `getModsRequiring(String)`
 - Forge/Fabric-like event architecture for easier mod development:
-  - Global SDK access point: `NilLoaderSDK`
+  - Global SDK access point: `NilKit`
   - Event primitives: `Event`, `CancellableEvent`, `EventPriority`, `SubscribeEvent`
   - Central `EventBus` with:
     - annotation listener registration (`@SubscribeEvent`)
@@ -191,7 +191,7 @@ All notable changes to this project will be documented in this file.
   - `NilMetadataBridge`
   - `NilMetadataPatchInstaller`
   - Patches `NilMetadata.from` during premain to merge CSS + KDL automatically.
-- New SDK metadata resource source-of-truth: `src/main/resources/nilloadersdk.nilsdkmod.kdl`.
+- New SDK metadata resource source-of-truth: `src/main/resources/nilkit.nilsdkmod.kdl`.
 - `NilLoaderHelper` SDK metadata APIs:
   - `getSdkMetadata(String)` / `getSdkMetadata(NilMetadata)`
   - `getMissingRequiredMods(String)`
@@ -216,13 +216,13 @@ All notable changes to this project will be documented in this file.
 ## [1.0.2] - 2026-03-24
 
 ### Added
-- New helper: `NilLoaderHelper` in `me.tamkungz.nilloadersdk.helper`.
+- New helper: `NilLoaderHelper` in `me.tamkungz.nilkit.helper`.
 - Convenience APIs for NilLoader metadata and loaded-mod checks:
   - `isModLoaded`, `isAnyModLoaded`
   - `getModMetadata`, `getModMetadataOrNull`, `getAllLoadedMods`
   - `getLoadedModIds`, `getLoadedModNames`, `getLoadedModsById`
   - `getSourceFile`, `getEntrypointNames`, `getEntrypointClass`, `describeMod`
-- New helper: `TransformerHelper` in `me.tamkungz.nilloadersdk.helper`.
+- New helper: `TransformerHelper` in `me.tamkungz.nilkit.helper`.
 - Java-agent style class patch registration via NilLoader transformer pipeline (no Mixin required):
   - `registerBytecodePatch` for raw byte[] transforms
   - `registerAsmPatch` for ASM `ClassNode` transforms
@@ -261,7 +261,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2026-03-22
 
 ### Added
-- Initial public release of NilLoaderSDK.
+- Initial public release of NilKit.
 - Core SDK base for NilLoader mods via `NilModBase`.
 - Entrypoint framework with phase dispatching (`premain`, `hijack`) and recursion safeguards.
 - Helper utilities for reflection, Minecraft internals, packet handling, and proxy behaviors.

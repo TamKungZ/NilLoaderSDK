@@ -1,0 +1,11 @@
+@nilmod {
+	name: "NilKit";
+	description: "Utilities and helper SDK for NilLoader mod development.";
+	authors: "TamKungZ_";
+	version: "4.0.0";
+}
+
+entrypoints {
+	premain: "me.tamkungz.nilkit.entrypoint.NilKitPremain";
+	hijack: "me.tamkungz.nilkit.entrypoint.NilKitHijack";
+}

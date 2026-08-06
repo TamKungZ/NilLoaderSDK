@@ -5,8 +5,8 @@ plugins {
     id 'signing'
 }
 
-group = 'me.tamkungz.nilloadersdk'
-version = '3.0.2'
+group = 'me.tamkungz.nilkit'
+version = '4.0.0'
 
 java {
     // Gradle itself runs on an automatically selected JDK 21/17, while all SDK
@@ -65,7 +65,7 @@ dependencies {
     compileOnly 'com.unascribed:nilloader:1.3.6'
     deps 'com.unascribed:nilloader:1.3.6'
 
-    // Optional developer toolbox bundled only in NilLoaderSDK-*-all.jar.
+    // Optional developer toolbox bundled only in NilKit-*-all.jar.
     // The SDK core does not require these libraries to start. They are included so
     // nilmod developers can use common instrumentation/config/scanning APIs without
     // maintaining a second dependency list when they choose the all-in-one artifact.
@@ -75,10 +75,10 @@ dependencies {
     shadowBundle 'net.bytebuddy:byte-buddy:1.17.6'
 
     // Optional access to java.lang.instrument.Instrumentation/self-attach helpers.
-    // NilLoaderSDK does not self-attach during startup; this is developer tooling only.
+    // NilKit does not self-attach during startup; this is developer tooling only.
     shadowBundle 'net.bytebuddy:byte-buddy-agent:1.17.6'
 
-    // Alternative compile-time generated event bus. NilLoaderSDK keeps its own EventBus;
+    // Alternative compile-time generated event bus. NilKit keeps its own EventBus;
     // GEB is bundled only as an optional high-performance choice for downstream mods.
     shadowBundle 'foo.zaaarf.geb:core:0.5.4'
 
@@ -171,20 +171,20 @@ shadowJar {
     // Byte Buddy uses a multi-release JAR. Preserve that behavior in the merged JAR.
     manifest {
         attributes(
-            'NilModID': 'nilloadersdk',
-            'NilModName': 'NilLoaderSDK',
-            'Implementation-Title': 'NilLoaderSDK Developer Toolbox',
+            'NilModID': 'nilkit',
+            'NilModName': 'NilKit',
+            'Implementation-Title': 'NilKit Developer Toolbox',
             'Implementation-Version': project.version,
             'Multi-Release': 'true'
         )
     }
 
     // Do not minimize: these libraries are intentionally present for downstream mods
-    // even when NilLoaderSDK itself does not reference every public API.
-    from('LICENSE') { into 'META-INF/nilloadersdk' }
-    from('NOTICE') { into 'META-INF/nilloadersdk' }
-    from('THIRD_PARTY_LICENSES.md') { into 'META-INF/nilloadersdk' }
-    from('licenses') { into 'META-INF/nilloadersdk/licenses' }
+    // even when NilKit itself does not reference every public API.
+    from('LICENSE') { into 'META-INF/nilkit' }
+    from('NOTICE') { into 'META-INF/nilkit' }
+    from('THIRD_PARTY_LICENSES.md') { into 'META-INF/nilkit' }
+    from('licenses') { into 'META-INF/nilkit/licenses' }
 }
 
 task fetchDeps(type: Copy) {
@@ -216,17 +216,17 @@ def generatedRemapJavaDir = "$buildDir/generated/sources/remapping/main"
 def generatedBuildInfoJavaDir = "$buildDir/generated/sources/buildinfo/main"
 
 task generateModBuildInfoFallback {
-    outputs.file "$generatedBuildInfoJavaDir/me/tamkungz/nilloadersdk/build/ModBuildInfo.java"
+    outputs.file "$generatedBuildInfoJavaDir/me/tamkungz/nilkit/build/ModBuildInfo.java"
 
     doLast {
-        def sourceBuildInfo = file('src/main/java/me/tamkungz/nilloadersdk/build/ModBuildInfo.java')
+        def sourceBuildInfo = file('src/main/java/me/tamkungz/nilkit/build/ModBuildInfo.java')
         if (sourceBuildInfo.exists()) {
             return
         }
 
-        def out = file("$generatedBuildInfoJavaDir/me/tamkungz/nilloadersdk/build/ModBuildInfo.java")
+        def out = file("$generatedBuildInfoJavaDir/me/tamkungz/nilkit/build/ModBuildInfo.java")
         out.parentFile.mkdirs()
-        out.setText('''package me.tamkungz.nilloadersdk.build;
+        out.setText('''package me.tamkungz.nilkit.build;
 
 public final class ModBuildInfo {
     private final String buildTag;
@@ -246,7 +246,7 @@ public final class ModBuildInfo {
 task generateSimpleRemapMappings {
     inputs.dir('tools/MinecraftRemapping').optional()
     inputs.files fileTree('src/main/java') { include '**/*.java' }
-    outputs.file "$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java"
+    outputs.file "$generatedRemapJavaDir/me/tamkungz/nilkit/remapping/GeneratedSrgMappings.java"
 
     doLast {
         def fieldNeed = new LinkedHashSet<String>()
@@ -351,11 +351,16 @@ task generateSimpleRemapMappings {
             s.replace('\\', '\\\\').replace('"', '\\"')
         }
 
-        def out = new File("$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java")
+        def legacyOut = new File("$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java")
+        if (legacyOut.exists()) {
+            legacyOut.delete()
+        }
+
+        def out = new File("$generatedRemapJavaDir/me/tamkungz/nilkit/remapping/GeneratedSrgMappings.java")
         out.parentFile.mkdirs()
 
         StringBuilder sb = new StringBuilder()
-        sb.append('package me.tamkungz.remapping;\n\n')
+        sb.append('package me.tamkungz.nilkit.remapping;\n\n')
         sb.append('/** Auto-generated by Gradle task generateSimpleRemapMappings. */\n')
         sb.append('public final class GeneratedSrgMappings {\n')
         sb.append('    private GeneratedSrgMappings() {}\n\n')
@@ -410,15 +415,15 @@ tasks.named('sourcesJar') {
 }
 
 jar {
-    from('LICENSE') { into 'META-INF/nilloadersdk' }
-    from('NOTICE') { into 'META-INF/nilloadersdk' }
-    from('THIRD_PARTY_LICENSES.md') { into 'META-INF/nilloadersdk' }
+    from('LICENSE') { into 'META-INF/nilkit' }
+    from('NOTICE') { into 'META-INF/nilkit' }
+    from('THIRD_PARTY_LICENSES.md') { into 'META-INF/nilkit' }
 
     manifest {
         attributes(
-            'NilModID': 'nilloadersdk',
-            'NilModName': 'NilLoaderSDK',
-            'Implementation-Title': 'NilLoaderSDK',
+            'NilModID': 'nilkit',
+            'NilModName': 'NilKit',
+            'Implementation-Title': 'NilKit',
             'Implementation-Version': project.version
         )
     }
@@ -428,12 +433,12 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifactId = 'nilloadersdk'
+            artifactId = 'nilkit'
 
             pom {
-                name = 'NilLoaderSDK'
-                description = 'SDK for NilLoader-based Minecraft mods'
-                url = 'https://github.com/NilLoaderSDK/NilLoaderSDK'
+                name = 'NilKit'
+                description = 'SDK for NilLoader-based Minecraft mod development'
+                url = 'https://github.com/NilKit/NilKit'
 
                 licenses {
                     license {
@@ -452,9 +457,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git:https://github.com/NilLoaderSDK/NilLoaderSDK.git'
-                    developerConnection = 'scm:git:ssh://git@github.com/NilLoaderSDK/NilLoaderSDK.git'
-                    url = 'https://github.com/NilLoaderSDK/NilLoaderSDK'
+                    connection = 'scm:git:https://github.com/NilKit/NilKit.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/NilKit/NilKit.git'
+                    url = 'https://github.com/NilKit/NilKit'
                 }
             }
         }
@@ -470,9 +475,9 @@ publishing {
 }
 
 def mappingToolSources = files(
-    'src/main/java/me/tamkungz/nilloadersdk/mapping/SrgMappingSet.java',
-    'src/main/java/me/tamkungz/nilloadersdk/mapping/SrgMappings.java',
-    'src/main/java/me/tamkungz/nilloadersdk/mapping/MappingToolMain.java'
+    'src/main/java/me/tamkungz/nilkit/mapping/SrgMappingSet.java',
+    'src/main/java/me/tamkungz/nilkit/mapping/SrgMappings.java',
+    'src/main/java/me/tamkungz/nilkit/mapping/MappingToolMain.java'
 )
 def mappingToolClassesDir = layout.buildDirectory.dir('mapping-tool/classes')
 
@@ -491,7 +496,7 @@ tasks.register('mappingTool', JavaExec) {
     description = 'Runs the local SRG/CSRG mapping utility. Example: ./gradlew mappingTool --args="inspect file.srg"'
     dependsOn 'compileMappingToolJava'
     classpath = files(mappingToolClassesDir)
-    mainClass = 'me.tamkungz.nilloadersdk.mapping.MappingToolMain'
+    mainClass = 'me.tamkungz.nilkit.mapping.MappingToolMain'
 }
 
 tasks.register('mappingToolJar', Jar) {
@@ -500,12 +505,12 @@ tasks.register('mappingToolJar', Jar) {
     dependsOn 'compileMappingToolJava'
     archiveClassifier.set('mapping-tool')
     from mappingToolClassesDir
-    from('LICENSE') { into 'META-INF/nilloadersdk' }
-    from('NOTICE') { into 'META-INF/nilloadersdk' }
+    from('LICENSE') { into 'META-INF/nilkit' }
+    from('NOTICE') { into 'META-INF/nilkit' }
     manifest {
         attributes(
-            'Main-Class': 'me.tamkungz.nilloadersdk.mapping.MappingToolMain',
-            'Implementation-Title': 'NilLoaderSDK Mapping Tool',
+            'Main-Class': 'me.tamkungz.nilkit.mapping.MappingToolMain',
+            'Implementation-Title': 'NilKit Mapping Tool',
             'Implementation-Version': project.version
         )
     }
@@ -548,7 +553,7 @@ tasks.register('inspectMinecraftRemapping') {
         }
         javaexec {
             classpath = files(mappingToolClassesDir)
-            mainClass = 'me.tamkungz.nilloadersdk.mapping.MappingToolMain'
+            mainClass = 'me.tamkungz.nilkit.mapping.MappingToolMain'
             args 'inspect-submodule', mcVersion, mappingFile
         }
     }

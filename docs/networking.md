@@ -19,17 +19,17 @@ The optional auto-client bridge is disabled by default.
 Example configuration:
 
 ```text
--Dnilloadersdk.network.autoclient.enabled=true
--Dnilloadersdk.minecraft.version=1.4.7
--Dnilloadersdk.network.autoclient.host=127.0.0.1
--Dnilloadersdk.network.autoclient.port=25566
+-Dnilkit.network.autoclient.enabled=true
+-Dnilkit.minecraft.version=1.4.7
+-Dnilkit.network.autoclient.host=127.0.0.1
+-Dnilkit.network.autoclient.port=25566
 ```
 
 Optional settings:
 
 ```text
--Dnilloadersdk.network.autoclient.pollMs=1000
--Dnilloadersdk.network.autoclient.maxFrame=1048576
+-Dnilkit.network.autoclient.pollMs=1000
+-Dnilkit.network.autoclient.maxFrame=1048576
 ```
 
 If the requested Minecraft mapping is unavailable, the bridge should fail closed and disable itself rather than stopping game startup.

@@ -9,15 +9,15 @@ This page keeps file/module structure out of the main README.
 
 ## Entrypoint system
 
-- `NilLoaderSDKPremain`
-- `NilLoaderSDKHijack`
+- `NilKitPremain`
+- `NilKitHijack`
 - `EntrypointDispatcher`
-- `NilLoaderSDKEntrypointModule`
+- `NilKitEntrypointModule`
 - `DefaultSdkEntrypointModule`
 
 ## Event system
 
-- `NilLoaderSDK`
+- `NilKit`
 - `EventBus`
 - `Event`
 - `CancellableEvent`
@@ -72,6 +72,6 @@ Historical SDK-specific metadata integration:
 
 ## Rename note
 
-The project is transitioning from **NilLoaderSDK** to **NilKit API**.
+The project is transitioning from **NilKit** to **NilKit API**.
 
 The documentation can use the new public project name immediately, while code/package/resource identifiers should be migrated in one controlled change so the repository does not end up with a half-renamed API.

@@ -1,12 +1,12 @@
 <h1>
-  <img src="https://raw.githubusercontent.com/NilLoaderSDK/NilLoaderSDK/refs/heads/main/src/main/resources/assets/nilloadersdk/icon.svg"
+  <img src="https://raw.githubusercontent.com/NilKit/NilKit/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
        width="30"
        alt=""
        aria-hidden="true">
-  NilLoaderSDK
+  NilKit
 </h1>
 
-NilLoaderSDK is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 3.0.2 keeps the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
+NilKit is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 4.0.0 keeps the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
 
 It provides:
 - metadata helpers for NilLoader + KDL
@@ -17,9 +17,9 @@ It provides:
 
 ---
 
-## Why NilLoaderSDK?
+## Why NilKit?
 
-NilLoaderSDK is not only metadata tooling. It is a practical utility layer for legacy NilLoader mod development, with reusable APIs that reduce boilerplate and speed up feature development.
+NilKit is not only metadata tooling. It is a practical utility layer for legacy NilLoader mod development, with reusable APIs that reduce boilerplate and speed up feature development.
 
 Use it when you want a single toolkit for lifecycle dispatching, reflection/remapping, networking, event handling, and modernized metadata support.
 
@@ -69,9 +69,9 @@ entrypoints {
   hijack "com.example.MyHijack"
 }
 
-nilloadersdk {
-  requires "nilloader" "nilloadersdk"
-  load_after "nilloadersdk"
+nilkit {
+  requires "nilloader" "nilkit"
+  load_after "nilkit"
   icon "assets/mymod/icon.png"
   modurl "https://modrinth.com/mod/my-mod"
   sourceurl "https://github.com/example/my-mod"
@@ -84,7 +84,7 @@ nilloadersdk {
 
 ## Dependency (Gradle)
 
-For `3.0.2`, publish the SDK into its project-local `./maven` repository first:
+For `4.0.0`, publish the SDK into its project-local `./maven` repository first:
 
 ```bash
 ./gradlew publishProjectLocal
@@ -98,7 +98,7 @@ repositories {
 }
 
 dependencies {
-  implementation "me.tamkungz.nilloadersdk:nilloadersdk:3.0.2"
+  implementation "me.tamkungz.nilkit:nilkit:4.0.0"
 }
 ```
 
@@ -108,7 +108,7 @@ The project-local publication is GPG-signed.
 
 ## Keywords (for search)
 
-NilLoader, NilLoaderSDK, Minecraft 1.4.7, legacy Minecraft modding, Java 8 modding, entrypoint framework, event bus, NIO networking, reflection helper, remapping tools, KDL metadata, nilmod SDK.
+NilLoader, NilKit, Minecraft 1.4.7, legacy Minecraft modding, Java 8 modding, entrypoint framework, event bus, NIO networking, reflection helper, remapping tools, KDL metadata, nilmod SDK.
 
 ---
 

@@ -11,13 +11,13 @@ Entrypoints are resolved in this order:
 Historical JVM property format:
 
 ```text
--Dnilloadersdk.entrypoint.<phase>=...
+-Dnilkit.entrypoint.<phase>=...
 ```
 
 The default properties resource is:
 
 ```text
-src/main/resources/nilloadersdk.entrypoints.properties
+src/main/resources/nilkit.entrypoints.properties
 ```
 
 ## Important
@@ -26,4 +26,4 @@ Do not point a configured phase back at the SDK's own dispatcher entrypoint clas
 
 ## Migration note
 
-The project is being renamed from NilLoaderSDK to NilKit API. Entrypoint class names, package names, resource names, and JVM property prefixes should be migrated deliberately rather than renamed partially.
+The project is being renamed from NilKit to NilKit API. Entrypoint class names, package names, resource names, and JVM property prefixes should be migrated deliberately rather than renamed partially.

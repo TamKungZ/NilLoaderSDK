@@ -1,8 +1,8 @@
 # Project-local Maven publishing
 
-The `3.0.2` build can publish signed artifacts into a Maven repository inside the project rather than `~/.m2`.
+The `4.0.0` build can publish signed artifacts into a Maven repository inside the project rather than `~/.m2`.
 
-> The names and coordinates below are the **historical NilLoaderSDK 3.0.2 values**.
+> The names and coordinates below are the **historical NilKit 4.0.0 values**.
 > They should be changed consistently when the NilKit API rename is applied to Gradle metadata.
 
 ## Publish
@@ -20,14 +20,14 @@ gradlew.bat publishProjectLocal
 Historical repository path:
 
 ```text
-maven/me/tamkungz/nilloadersdk/nilloadersdk/3.0.2/
+maven/me/tamkungz/nilkit/nilkit/4.0.0/
 ```
 
 Historical classified artifacts:
 
 ```text
-nilloadersdk-3.0.2-all.jar
-nilloadersdk-3.0.2-mapping-tool.jar
+nilkit-4.0.0-all.jar
+nilkit-4.0.0-mapping-tool.jar
 ```
 
 The publication also includes the normal JAR, sources JAR, Javadoc JAR, POM/module metadata, checksums, and OpenPGP signatures.
@@ -52,7 +52,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.tamkungz.nilloadersdk:nilloadersdk:3.0.2'
+    implementation 'me.tamkungz.nilkit:nilkit:4.0.0'
 }
 ```
 

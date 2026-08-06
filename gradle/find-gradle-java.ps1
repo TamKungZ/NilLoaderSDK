@@ -45,7 +45,7 @@ if (-not [string]::IsNullOrWhiteSpace($env:NILSDK_GRADLE_JAVA_HOME)) {
     }
 
     [Console]::Error.WriteLine(
-        "NilLoaderSDK: NILSDK_GRADLE_JAVA_HOME is not a supported JDK (17-22): $JavaHome"
+        "NilKit: NILSDK_GRADLE_JAVA_HOME is not a supported JDK (17-22): $JavaHome"
     )
     exit 1
 }
@@ -116,7 +116,7 @@ foreach ($Preferred in @(21, 17, 22, 20, 19, 18)) {
     }
 }
 
-[Console]::Error.WriteLine('NilLoaderSDK: no compatible Gradle JVM found.')
+[Console]::Error.WriteLine('NilKit: no compatible Gradle JVM found.')
 [Console]::Error.WriteLine('Install JDK 21 or 17, or set NILSDK_GRADLE_JAVA_HOME.')
 [Console]::Error.WriteLine('Gradle 8.8 cannot run on Java 25.')
 

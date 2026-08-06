@@ -16,7 +16,7 @@ if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%
 
-@rem NilLoaderSDK bootstrap: Gradle 8.8 cannot run on Java 25. Ask the
+@rem NilKit bootstrap: Gradle 8.8 cannot run on Java 25. Ask the
 @rem PowerShell finder to validate the current JAVA_HOME first (important for
 @rem actions/setup-java matrix jobs), then scan installed JDKs if necessary.
 set "NILSDK_SELECTED_JAVA_HOME="
@@ -59,7 +59,7 @@ if exist "%JAVA_EXE%" goto init
 
 :noCompatibleJava
 echo.
-echo ERROR: NilLoaderSDK could not locate a supported JDK (17-22) for Gradle 8.8.
+echo ERROR: NilKit could not locate a supported JDK (17-22) for Gradle 8.8.
 echo Install JDK 21/17 or set NILSDK_GRADLE_JAVA_HOME.
 goto fail
 

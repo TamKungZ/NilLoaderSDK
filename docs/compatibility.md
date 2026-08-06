@@ -1,6 +1,6 @@
 # Minecraft compatibility
 
-NilKit API `3.0.2` no longer has a hard bytecode dependency on one specific Minecraft JAR.
+NilKit API `4.0.0` no longer has a hard bytecode dependency on one specific Minecraft JAR.
 
 Core systems such as events, KDL utilities, metadata helpers, networking, logging, reflection, and mapping tooling can load independently of Minecraft `1.4.7`.
 
@@ -15,8 +15,8 @@ The optional automatic Minecraft network bridge is disabled by default.
 Example:
 
 ```text
--Dnilloadersdk.network.autoclient.enabled=true
--Dnilloadersdk.minecraft.version=1.4.7
+-Dnilkit.network.autoclient.enabled=true
+-Dnilkit.minecraft.version=1.4.7
 ```
 
 If the requested version or mapping is unavailable, the bridge should disable itself rather than aborting game startup.

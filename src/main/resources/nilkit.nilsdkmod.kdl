@@ -1,0 +1,39 @@
+nilmod {
+  name "NilKit"
+  description "Utilities and helper SDK for NilLoader mod development."
+  authors "TamKungZ_"
+  version "4.0.0"
+}
+
+entrypoints {
+  premain "me.tamkungz.nilkit.entrypoint.NilKitPremain"
+  hijack "me.tamkungz.nilkit.entrypoint.NilKitHijack"
+}
+
+nilkit {
+  // Required mods for this mod to run
+  // requires "nilloader"
+
+  // Advisory order hints for SDK-aware tooling/runtime
+  // load_before "example_optional_mod"
+  // load_after "another_optional_mod"
+
+  // Icon path inside the mod jar/resources
+  icon "assets/nilkit/icon.png"
+
+  // Public mod page URL
+  modurl "https://modrinth.com/mod/nilkit"
+
+  // Source repository URL
+  sourceurl "https://github.com/NilKit/NilKit"
+
+  // License identifier/name
+  license "LGPL-3.0"
+
+  // Contributors / shared credits
+  credits "TamKungZ_" "unascribed"
+
+  // Optional: when false, missing required mods will stop startup
+  // safeload #false
+}
+

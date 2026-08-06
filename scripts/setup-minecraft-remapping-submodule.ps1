@@ -8,7 +8,7 @@ $Pin = "8ca7ba25dfd67eae43b3c73d02603ff6c085a6d7"
 
 & git rev-parse --is-inside-work-tree *> $null
 if ($LASTEXITCODE -ne 0) {
-    throw "This command must be run inside the NilLoaderSDK Git repository."
+    throw "This command must be run inside the NilKit Git repository."
 }
 
 # A ZIP cannot store Git's mode-160000 index entry. Recreate the exact pinned

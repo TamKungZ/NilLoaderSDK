@@ -17,7 +17,7 @@ These classes are useful independently of NilLoader metadata.
 
 ## Historical SDK-specific metadata
 
-The `3.0.2` codebase contains support for `.nilsdkmod.kdl`, including metadata bridge/bootstrap classes.
+The `4.0.0` codebase contains support for `.nilsdkmod.kdl`, including metadata bridge/bootstrap classes.
 
 This area should be treated as **legacy/experimental during the NilKit migration**.
 

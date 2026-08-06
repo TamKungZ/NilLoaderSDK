@@ -1,6 +1,6 @@
 # Third-party software
 
-NilLoaderSDK itself is licensed under LGPL-3.0-or-later. The optional developer toolbox in `NilLoaderSDK-*-all.jar` contains the upstream libraries listed below **without package relocation**. Their original licenses remain in force.
+NilKit itself is licensed under LGPL-3.0-or-later. The optional developer toolbox in `NilKit-*-all.jar` contains the upstream libraries listed below **without package relocation**. Their original licenses remain in force.
 
 | Component | Version | Distribution role | License |
 | --- | --- | --- | --- |
@@ -21,6 +21,6 @@ Notices known to be required/preserved include:
 - SnakeYAML source files identify Copyright (c) 2008, SnakeYAML under Apache-2.0.
 - Byte Buddy is Apache-2.0 and its main distribution repackages ASM under Byte Buddy's own namespace.
 
-Copies of the applicable permissive license texts and MIT copyright notices are included under `licenses/` and copied into `META-INF/nilloadersdk/licenses/` in the shadow JAR. Dependency JAR license/service resources are also preserved by the Shadow build where possible.
+Copies of the applicable permissive license texts and MIT copyright notices are included under `licenses/` and copied into `META-INF/nilkit/licenses/` in the shadow JAR. Dependency JAR license/service resources are also preserved by the Shadow build where possible.
 
-Complete Minecraft mapping files are **not** bundled with NilLoaderSDK. Mapping input is read directly from the pinned `tools/MinecraftRemapping` Git submodule and only the names actually referenced by SDK code may be emitted into generated source. The external mapping repository remains under its own copyright and terms.
+Complete Minecraft mapping files are **not** bundled with NilKit. Mapping input is read directly from the pinned `tools/MinecraftRemapping` Git submodule and only the names actually referenced by SDK code may be emitted into generated source. The external mapping repository remains under its own copyright and terms.

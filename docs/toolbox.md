@@ -13,7 +13,7 @@ Current bundled runtime tooling:
 Convenience facades currently live under the historical package:
 
 ```text
-me.tamkungz.nilloadersdk.tooling
+me.tamkungz.nilkit.tooling
 ```
 
 Examples include:

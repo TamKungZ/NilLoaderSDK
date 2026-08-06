@@ -22,10 +22,10 @@ public final class MyModEvents {
     }
 }
 
-NilLoaderSDK.registerEvents(new MyModEvents());
+NilKit.registerEvents(new MyModEvents());
 ```
 
-> During the NilKit API rename, public class/package names may still use the historical `NilLoaderSDK` identifier until the code migration is complete.
+> During the NilKit API rename, public class/package names may still use the historical `NilKit` identifier until the code migration is complete.
 
 ## Helpers
 
