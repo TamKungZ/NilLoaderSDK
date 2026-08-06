@@ -34,3 +34,8 @@ replay_pid*
 
 # Generated project-local Maven publication
 /maven/
+
+nilplugin.txt
+nilplugin-verbose.txt
+nilagent.txt
+

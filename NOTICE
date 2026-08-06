@@ -1,7 +1,0 @@
-NilLoaderSDK 3.0.2
-
-NilLoaderSDK is licensed under LGPL-3.0-or-later.
-
-The optional `-all.jar` includes developer-tooling libraries under their own permissive licenses. See THIRD_PARTY_LICENSES.md and META-INF/nilloadersdk/licenses/ in the distribution.
-
-Complete third-party Minecraft mapping files are not bundled with NilLoaderSDK. The build reads mapping input directly from the pinned tools/MinecraftRemapping Git submodule; that external repository remains under its own copyright and terms.
