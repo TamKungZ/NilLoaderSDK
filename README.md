@@ -1,4 +1,10 @@
-# NilKit API
+<h1>
+  <img src="https://raw.githubusercontent.com/NilKitAPI/NilKit-API/refs/heads/main/src/main/resources/assets/nilkit/icon.png"
+       width="30"
+       alt=""
+       aria-hidden="true">
+  NilKit API
+</h1>
 
 **Independent community tooling and APIs for NilLoader-based Minecraft development.**
 
