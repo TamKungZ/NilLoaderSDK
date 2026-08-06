@@ -8,11 +8,12 @@
 
 **An independent utility API and developer toolkit for mods built with NilLoader.**
 
-> [!IMPORTANT]
-> **NilKit is not part of the official NilLoader project and is not required to use NilLoader.**
->
-> NilLoader is maintained separately at:
-> https://git.sleeping.town/Nil/NilLoader
+<blockquote>
+  <p><strong>Important</strong></p>
+  <p><strong>NilKit is not part of the official NilLoader project and is not required to use NilLoader.</strong></p>
+  <p>NilLoader is maintained separately at:<br>
+  <a href="https://git.sleeping.town/Nil/NilLoader">https://git.sleeping.town/Nil/NilLoader</a></p>
+</blockquote>
 
 NilKit provides reusable APIs and tooling for legacy Minecraft mod development, with a focus on reducing boilerplate around events, reflection, mappings, metadata, networking, and development utilities.
 
