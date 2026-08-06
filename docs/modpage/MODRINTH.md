@@ -3,58 +3,43 @@
        width="30"
        alt=""
        aria-hidden="true">
-  NilKit
+  NilKit API
 </h1>
 
-NilKit is a Java 8 utility SDK for NilLoader-based Minecraft mods. Version 4.0.0 keeps the hard runtime link to Minecraft 1.4.7: the core SDK can load across versions, while Minecraft-specific helpers remain mapping/structure dependent.
+**An independent utility API and developer toolkit for mods built with NilLoader.**
 
-It provides:
-- metadata helpers for NilLoader + KDL
-- runtime bootstrap for KDL-only mods
-- reflection/remapping helpers
-- event bus and lifecycle events
-- NIO networking utilities
+> [!IMPORTANT]
+> **NilKit is not part of the official NilLoader project and is not required to use NilLoader.**
+>
+> NilLoader is maintained separately at:
+> https://git.sleeping.town/Nil/NilLoader
 
----
+NilKit provides reusable APIs and tooling for legacy Minecraft mod development, with a focus on reducing boilerplate around events, reflection, mappings, metadata, networking, and development utilities.
 
-## Why NilKit?
+NilKit `4.0.0` targets Java 8 bytecode and does not require a hard runtime link to a specific Minecraft JAR for its core APIs. Minecraft-specific functionality remains dependent on the mappings and structure of the target game version.
 
-NilKit is not only metadata tooling. It is a practical utility layer for legacy NilLoader mod development, with reusable APIs that reduce boilerplate and speed up feature development.
+## Features
 
-Use it when you want a single toolkit for lifecycle dispatching, reflection/remapping, networking, event handling, and modernized metadata support.
+### Events and lifecycle
 
----
+- Lightweight event bus
+- Cancellable events
+- Listener priorities
+- `premain` / `hijack` lifecycle helpers
+- Typed and annotation-based listeners
 
-## Key Features
+### Reflection and legacy Minecraft tooling
 
-- **Lifecycle + Entrypoint system**
-  - `premain` / `hijack` dispatching via ServiceLoader, JVM properties, and properties file
-  - Default SDK modules for centralized startup flow
-- **Event bus for mod architecture**
-  - Lightweight event system with cancellable events and priority ordering
-  - Lifecycle events for pre/post entrypoint dispatch hooks
-- **Networking stack (Java NIO)**
-  - Client/server implementations with packet registry and codec
-  - Optional auto-network bridge for fast integration; version-aware and fail-closed when mappings are unavailable
-- **Reflection + remapping helpers**
-  - Utilities for interacting with obfuscated legacy internals safely and repeatedly
-  - Descriptor-aware SRG/CSRG inspect, reverse, chain, and lookup tooling
-  - Pinned MinecraftRemapping Git submodule used directly as build input; complete mapping files are not copied into releases
-- **Metadata bridge (CSS + KDL)**
-  - Supports `.nilmod.css` and `.nilsdkmod.kdl`
-  - KDL-only runtime bootstrap for SDK-aware mods when root CSS is absent
-  - Dependency policy support (`requires`, `safeload`, load order hints)
-- **Developer toolbox shadow JAR**
-  - Optional Byte Buddy, GEB, ClassGraph, and SnakeYAML APIs in `-all.jar` without package relocation
-  - Helper facades for instrumentation, scanning, YAML, and GEB bootstrap
-- **Diagnostics for pack/mod developers**
-  - Verbose bootstrap pipeline logs
-  - Loaded-mod table output:
-    - `ID | Name | Version | Authors | License`
+- Reflection helpers for version-dependent Minecraft code
+- SRG/CSRG mapping utilities
+- Mapping inspection, reversal, chaining, and lookup
+- Integration with the external `MinecraftRemapping` mapping repository during development
 
----
+### KDL
 
-## Metadata Example (`.nilsdkmod.kdl`)
+NilKit includes a general-purpose KDL parser and writer and can use KDL for richer project/mod metadata.
+
+Example:
 
 ```kdl
 nilmod {
@@ -72,53 +57,62 @@ entrypoints {
 nilkit {
   requires "nilloader" "nilkit"
   load_after "nilkit"
+
   icon "assets/mymod/icon.png"
   modurl "https://modrinth.com/mod/my-mod"
   sourceurl "https://github.com/example/my-mod"
+
   license "MIT"
   credits "Author"
 }
 ```
 
----
+### Networking
 
-## Dependency (Gradle)
+* Java NIO client/server utilities
+* Packet registry and codecs
+* Optional Minecraft-facing network helpers
 
-For `4.0.0`, publish the SDK into its project-local `./maven` repository first:
+### Developer toolbox
 
-```bash
-./gradlew publishProjectLocal
-```
+The optional `-all.jar` also bundles several developer libraries without relocating their public packages:
 
-Then point the consuming project at that directory:
+* Byte Buddy
+* GEB
+* ClassGraph
+* SnakeYAML
+
+The normal NilKit artifact does not require these libraries at runtime.
+
+## Gradle
 
 ```gradle
 repositories {
-  maven { url = uri("https://repo.tamkungz.me") }
+    maven {
+        url = uri("https://repo.tamkungz.me")
+    }
 }
 
 dependencies {
-  implementation "me.tamkungz.nilkit:nilkit:4.0.0"
+    implementation "me.tamkungz.nilkit:nilkit:4.0.0"
 }
 ```
 
-The project-local publication is GPG-signed.
+## Documentation
 
----
+Full documentation and development information are available in the GitHub repository:
 
-## Keywords (for search)
+[https://github.com/NilKit/NilKit](https://github.com/NilKit/NilKit)
 
-NilLoader, NilKit, Minecraft 1.4.7, legacy Minecraft modding, Java 8 modding, entrypoint framework, event bus, NIO networking, reflection helper, remapping tools, KDL metadata, nilmod SDK.
+## NilLoader
 
----
+NilKit is designed to complement NilLoader, not replace it.
+
+NilLoader itself, its loading lifecycle, and its upstream development remain separate from NilKit.
+
+* [NilLoader — official repository](https://git.sleeping.town/Nil/NilLoader)
+* [NilLoader — GitHub mirror](https://github.com/exaskye/NilLoader)
 
 ## License
 
-Licensed under **LGPL-3.0-or-later**.
-
----
-
-## Credits
-
-- [NilLoader (official)](https://git.sleeping.town/Nil/NilLoader)
-- [NilLoader (mirror)](https://github.com/exaskye/NilLoader)
+NilKit is licensed under **LGPL-3.0-or-later**.
