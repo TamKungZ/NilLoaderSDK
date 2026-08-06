@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://raw.githubusercontent.com/TamKungZ/NilLoaderSDK/refs/heads/main/src/main/resources/assets/nilloadersdk/icon.svg"
+  <img src="https://raw.githubusercontent.com/NilLoaderSDK/NilLoaderSDK/refs/heads/main/src/main/resources/assets/nilloadersdk/icon.svg"
        width="30"
        alt=""
        aria-hidden="true">

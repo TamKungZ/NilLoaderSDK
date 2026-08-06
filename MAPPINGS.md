@@ -15,7 +15,7 @@ The historical `agaricusb/MinecraftRemapping` repository is attached as an exter
 Normal Git clone:
 
 ```bash
-git clone --recurse-submodules https://github.com/TamKungZ/NilLoaderSDK.git
+git clone --recurse-submodules git@github.com:NilLoaderSDK/NilLoaderSDK.git
 ```
 
 Existing clone:

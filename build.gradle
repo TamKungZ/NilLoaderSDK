@@ -433,7 +433,7 @@ publishing {
             pom {
                 name = 'NilLoaderSDK'
                 description = 'SDK for NilLoader-based Minecraft mods'
-                url = 'https://github.com/TamKungZ/NilLoaderSDK'
+                url = 'https://github.com/NilLoaderSDK/NilLoaderSDK'
 
                 licenses {
                     license {
@@ -452,9 +452,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git:https://github.com/TamKungZ/NilLoaderSDK.git'
-                    developerConnection = 'scm:git:ssh://git@github.com/TamKungZ/NilLoaderSDK.git'
-                    url = 'https://github.com/TamKungZ/NilLoaderSDK'
+                    connection = 'scm:git:https://github.com/NilLoaderSDK/NilLoaderSDK.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/NilLoaderSDK/NilLoaderSDK.git'
+                    url = 'https://github.com/NilLoaderSDK/NilLoaderSDK'
                 }
             }
         }

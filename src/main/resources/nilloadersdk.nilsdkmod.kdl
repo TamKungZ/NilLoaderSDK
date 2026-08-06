@@ -25,7 +25,7 @@ nilloadersdk {
   modurl "https://modrinth.com/mod/nilloadersdk"
 
   // Source repository URL
-  sourceurl "https://github.com/TamKungZ/NilLoaderSDK"
+  sourceurl "https://github.com/NilLoaderSDK/NilLoaderSDK"
 
   // License identifier/name
   license "LGPL-3.0"
