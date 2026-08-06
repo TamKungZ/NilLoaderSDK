@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://raw.githubusercontent.com/NilKit/NilKit/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
+  <img src="https://raw.githubusercontent.com/NilKitAPI/NilKit-API/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
        width="30"
        alt=""
        aria-hidden="true">
