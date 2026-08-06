@@ -31,4 +31,4 @@ NilKit API should not vendor a second copy of the mapping dataset. Mapping input
 
 The standalone mapping tool contains the mapping utility code, not the mapping dataset itself.
 
-For mapping-source redistribution and licensing rules, keep the project's dedicated `MAPPINGS.md` as the authoritative policy document.
+For mapping-source redistribution and licensing rules, keep the project's dedicated `mapping/MAPPINGS.md` as the authoritative policy document.

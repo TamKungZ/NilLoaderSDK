@@ -10,7 +10,7 @@ Priority:
 2. obf2mcp.srg (reversed automatically)
 
 Usage:
-    python gen_srg_mappings.py
+    python mapping/gen_srg_mappings.py
 
 Mapping Credit: https://github.com/agaricusb/MinecraftRemapping
 """
@@ -172,7 +172,7 @@ def generate():
     lines.append(f"package {PACKAGE};")
     lines.append("")
     lines.append("// AUTO-GENERATED — do not edit by hand.")
-    lines.append("// Run gen_srg_mappings.py to regenerate.")
+    lines.append("// Run mapping/gen_srg_mappings.py to regenerate.")
     lines.append("//")
     lines.append(f"// Source priority: tools/MinecraftRemapping/<version>/{PRIMARY_SRG}")
     lines.append(f"// Fallback       : tools/MinecraftRemapping/<version>/{FALLBACK_SRG} (reversed)")
