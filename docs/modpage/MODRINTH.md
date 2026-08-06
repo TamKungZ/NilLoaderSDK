@@ -105,7 +105,7 @@ dependencies {
 
 Full documentation and development information are available in the GitHub repository:
 
-[https://github.com/NilKit/NilKit](https://github.com/NilKit/NilKit)
+[https://github.com/NilKitAPI/NilKit-API/tree/main/docs](https://github.com/NilKitAPI/NilKit-API/tree/main/docs)
 
 ## NilLoader
 
