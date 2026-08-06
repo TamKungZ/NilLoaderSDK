@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation "me.tamkungz.nilkit:nilkit:4.0.0"
+    implementation "me.tamkungz.nilkit:nilkit:4.1.0"
 }
 ```
 

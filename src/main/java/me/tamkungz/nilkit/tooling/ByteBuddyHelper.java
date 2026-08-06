@@ -1,5 +1,7 @@
 package me.tamkungz.nilkit.tooling;
 
+import me.tamkungz.nilkit.tooling.bytebuddy.ByteBuddyPatch;
+import me.tamkungz.nilkit.tooling.bytebuddy.ByteBuddyPatchRegistry;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.dynamic.DynamicType;
@@ -8,20 +10,52 @@ import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import java.lang.instrument.Instrumentation;
 
 /**
- * Convenience entry points for the Byte Buddy libraries bundled by the
- * NilKit all-in-one artifact.
+ * NilKit's Byte Buddy entry point.
+ *
+ * <p>For one-off generation, use {@link #byteBuddy()} or {@link #subclass(Class)}.
+ * For Mixin-style class patching, register {@link ByteBuddyPatch} objects in
+ * {@link #patches()} and install either the NilLoader bridge during premain or
+ * an Instrumentation bridge.</p>
  *
  * <p>Nothing in the SDK startup path calls {@link ByteBuddyAgent#install()}.
- * Self-attachment is explicit because some JVMs disable or restrict it.</p>
+ * Self-attachment remains explicit because many JVMs disable or restrict it.</p>
  */
 public final class ByteBuddyHelper {
+
+    private static final ByteBuddyPatchRegistry PATCHES = new ByteBuddyPatchRegistry();
 
     private ByteBuddyHelper() {
     }
 
-    /** Creates a normal Byte Buddy builder entry point for advanced use. */
+    /** Creates an unrestricted Byte Buddy entry point for advanced use. */
     public static ByteBuddy byteBuddy() {
         return new ByteBuddy();
+    }
+
+    /** Global composable patch registry used by the convenience methods below. */
+    public static ByteBuddyPatchRegistry patches() {
+        return PATCHES;
+    }
+
+    /** Registers a Mixin-style patch in the global registry. */
+    public static ByteBuddyPatchRegistry register(ByteBuddyPatch patch) {
+        return PATCHES.register(patch);
+    }
+
+    /**
+     * Installs the global registry into NilLoader's pre-load transformer chain.
+     * Call during premain/hijack, before transformer registration is closed.
+     */
+    public static void installNilLoaderBridge() {
+        PATCHES.installNilLoaderBridge();
+    }
+
+    /**
+     * Installs the global registry on existing Instrumentation. The installation
+     * is retransformation-capable and can be reset through the returned handle.
+     */
+    public static ByteBuddyPatchRegistry.Installation installPatches(Instrumentation instrumentation) {
+        return PATCHES.installOn(instrumentation);
     }
 
     /**
@@ -38,11 +72,7 @@ public final class ByteBuddyHelper {
 
     /**
      * Explicitly asks Byte Buddy to self-attach and returns Instrumentation.
-     * Callers should prefer instrumentation supplied by their loader/agent when
-     * available. Self-attachment is JVM/platform dependent and may be disabled;
-     * when Byte Buddy is repackaged inside a shadow JAR, upstream attach behavior
-     * is also not guaranteed on every VM. Any failure is intentionally propagated
-     * to the caller rather than affecting NilKit startup.
+     * Prefer instrumentation supplied by the loader/agent when available.
      */
     public static Instrumentation installInstrumentation() {
         return ByteBuddyAgent.install();
@@ -59,11 +89,7 @@ public final class ByteBuddyHelper {
         return new ByteBuddy().subclass(baseType);
     }
 
-    /**
-     * Generates and loads an empty subclass using a wrapper class loader.
-     * Useful for quick prototypes; advanced transformations should use
-     * {@link #subclass(Class)} directly.
-     */
+    /** Generates and loads an empty subclass using a wrapper class loader. */
     public static <T> Class<? extends T> makeSubclass(Class<T> baseType) {
         if (baseType == null) throw new IllegalArgumentException("baseType must not be null");
         ClassLoader loader = baseType.getClassLoader();

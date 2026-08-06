@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'me.tamkungz.nilkit'
-version = '4.0.0'
+version = '4.1.0'
 
 java {
     // Gradle runs on an automatically selected modern JDK while NilKit bytecode

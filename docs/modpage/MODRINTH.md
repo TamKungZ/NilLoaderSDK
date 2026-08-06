@@ -1,6 +1,6 @@
 <h1>
-  <img src="https://raw.githubusercontent.com/NilKit/NilKit/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
-       width="30"
+  <img src="https://raw.githubusercontent.com/NilKitAPI/NilKit-API/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
+       width="40"
        alt=""
        aria-hidden="true">
   NilKit API
@@ -17,7 +17,7 @@
 
 NilKit provides reusable APIs and tooling for legacy Minecraft mod development, with a focus on reducing boilerplate around events, reflection, mappings, metadata, networking, and development utilities.
 
-NilKit `4.0.0` targets Java 8 bytecode and does not require a hard runtime link to a specific Minecraft JAR for its core APIs. Minecraft-specific functionality remains dependent on the mappings and structure of the target game version.
+NilKit `4.0.1` targets Java 8 bytecode and does not require a hard runtime link to a specific Minecraft JAR for its core APIs. Minecraft-specific functionality remains dependent on the mappings and structure of the target game version.
 
 ## Features
 
@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-    implementation "me.tamkungz.nilkit:nilkit:4.0.0"
+    implementation "me.tamkungz.nilkit:nilkit:4.0.1"
 }
 ```
 

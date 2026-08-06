@@ -2,11 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.1.0] - 2026-08-06
+
+### Byte Buddy patching framework
+
+* Expanded the Byte Buddy integration from a thin helper wrapper into a reusable patching framework designed for Mixin-style runtime transformations.
+* Added `ByteBuddyPatch` as a declarative patch definition API for targeting classes and applying multiple transformations without manually recreating `AgentBuilder` or transformer boilerplate.
+* Added `ByteBuddyPatchRegistry` for managing multiple patches with deterministic ordering and configurable priorities.
+* Added JVM descriptor-based method matching for more reliable targeting across mapped, obfuscated, and legacy Minecraft environments.
+* Added patch validation through `require(...)`, allowing transformations to fail immediately when an expected method or target is missing instead of silently continuing with an unapplied patch.
+* Added reusable Advice-based injection support for method entry, method exit, constructors, argument modification, return-value modification, and exception handling.
+* Added support for replacing complete method implementations through direct Byte Buddy interception.
+* Added low-level transformation access through `mutate(...)`, allowing patches to use raw Byte Buddy features such as `MemberSubstitution`, ASM visitors, field/method definitions, implemented interfaces, and custom builder mutations.
+* Kept the underlying Byte Buddy API exposed so advanced transformations are not restricted by the higher-level NilKit abstraction.
+
+### Runtime transformation
+
+* Added a NilLoader transformation bridge so registered Byte Buddy patches can participate directly in NilLoader class transformation without requiring Byte Buddy self-attachment.
+* Added optional `Instrumentation`-based installation with retransformation support for environments where already-loaded classes must be patched.
+* Preserved explicit Byte Buddy Agent attachment behavior; NilKit still does not automatically invoke `ByteBuddyAgent.install()` during SDK startup.
+* Added composition support so multiple independent patches can safely target the same class through a single transformation pipeline.
+* Improved transformation diagnostics and failure behavior for incompatible targets, incorrect mappings, and changed method descriptors.
+
+### Documentation
+
+* Added documentation and examples for using the Byte Buddy patch API as a Mixin-style transformation layer.
+* Documented patch registration, priorities, required targets, Advice injection, full method interception, and advanced raw Byte Buddy mutations.
+* Added examples showing integration through the NilLoader transformer bridge without requiring a Java agent.
+
 ## [4.0.0] - 2026-08-06
+
+### Refactor Project
+
+## [3.0.2] - 2026-08-06
 
 ### Developer toolbox
 
-- Added the optional `NilKit-4.0.0-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
+- Added the optional `NilLoaderSDK-3.0.2-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
 - Added `DeveloperToolbox` capability checks plus `ByteBuddyHelper`, `ClassGraphHelper`, `YamlHelper`, and `GebHelper` convenience APIs.
 - Byte Buddy self-attachment remains explicit; SDK startup never calls `ByteBuddyAgent.install()` automatically.
 - YAML helpers use `SafeConstructor`, reject duplicate mapping keys, and cap aliases for safer configuration loading.
@@ -26,10 +58,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed and documented
 
 - Replaced the accidental Gradle snippet previously stored in `THIRD_PARTY_LICENSES.md` with an actual third-party license inventory.
-- Updated stale `4.0.0` metadata and documentation references to the in-development `4.0.0` release.
+- Updated stale `3.0.1` metadata and documentation references to the in-development `3.0.2` release.
 - Kept complete mapping data outside release artifacts; mapping input continues to come directly from `tools/MinecraftRemapping`.
 
-## [4.0.0] - 2026-08-05
+## [3.0.1] - 2026-08-05
 
 ### Compatibility
 
@@ -43,15 +75,15 @@ All notable changes to this project will be documented in this file.
 
 - Removed the `.remapping` staging workflow. `tools/MinecraftRemapping` is now the single source path for mapping data.
 - Gradle mapping generation reads `tools/MinecraftRemapping/<version>/mcp2obf.srg` directly from the pinned submodule.
-- Fixed `SimpleRemap` so release JARs actually consume the generated mapping subset; 4.0.0 generated `GeneratedSrgMappings` but never called it.
+- Fixed `SimpleRemap` so release JARs actually consume the generated mapping subset; 3.0.0 generated `GeneratedSrgMappings` but never called it.
 - Replaced `prepareRemapping` / `import-submodule` with direct `inspectMinecraftRemapping`, `inspect-submodule`, and `submodule-path` workflows.
 - Updated `gen_srg_mappings.py` to use project-relative paths instead of a machine-specific absolute Windows path.
 
 ### Build fixes
 
-- Removed duplicate declarations accidentally left in `build.gradle` 4.0.0 mapping-generation code.
+- Removed duplicate declarations accidentally left in `build.gradle` 3.0.0 mapping-generation code.
 
-## [4.0.0] - 2026-08-05
+## [3.0.0] - 2026-08-05
 
 ### Added
 - Added `agaricusb/MinecraftRemapping` as an external Git submodule configuration at `tools/MinecraftRemapping`, pinned by the bootstrap scripts to `8ca7ba25dfd67eae43b3c73d02603ff6c085a6d7`.
@@ -65,7 +97,7 @@ All notable changes to this project will be documented in this file.
 - Added release helper scripts that verify tag/project version consistency and extract one changelog section.
 
 ### Changed
-- Bumped the SDK and metadata version to `4.0.0`.
+- Bumped the SDK and metadata version to `3.0.0`.
 - Java compilation now targets Java 8 with `--release 8` while Gradle itself runs on a supported modern launcher JDK; a dedicated local JDK 8 installation is no longer required for normal builds.
 - Complete mapping collections are not duplicated into the project ZIP/release tree. Mapping-aware builds read directly from the pinned `tools/MinecraftRemapping` submodule.
 - GitHub release responsibilities were separated from normal commit CI: `build.yml` only validates commits/PRs, while `release.yml` owns tagged releases.
