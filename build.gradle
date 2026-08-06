@@ -9,8 +9,8 @@ group = 'me.tamkungz.nilkit'
 version = '4.0.0'
 
 java {
-    // Gradle itself runs on an automatically selected JDK 21/17, while all SDK
-    // bytecode stays Java 8 compatible. This avoids requiring a second JDK 8.
+    // Gradle runs on an automatically selected modern JDK while NilKit bytecode
+    // remains Java 8 compatible. A separate JDK 8 installation is not required.
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
@@ -31,7 +31,6 @@ tasks.withType(Javadoc).configureEach {
     failOnError = false
 }
 
-
 // Reproducible archives make CI/release checksums stable for identical inputs.
 tasks.withType(AbstractArchiveTask).configureEach {
     preserveFileTimestamps = false
@@ -39,13 +38,13 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 configurations {
-    deps
+    nilLoaderArtifact
     cfr
     shadowBundle
 
-    // Optional developer-tooling libraries are available while compiling the SDK,
-    // but they are intentionally not published as transitive dependencies of the
-    // normal Maven artifact. They are physically bundled only by shadowJar.
+    // Optional developer-tooling libraries are available at compile/test time but are
+    // not published as transitive dependencies of the normal artifact. They are
+    // physically bundled only in the all-in-one shadow JAR.
     compileOnly.extendsFrom shadowBundle
     testImplementation.extendsFrom shadowBundle
 }
@@ -53,20 +52,19 @@ configurations {
 repositories {
     mavenCentral()
     maven { url 'https://repo.sleeping.town' }
-    maven { url 'https://repo.spongepowered.org/repository/maven-public/' }
 }
 
 dependencies {
     cfr 'org.benf:cfr:0.152'
 
-    // No Minecraft game JAR is required to compile the SDK core. Minecraft-facing
-    // helpers use reflection so the published JAR has no hard version link.
+    // No Minecraft game JAR is required to compile the core library. Minecraft-facing
+    // helpers are resolved lazily so the published JAR has no hard game-version link.
 
     compileOnly 'com.unascribed:nilloader:1.3.6'
-    deps 'com.unascribed:nilloader:1.3.6'
+    nilLoaderArtifact 'com.unascribed:nilloader:1.3.6'
 
     // Optional developer toolbox bundled only in NilKit-*-all.jar.
-    // The SDK core does not require these libraries to start. They are included so
+    // NilKit core does not require these libraries to start. They are included so
     // nilmod developers can use common instrumentation/config/scanning APIs without
     // maintaining a second dependency list when they choose the all-in-one artifact.
 
@@ -84,7 +82,7 @@ dependencies {
 
     // GEB's processor generates dispatchers at compile time. It must NOT be put in the
     // runtime shadow JAR; Gradle users that author @Listen handlers need it on the
-    // annotation-processor path. Keeping it here also lets SDK examples/tests compile
+    // annotation-processor path. Keeping it here also lets NilKit examples/tests compile
     // generated GEB code without shipping the processor or JavaPoet at runtime.
     annotationProcessor 'foo.zaaarf.geb:processor:0.4.9'
 
@@ -95,8 +93,6 @@ dependencies {
     shadowBundle 'org.yaml:snakeyaml:2.6'
 
     testImplementation 'junit:junit:4.13.2'
-
-    // shadow 'org.spongepowered:mixin:0.8.5'
 }
 
 // Guard the legacy-runtime promise of the all-in-one artifact. Multi-release
@@ -172,8 +168,8 @@ shadowJar {
     manifest {
         attributes(
             'NilModID': 'nilkit',
-            'NilModName': 'NilKit',
-            'Implementation-Title': 'NilKit Developer Toolbox',
+            'NilModName': 'NilKit API',
+            'Implementation-Title': 'NilKit API Developer Toolbox',
             'Implementation-Version': project.version,
             'Multi-Release': 'true'
         )
@@ -187,44 +183,64 @@ shadowJar {
     from('licenses') { into 'META-INF/nilkit/licenses' }
 }
 
-task fetchDeps(type: Copy) {
-    from configurations.deps
-    into "$buildDir/deps"
+def nilLoaderDepsDir = layout.buildDirectory.dir('deps')
+def nilLoaderDecompileDir = layout.buildDirectory.dir('decompiled')
+
+tasks.register('fetchNilLoader', Copy) {
+    group = 'development'
+    description = 'Copies the NilLoader artifact used by optional developer tasks.'
+    from configurations.nilLoaderArtifact
+    into nilLoaderDepsDir
 }
 
-task decompileNilloader(type: JavaExec) {
-    dependsOn 'fetchDeps'
+tasks.register('decompileNilLoader', JavaExec) {
+    group = 'development'
+    description = 'Decompiles NilLoader for local reference. This task is never part of a normal build.'
+    dependsOn 'fetchNilLoader'
+    classpath = configurations.cfr
+    mainClass = 'org.benf.cfr.reader.Main'
 
     doFirst {
-        def nilJar = fileTree("$buildDir/deps").matching {
-            include "*nilloader*.jar"
+        def nilJar = fileTree(nilLoaderDepsDir.get().asFile).matching {
+            include '*nilloader*.jar'
         }.singleFile
 
         args = [
-                nilJar.absolutePath,
-                '--outputdir', "$buildDir/decompiled"
+            nilJar.absolutePath,
+            '--outputdir', nilLoaderDecompileDir.get().asFile.absolutePath
         ]
     }
-
-    classpath = configurations.cfr
-    mainClass = 'org.benf.cfr.reader.Main'
 }
 
-// Keep decompilation opt-in. A normal build should not need to decompile NilLoader.
+// Compatibility aliases for scripts/docs that used the historical task names.
+tasks.register('fetchDeps') {
+    group = 'development'
+    description = 'Deprecated alias for fetchNilLoader.'
+    dependsOn 'fetchNilLoader'
+}
 
-def generatedRemapJavaDir = "$buildDir/generated/sources/remapping/main"
-def generatedBuildInfoJavaDir = "$buildDir/generated/sources/buildinfo/main"
+tasks.register('decompileNilloader') {
+    group = 'development'
+    description = 'Deprecated alias for decompileNilLoader.'
+    dependsOn 'decompileNilLoader'
+}
 
-task generateModBuildInfoFallback {
-    outputs.file "$generatedBuildInfoJavaDir/me/tamkungz/nilkit/build/ModBuildInfo.java"
+// Generated sources used by the main compilation.
+def generatedRemapJavaDir = layout.buildDirectory.dir('generated/sources/remapping/main')
+def generatedBuildInfoJavaDir = layout.buildDirectory.dir('generated/sources/buildinfo/main')
+
+tasks.register('generateModBuildInfoFallback') {
+    outputs.file generatedBuildInfoJavaDir.map {
+        it.file('me/tamkungz/nilkit/build/ModBuildInfo.java')
+    }
 
     doLast {
-        def sourceBuildInfo = file('src/main/java/me/tamkungz/nilkit/build/ModBuildInfo.java')
+        def sourceBuildInfo = layout.projectDirectory.file('src/main/java/me/tamkungz/nilkit/build/ModBuildInfo.java').asFile
         if (sourceBuildInfo.exists()) {
             return
         }
 
-        def out = file("$generatedBuildInfoJavaDir/me/tamkungz/nilkit/build/ModBuildInfo.java")
+        def out = generatedBuildInfoJavaDir.get().file('me/tamkungz/nilkit/build/ModBuildInfo.java').asFile
         out.parentFile.mkdirs()
         out.setText('''package me.tamkungz.nilkit.build;
 
@@ -243,10 +259,12 @@ public final class ModBuildInfo {
     }
 }
 
-task generateSimpleRemapMappings {
+tasks.register('generateSimpleRemapMappings') {
     inputs.dir('tools/MinecraftRemapping').optional()
     inputs.files fileTree('src/main/java') { include '**/*.java' }
-    outputs.file "$generatedRemapJavaDir/me/tamkungz/nilkit/remapping/GeneratedSrgMappings.java"
+    outputs.file generatedRemapJavaDir.map {
+        it.file('me/tamkungz/nilkit/remapping/GeneratedSrgMappings.java')
+    }
 
     doLast {
         def fieldNeed = new LinkedHashSet<String>()
@@ -351,12 +369,12 @@ task generateSimpleRemapMappings {
             s.replace('\\', '\\\\').replace('"', '\\"')
         }
 
-        def legacyOut = new File("$generatedRemapJavaDir/me/tamkungz/remapping/GeneratedSrgMappings.java")
+        def legacyOut = generatedRemapJavaDir.get().file('me/tamkungz/remapping/GeneratedSrgMappings.java').asFile
         if (legacyOut.exists()) {
             legacyOut.delete()
         }
 
-        def out = new File("$generatedRemapJavaDir/me/tamkungz/nilkit/remapping/GeneratedSrgMappings.java")
+        def out = generatedRemapJavaDir.get().file('me/tamkungz/nilkit/remapping/GeneratedSrgMappings.java').asFile
         out.parentFile.mkdirs()
 
         StringBuilder sb = new StringBuilder()
@@ -407,11 +425,11 @@ sourceSets {
     }
 }
 
-compileJava.dependsOn generateSimpleRemapMappings
-compileJava.dependsOn generateModBuildInfoFallback
+tasks.named('compileJava') {
+    dependsOn 'generateSimpleRemapMappings', 'generateModBuildInfoFallback'
+}
 tasks.named('sourcesJar') {
-    dependsOn generateSimpleRemapMappings
-    dependsOn generateModBuildInfoFallback
+    dependsOn 'generateSimpleRemapMappings', 'generateModBuildInfoFallback'
 }
 
 jar {
@@ -422,8 +440,8 @@ jar {
     manifest {
         attributes(
             'NilModID': 'nilkit',
-            'NilModName': 'NilKit',
-            'Implementation-Title': 'NilKit',
+            'NilModName': 'NilKit API',
+            'Implementation-Title': 'NilKit API',
             'Implementation-Version': project.version
         )
     }
@@ -436,9 +454,9 @@ publishing {
             artifactId = 'nilkit'
 
             pom {
-                name = 'NilKit'
-                description = 'SDK for NilLoader-based Minecraft mod development'
-                url = 'https://github.com/NilKit/NilKit'
+                name = 'NilKit API'
+                description = 'Independent API and tooling for NilLoader-based Minecraft mod development'
+                url = 'https://github.com/NilKitAPI/NilKit-API'
 
                 licenses {
                     license {
@@ -457,9 +475,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git:https://github.com/NilKit/NilKit.git'
-                    developerConnection = 'scm:git:ssh://git@github.com/NilKit/NilKit.git'
-                    url = 'https://github.com/NilKit/NilKit'
+                    connection = 'scm:git:https://github.com/NilKitAPI/NilKit-API.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/NilKitAPI/NilKit-API.git'
+                    url = 'https://github.com/NilKitAPI/NilKit-API'
                 }
             }
         }
@@ -537,8 +555,7 @@ tasks.register('publishProjectLocal') {
 }
 
 tasks.named('assemble') {
-    dependsOn 'mappingToolJar'
-    dependsOn 'shadowJar'
+    dependsOn 'mappingToolJar', 'shadowJar'
 }
 
 tasks.register('inspectMinecraftRemapping') {
