@@ -35,6 +35,8 @@ replay_pid*
 # Generated project-local Maven publication
 /maven/
 
+.gradle-home/
+
 nilplugin.txt
 nilplugin-verbose.txt
 nilagent.txt
