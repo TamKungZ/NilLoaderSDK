@@ -32,6 +32,20 @@ Minecraft-facing helpers are resolved lazily and depend on mappings compatible w
 
 See [Minecraft compatibility](docs/compatibility.md).
 
+## Gradle
+
+```gradle
+repositories {
+    maven {
+        url = uri("https://repo.tamkungz.me")
+    }
+}
+
+dependencies {
+    implementation "me.tamkungz.nilkit:nilkit:4.0.0"
+}
+```
+
 ## Quick build
 
 Gradle itself should run on a supported modern JDK, while the library targets Java 8 bytecode.
