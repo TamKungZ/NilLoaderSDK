@@ -1,6 +1,6 @@
 <h1>
-  <img src="https://raw.githubusercontent.com/NilKitAPI/NilKit-API/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
-       width="40"
+  <img src="https://raw.githubusercontent.com/NilKit/NilKit/refs/heads/main/src/main/resources/assets/nilkit/icon.svg"
+       width="30"
        alt=""
        aria-hidden="true">
   NilKit API
@@ -105,7 +105,7 @@ dependencies {
 
 Full documentation and development information are available in the GitHub repository:
 
-[https://github.com/NilKitAPI/NilKit-API/tree/main/docs](https://github.com/NilKitAPI/NilKit-API/tree/main/docs)
+[https://github.com/NilKit/NilKit](https://github.com/NilKit/NilKit)
 
 ## NilLoader
 

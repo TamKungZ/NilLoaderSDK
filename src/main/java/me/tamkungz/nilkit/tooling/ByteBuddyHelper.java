@@ -22,7 +22,15 @@ import java.lang.instrument.Instrumentation;
  */
 public final class ByteBuddyHelper {
 
-    private static final ByteBuddyPatchRegistry PATCHES = new ByteBuddyPatchRegistry();
+    /*
+     * Keep the patching subsystem lazy. Simple Byte Buddy generation must not
+     * initialize NilLoader-facing transformer classes as a side effect. This
+     * also keeps makeSubclass()/byteBuddy() usable in tooling and unit tests
+     * where NilLoader is intentionally absent from the runtime classpath.
+     */
+    private static final class PatchRegistryHolder {
+        private static final ByteBuddyPatchRegistry INSTANCE = new ByteBuddyPatchRegistry();
+    }
 
     private ByteBuddyHelper() {
     }
@@ -34,12 +42,12 @@ public final class ByteBuddyHelper {
 
     /** Global composable patch registry used by the convenience methods below. */
     public static ByteBuddyPatchRegistry patches() {
-        return PATCHES;
+        return PatchRegistryHolder.INSTANCE;
     }
 
     /** Registers a Mixin-style patch in the global registry. */
     public static ByteBuddyPatchRegistry register(ByteBuddyPatch patch) {
-        return PATCHES.register(patch);
+        return patches().register(patch);
     }
 
     /**
@@ -47,7 +55,7 @@ public final class ByteBuddyHelper {
      * Call during premain/hijack, before transformer registration is closed.
      */
     public static void installNilLoaderBridge() {
-        PATCHES.installNilLoaderBridge();
+        patches().installNilLoaderBridge();
     }
 
     /**
@@ -55,7 +63,7 @@ public final class ByteBuddyHelper {
      * is retransformation-capable and can be reset through the returned handle.
      */
     public static ByteBuddyPatchRegistry.Installation installPatches(Instrumentation instrumentation) {
-        return PATCHES.installOn(instrumentation);
+        return patches().installOn(instrumentation);
     }
 
     /**

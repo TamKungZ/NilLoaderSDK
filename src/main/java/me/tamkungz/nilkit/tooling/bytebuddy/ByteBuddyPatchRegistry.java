@@ -9,7 +9,6 @@ import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.dynamic.scaffold.MethodGraph;
 import net.bytebuddy.pool.TypePool;
 import net.bytebuddy.utility.JavaModule;
-import nilloader.api.ClassTransformer;
 
 import java.lang.instrument.Instrumentation;
 import java.security.ProtectionDomain;
@@ -80,23 +79,35 @@ public final class ByteBuddyPatchRegistry {
     public void installNilLoaderBridge() {
         if (!nilLoaderBridgeInstalled.compareAndSet(false, true)) return;
 
-        ClassTransformer.register(new ClassTransformer() {
-            @Override
-            public byte[] transform(ClassLoader loader, String internalClassName, byte[] originalData) {
-                if (originalData == null || patches.isEmpty()) return originalData;
-                String binaryName = internalClassName.replace('/', '.');
-                try {
-                    return transformBytes(loader, binaryName, originalData);
-                } catch (Throwable t) {
-                    throw new RuntimeException("Byte Buddy NilLoader transformation failed for " + binaryName, t);
-                }
+        try {
+            /*
+             * Deliberately load the NilLoader adapter reflectively. Keeping the
+             * nilloader.api.ClassTransformer reference in a separate class means
+             * this registry remains loadable for Byte Buddy-only tooling and for
+             * Instrumentation agents whose runtime does not contain NilLoader.
+             */
+            ClassLoader loader = ByteBuddyPatchRegistry.class.getClassLoader();
+            Class<?> bridge = Class.forName(
+                    "me.tamkungz.nilkit.tooling.bytebuddy.NilLoaderByteBuddyBridge",
+                    true,
+                    loader);
+            java.lang.reflect.Method install = bridge.getDeclaredMethod(
+                    "install", ByteBuddyPatchRegistry.class);
+            install.invoke(null, this);
+        } catch (Throwable t) {
+            nilLoaderBridgeInstalled.set(false);
+
+            Throwable cause = t;
+            if (t instanceof java.lang.reflect.InvocationTargetException
+                    && ((java.lang.reflect.InvocationTargetException) t).getCause() != null) {
+                cause = ((java.lang.reflect.InvocationTargetException) t).getCause();
             }
 
-            @Override
-            public byte[] transform(String className, byte[] originalData) {
-                return transform(ClassLoader.getSystemClassLoader(), className, originalData);
-            }
-        });
+            throw new IllegalStateException(
+                    "Cannot install the NilLoader Byte Buddy bridge. "
+                            + "Ensure NilLoader is present and transformer registration is still open.",
+                    cause);
+        }
     }
 
     /**
