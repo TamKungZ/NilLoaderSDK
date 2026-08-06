@@ -39,6 +39,8 @@ NilKit `4.0.0` targets Java 8 bytecode and does not require a hard runtime link 
 
 NilKit includes a general-purpose KDL parser and writer and can use KDL for richer project/mod metadata.
 
+> *KDL support is optional. NilKit does not require NilLoader mods to use KDL, and standard NilLoader metadata remains fully supported.*
+
 Example:
 
 ```kdl
