@@ -38,7 +38,7 @@ All notable changes to this project will be documented in this file.
 
 ### Developer toolbox
 
-- Added the optional `NilLoaderSDK-3.0.2-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
+- Added the optional `Legacy-3.0.2-all.jar` developer toolbox with Byte Buddy `1.17.6`, Byte Buddy Agent `1.17.6`, GEB core `0.5.4`, ClassGraph `4.8.184`, and SnakeYAML `2.6`, keeping upstream package names unrelocated for direct imports.
 - Added `DeveloperToolbox` capability checks plus `ByteBuddyHelper`, `ClassGraphHelper`, `YamlHelper`, and `GebHelper` convenience APIs.
 - Byte Buddy self-attachment remains explicit; SDK startup never calls `ByteBuddyAgent.install()` automatically.
 - YAML helpers use `SafeConstructor`, reject duplicate mapping keys, and cap aliases for safer configuration loading.

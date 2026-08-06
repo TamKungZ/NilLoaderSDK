@@ -60,6 +60,6 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && matrix.java == 21
         uses: actions/upload-artifact@v4
         with:
-          name: NilLoaderSDK-jars
+          name: NilKitAPI-jars
           path: build/libs/*.jar
           if-no-files-found: error
